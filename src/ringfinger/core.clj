@@ -4,12 +4,30 @@
 (def routes (ref (list
   {:route (route-compile "/*")
    :handler (fn [req matches]
-    {:status 404
+    {:status  404
      :headers {"Content-Type" "text/plain"}
-     :body "404 Not Found"})})))
+     :body    "404 Not Found"})})))
 
-(defn defroute [route]
-  (dosync (ref-set routes (conj @routes route))))
+(defn method-na-handler [req matches]
+  {:status  405
+   :headers {"Content-Type" "text/plain"}
+   :body    "405 Method Not Allowed"})
+
+(def default-handlers
+  {:get      method-na-handler
+   :head     method-na-handler
+   :options  method-na-handler
+   :put      method-na-handler
+   :post     method-na-handler
+   :delete   method-na-handler})
+
+(defn defroute [url handlers]
+  (dosync
+    (ref-set routes
+      (conj @routes
+        {:route   (route-compile url)
+         :handler (fn [req matches]
+                    (((:request-method req) (merge default-handlers handlers)) req matches))}))))
 
 (defn app [req]
   (let [route
