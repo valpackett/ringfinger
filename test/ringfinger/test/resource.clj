@@ -1,12 +1,11 @@
 (ns ringfinger.test.resource
   (:use ringfinger.core, ringfinger.resource, ringfinger.db, ringfinger.db.inmem,
-        ring.mock.request, clojure.test))
+        valip.predicates, ring.mock.request, clojure.test))
 
 (defresource :todos
   {:store inmem
    :pk    :body}
-  {:body  :string
-   :state :boolean})
+  [:body  present? "should be present"])
 
 (deftest right-create
   (is (= (app (body (request :post "/todos?format=json") {:body  "test"
@@ -16,11 +15,10 @@
           :body    ""})))
 
 (deftest wrong-create
-  (is (= (app (body (request :post "/todos?format=json") {:body  false
-                                                          :state false}))
-         {:status  417
+  (is (= (app (body (request :post "/todos?format=json") {:state false}))
+         {:status  400
           :headers {"Content-Type" "application/json"}
-          :body    "{\"error\": \"body should be a string\"}"})))
+          :body    "{\"body\":[\"should be present\"]}"})))
 
 (deftest right-update
   (is (= (app (body (request :put "/todos/test?format=json") {:body  "test"
@@ -49,7 +47,7 @@
   (is (= (get_one inmem :todos :body "test") nil)))
 
 (defn test-ns-hook []
-;  (wrong-create)
+  (wrong-create)
   (right-create)
   (right-update)
   (right-show)
