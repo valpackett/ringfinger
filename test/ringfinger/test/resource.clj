@@ -35,6 +35,12 @@
           :headers {"Content-Type" "application/json"}
           :body    "{\"body\":\"test\",\"state\":\"true\"}"})))
 
+(deftest alt-show
+  (is (= (app (header (request :get "/todos/test") "Accept" "text/xml"))
+      {:status  200
+       :headers {"Content-Type" "text/xml"}
+       :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>/n<response><body>test</body><state>true</state></response>"})))
+
 (deftest right-delete
   (is (= (app (request :delete "/todos/test?format=json"))
           {:status  200
@@ -47,5 +53,6 @@
   (right-create)
   (right-update)
   (right-show)
+  (alt-show)
   (right-delete)
   (reset-inmem-db))
