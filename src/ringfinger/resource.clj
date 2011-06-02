@@ -12,11 +12,13 @@
       (str "?" (first format) "=" (get format 1))
       "")))
 
-(defn defresource [coll options fields]
+(defn defresource [collname options fields]
   (let [store (:store options)
-        i_get_one (fn [matches] (get_one store coll (:pk options) (:pk matches)))
-        i_redirect (fn [req form] (redirect (str "/" (as-str coll) "/" (get form (:pk options)) (qsformat req))))]
-  (defroute (str "/" (as-str coll))
+        pk (:pk options)
+        collname (as-str coll)
+        i_get_one (fn [matches] (get_one store coll pk) (:pk matches)))
+        i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk)) (qsformat req))))]
+  (defroute (str "/" collname)
     {;:get (fn [req matches]
             ; TODO: index
     ;        )
@@ -24,7 +26,7 @@
              (let [form (keywordize (:form-params req))]
                (create store coll form)
                (i_redirect req form)))})
-  (defroute (str "/" (as-str coll) "/:pk")
+  (defroute (str "/" collname "/:pk")
     {:get (fn [req matches]
             {:status 200
              :headers {"Content-Type" "application/json"}
