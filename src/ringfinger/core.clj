@@ -1,5 +1,5 @@
 (ns ringfinger.core
-  (:use clout.core))
+  (:use clout.core, (ring.middleware params)))
 
 (def routes (ref (list
   {:route (route-compile "/*")
@@ -29,8 +29,12 @@
          :handler (fn [req matches]
                     (((:request-method req) (merge default-handlers handlers)) req matches))}))))
 
-(defn app [req]
+(defn main-handler [req]
   (let [route
      (first
         (filter (fn [route] (route-matches (:route route) req)) @routes))]
      ((:handler route) req (route-matches (:route route) req))))
+
+(def app
+  (-> main-handler
+      wrap-params))

@@ -17,4 +17,5 @@
   (creation)
   (reading)
   (updating)
-  (deleting))
+  (deleting)
+  (reset-inmem-db))

@@ -18,3 +18,6 @@
   (delete [self coll entry]
     (dosync
       (ref-set base (assoc @base coll (remove (fn [centry] (if (= entry centry) true false)) (get @base coll))))))))
+
+(defn reset-inmem-db []
+  (dosync (ref-set base {})))
