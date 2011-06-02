@@ -38,7 +38,7 @@
 (deftest alt-show
   (is (= (app (header (request :get "/todos/test") "Accept" "text/xml"))
       {:status  200
-       :headers {"Content-Type" "text/xml"}
+       :headers {"Content-Type" "application/xml"}
        :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>/n<response><body>test</body><state>true</state></response>"})))
 
 (deftest right-delete

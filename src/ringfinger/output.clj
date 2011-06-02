@@ -14,7 +14,7 @@
 (def xml  (reify output
   (render [self status data]
           {:status  status
-           :headers {"Content-Type" "text/xml"}
+           :headers {"Content-Type" "application/xml"}
            :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>/n" (with-out-str (prxml [:response (map vec data)])))})))
 
 (defmacro defoutput [name fun]
