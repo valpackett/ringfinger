@@ -44,7 +44,7 @@
           {:status  200
            :headers {"Content-Type" "application/json"}
            :body    "{}"}))
-  (is (= (get_one inmem :todos :body "test") nil)))
+  (is (= (get_one inmem :todos {:body "test"}) nil)))
 
 (defn test-ns-hook []
   (wrong-create)

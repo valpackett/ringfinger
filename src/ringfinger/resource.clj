@@ -23,7 +23,7 @@
         pk (:pk options)
         collname (as-str coll)
         i_validate (fn [req data yep] (let [result (apply validate data validations)] (if (= result nil) (yep) (respond req 400 result))))
-        i_get_one  (fn [matches] (get_one store coll pk (:pk matches)))
+        i_get_one  (fn [matches] (get_one store coll {pk (:pk matches)}))
         i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
   (defroute (str "/" collname)
     {;:get (fn [req matches]

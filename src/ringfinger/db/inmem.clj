@@ -10,8 +10,10 @@
       (if (false? (coll base))
         (ref-set base (assoc @base coll [data]))
         (ref-set base (assoc @base coll (conj (get @base coll) data))))))
-  (get_one [self coll field value]
-    (first (filter (fn [entry] (= (get entry field) value)) (get @base coll))))
+  (get_many [self coll query]
+    (filter (make-filter query) (get @base coll)))
+  (get_one [self coll query]
+    (first (get_many self coll query)))
   (update  [self coll entry data]
     (dosync
       (ref-set base (assoc @base coll (replace {entry (merge entry data)} (get @base coll))))))
