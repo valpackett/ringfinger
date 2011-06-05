@@ -1,7 +1,7 @@
 (ns ringfinger.resource
   (:use ringfinger.core, ringfinger.db, ringfinger.output
         ring.util.response,
-        valip.core, valip.predicates,
+        valip.core, valip.predicates, ; FIXME: don't need predicates here?
         [clojure.contrib.string :only [as-str]]))
 
 (defmacro normalize [a]
@@ -18,6 +18,9 @@
                                                 (qsformat ~req)
                                                 (get (:headers ~req) "accept"))))) ~status ~data))
 
+(defn- params-to-query [req]
+  nil) ; TODO: implement
+
 (defn defresource [coll options & validations]
   (let [store (:store options)
         pk (:pk options)
@@ -26,9 +29,8 @@
         i_get_one  (fn [matches] (get_one store coll {pk (:pk matches)}))
         i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
   (defroute (str "/" collname)
-    {;:get (fn [req matches]
-            ; TODO: index
-    ;        )
+    {:get (fn [req matches]
+            (respond req 200 (get_many store coll (params-to-query req))))
      :post (fn [req matches]
              (let [form (normalize (:form-params req))]
                (i_validate req form

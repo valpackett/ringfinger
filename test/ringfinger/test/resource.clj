@@ -31,13 +31,17 @@
   (is (= (app (request :get "/todos/test?format=json"))
          {:status  200
           :headers {"Content-Type" "application/json"}
-          :body    "{\"body\":\"test\",\"state\":\"true\"}"})))
-
-(deftest alt-show
+          :body    "{\"body\":\"test\",\"state\":\"true\"}"}))
   (is (= (app (header (request :get "/todos/test") "Accept" "text/xml"))
-      {:status  200
-       :headers {"Content-Type" "application/xml"}
-       :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>/n<response><body>test</body><state>true</state></response>"})))
+          {:status  200
+          :headers {"Content-Type" "application/xml"}
+          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body>test</body><state>true</state></response>"})))
+
+(deftest right-index
+  (is (= (app (request :get "/todos?format=json"))
+         {:status  200
+          :headers {"Content-Type" "application/json"}
+          :body "[{\"body\":\"test\",\"state\":\"true\"}]"})))
 
 (deftest right-delete
   (is (= (app (request :delete "/todos/test?format=json"))
@@ -51,6 +55,6 @@
   (right-create)
   (right-update)
   (right-show)
-  (alt-show)
+  (right-index)
   (right-delete)
   (reset-inmem-db))
