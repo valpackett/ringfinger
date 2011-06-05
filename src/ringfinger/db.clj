@@ -1,4 +1,5 @@
-(ns ringfinger.db)
+(ns ringfinger.db
+  (:use ringfinger.util))
 
 (defprotocol database
   (create   [self coll data])
@@ -10,10 +11,6 @@
 ; For databases w/o built-in filters, eg. inmem
 ; TODO: implement more of
 ; http://www.mongodb.org/display/DOCS/Advanced+Queries
-(defn- andf ([] true) ([x] x)
-  ([x & next]
-    (if x (apply andf next) x)))
-
 (defn- make-query [kk vv]
   (apply andf (map (fn [k v]
     (cond
