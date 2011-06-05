@@ -11,21 +11,34 @@
            :headers {"Content-Type" "application/json"}
            :body    (json-str data)})))
 
-(defn pre-xml [data]
-  (if (map? data)
-    (map vec data)
-    (map (fn [entry] ["entry" (map vec entry)]) data)))
+(defn to-xml [data]
+  `(prxml [:response (if (map? ~data)
+    (map vec ~data)
+    (map (fn [entry] ["entry" (map vec entry)]) ~data))]))
 
 (def xml  (reify output
   (render [self status data]
           {:status  status
            :headers {"Content-Type" "application/xml"}
-           :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" (with-out-str (prxml [:response (pre-xml data)])))})))
+           :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" (with-out-str (to-xml data)))})))
+
+(def outputs (ref {}))
+(def views   (ref {}))
 
 (defmacro defoutput [name fun]
-  `(def ~name (reify output
-     (render [self data#] (~fun data#)))))
+  `(dosync (ref-set outputs (merge @outputs {~name (reify output
+     (render [self status# data#] (~fun status# data#)))}))))
 
-(defn getoutput [ctype]
-  (cond (substring? "json" ctype) json
-        (substring? "xml"  ctype)  xml))
+(defmacro defview [res action fun]
+  `(dosync (ref-set views (merge @views {(str ~res "/" ~action)
+     (reify output
+       (render [self status# data#]
+         {:status  status#
+          :headers {"Content-Type" "text/html"}
+          :body (~fun data#)}))}))))
+
+(defn getoutput [ctype res action]
+  (cond (substring? "html" ctype) (get @views (str res "/" action))
+        (substring? "json" ctype) json
+        (substring? "xml"  ctype)  xml
+        :else (get @outputs ctype)))
