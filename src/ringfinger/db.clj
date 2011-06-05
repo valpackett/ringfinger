@@ -14,9 +14,21 @@
   ([x & next]
     (if x (apply andf next) x)))
 
+(defn- make-query [kk vv]
+  (apply andf (map (fn [k v]
+    (cond
+      (= k :$not)    (not (make-query kk v))
+      (= k :$lt)     (< kk v)
+      (= k :$lte)    (<= kk v)
+      (= k :$gt)     (> kk v)
+      (= k :$gte)    (>= kk v)
+      (= k :$exists) (if (false? v) (nil? kk) (not (nil? kk)))
+      (= k :$ne)     (not (= kk v))
+      :else          (= kk v))) (keys vv) (vals vv))))
+
 (defn make-filter [query]
   (fn [entry]
     (apply andf (map (fn [k v]
       (cond
-        (map? v) =
+        (map? v) (make-query (get entry k) v)
         :else (= (get entry k) v))) (keys query) (vals query)))))
