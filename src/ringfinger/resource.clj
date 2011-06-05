@@ -57,6 +57,7 @@
                    (i_redirect req form)))))})
   (defroute (str "/" collname "/:pk")
     {:get (fn [req matches]
+            ; TODO: 404
              (respond req 200 (i_get_one matches) collname "get"))
      :put (fn [req matches]
             (let [form (normalize (:form-params req))
@@ -81,7 +82,9 @@
           [:tr (map (fn [f] [:th f]) fields)]
           (map (fn [e] [:tr
              (map (fn [f] [:td (get e f)]) fields)
-             [:td [:a {:href (str "/" collname "/" (get e pk))} "edit"]]]) data)]
+             [:td [:a {:href (str "/" collname "/" (get e pk))} "edit"]]
+             [:td [:a {:href (str "/" collname "/" (get e pk) "?_method=delete")} "delete"]]
+          ]) data)]
       ]]))))
   (defview collname "get" (fn [data]
     (str "<!DOCTYPE html>" (html [:html

@@ -27,7 +27,8 @@
       (conj @routes
         {:route   (route-compile url)
          :handler (fn [req matches]
-                    (((:request-method req) (merge default-handlers handlers)) req matches))}))))
+                    (let [rm (first (select-keys (:query-params req) ["_method"]))]
+                      (((if rm (keyword (get rm 1)) (:request-method req)) (merge default-handlers handlers)) req matches)))}))))
 
 (defn main-handler [req]
   (let [route
