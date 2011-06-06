@@ -13,7 +13,7 @@
 
 ; TODO: customization
 (defmacro form-fields [fields data errors]
-  `(map (fn [f#] (list
-    [:input {:name (as-str f#) :value (as-str (get ~data f#)) :placeholder (as-str f#)}]
+  `(map (fn [f# fval#] (list
+    [:input (merge {:name (as-str f#) :value (as-str (get ~data f#)) :placeholder (as-str f#)} fval#)]
     (if (get ~errors f#) [:div {:class "error"} (map as-str (get ~errors f#))] nil)
-  )) ~fields))
+  )) (keys ~fields) (vals ~fields)))

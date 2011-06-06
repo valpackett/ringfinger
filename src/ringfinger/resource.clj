@@ -36,17 +36,19 @@
   ([qp] (apply merge (map params-to-query (keys qp) (vals qp))))
   ([q v] (if (substring? "_" q) (param-to-query (flatten (list (split #"_" q) (typeify v)))) nil)))
 
-(def default-style "html{background:#cece9e}body{margin:4%;padding:2%;background:#fff;color:#333;font:14px \"Lucida Grande\", sans-serif}input,button{display: block}.error{background:#dd9090;color:#f4f4f4}")
+(def default-style "html{background:#cece9e}body{margin:4%;padding:2%;background:#fff;color:#333;font:14px \"Lucida Grande\", sans-serif}input,button{display: block}.error,input:invalid{background:#dd9090;color:#f4f4f4}")
 
 (defn defresource [coll options & validations]
   (let [store (:store options)
         pk (:pk options)
         collname (as-str coll)
-        fields (set (map first validations))
+        fields (let [v (group-by first validations)]
+                 (zipmap (keys v) (map (fn [a] (apply merge (map (fn [b] (:html (meta (get b 1)))) a))) (vals v))))
         i_validate (fn [req data yep nope] (let [result (apply validate data validations)]
                       (if (= result nil) (yep) (nope result))))
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
         i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
+    (prn fields)
   (defroute (str "/" collname)
     {:get (fn [req matches]
             (respond req 200 {:data (get_many store coll (params-to-query (:query-params req)))} collname "index"))
@@ -79,7 +81,7 @@
                (delete store coll (i_get_one matches))
                (redirect (str "/" collname)))})
   (defview collname "index" (fn [stuff]
-    (let [data (:data stuff) errors (:errors stuff)]
+    (let [data (:data stuff) errors (:errors stuff) fieldnames (keys fields)]
       (str "<!DOCTYPE html>" (html [:html
         [:head [:title (str collname " / index")]
                [:style default-style]]
@@ -89,9 +91,9 @@
             (form-fields fields data errors)
             [:button {:type "submit"} "Add"]]
           [:table
-            [:tr (map (fn [f] [:th f]) fields)]
+            [:tr (map (fn [f] [:th f]) fieldnames)]
             (map (fn [e] [:tr
-               (map (fn [f] [:td (get e f)]) fields)
+               (map (fn [f] [:td (get e f)]) fieldnames)
                [:td [:a {:href (str "/" collname "/" (get e pk))} "edit"]]
                [:td [:a {:href (str "/" collname "/" (get e pk) "?_method=delete")} "delete"]]
             ]) data)]
