@@ -48,7 +48,6 @@
                       (if (= result nil) (yep) (nope result))))
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
         i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
-    (prn fields)
   (defroute (str "/" collname)
     {:get (fn [req matches]
             (respond req 200 {:data (get_many store coll (params-to-query (:query-params req)))} collname "index"))
@@ -88,7 +87,7 @@
         [:body
           [:h1 collname]
           [:form {:method "post" :action ""}
-            (form-fields fields data errors)
+            (form-fields fields data errors [:div] [:div {:class "error"}] :placeholder)
             [:button {:type "submit"} "Add"]]
           [:table
             [:tr (map (fn [f] [:th f]) fieldnames)]
@@ -106,7 +105,7 @@
         [:body
           [:h1 [:a {:href (str "/" collname)} collname] (str " / " (get data pk))]
           [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put")}
-            (form-fields fields data errors)
+            (form-fields fields data errors [:div] [:div {:class "error"}] :label)
             [:button {:type "submit"} "Save"]]]])))))
   (defview collname "not-found" (fn [stuff]
     (str "<!DOCTYPE html>" (html [:html
