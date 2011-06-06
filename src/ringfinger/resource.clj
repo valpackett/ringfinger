@@ -1,6 +1,5 @@
 (ns ringfinger.resource
   (:use ringfinger.core, ringfinger.db, ringfinger.output, ringfinger.util,
-        ringfinger.helpers
         ring.util.response,
         hiccup.core,
         valip.core,
