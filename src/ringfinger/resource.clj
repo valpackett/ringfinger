@@ -62,8 +62,10 @@
                                      :errors errors} collname "index")))))})
   (defroute (str "/" collname "/:pk")
     {:get (fn [req matches]
-            ; TODO: 404
-             (respond req 200 {:data (i_get_one matches)} collname "get"))
+            (let [entry (i_get_one matches)]
+              (if entry
+                (respond req 200 {:data entry} collname "get")
+                (respond req 404 {} collname "not-found"))))
      :put (fn [req matches]
             (let [form (normalize (:form-params req))
                   entry (i_get_one matches)
@@ -104,4 +106,9 @@
           [:h1 [:a {:href (str "/" collname)} collname] (str " / " (get data pk))]
           [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put")}
             (form-fields fields data errors)
-            [:button {:type "submit"} "Save"]]]])))))) true)
+            [:button {:type "submit"} "Save"]]]])))))
+  (defview collname "not-found" (fn [stuff]
+    (str "<!DOCTYPE html>" (html [:html
+      [:head [:title (str collname " / not found")]
+             [:style default-style]]
+      [:body [:h1 "Not found :-("]]]))))) true)
