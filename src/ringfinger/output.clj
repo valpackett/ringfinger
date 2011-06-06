@@ -11,10 +11,12 @@
            :headers {"Content-Type" "application/json"}
            :body    (json-str data)})))
 
-(defn to-xml [data]
-  `(prxml [:response (if (map? ~data)
-    (map vec ~data)
-    (map (fn [entry] ["entry" (map vec entry)]) ~data))]))
+(defmacro to-xml [data]
+  `(let [errs# (:errors ~data)]
+     (prxml [:response (cond
+       (not (nil? errs#)) (map (fn [fld# err#] [(keyword fld#) (map (fn [estr#] [:error estr#]) err#)]) (keys errs#) (vals errs#))
+       (map? ~data) (map vec ~data)
+       :else (map (fn [entry#] [:entry (map vec entry#)]) ~data))])))
 
 (def xml  (reify output
   (render [self status data]
