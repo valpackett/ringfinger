@@ -5,18 +5,19 @@
 (defprotocol Output
   (render [self status data]))
 
+(defmacro errors-or-data [data]
+  `(let [errs# (:errors ~data)] (if errs# errs# (:data ~data))))
+
 (def json (reify Output
   (render [self status data]
           {:status  status
            :headers {"Content-Type" "application/json; charset=utf-8"}
-           :body    (json-str data)})))
+           :body    (json-str (errors-or-data data))})))
 
 (defmacro to-xml [data]
-  `(let [errs# (:errors ~data)]
-     (prxml [:response (cond
-       (not (nil? errs#)) (map (fn [fld# err#] [(keyword fld#) (map (fn [estr#] [:error estr#]) err#)]) (keys errs#) (vals errs#))
-       (map? ~data) (map vec ~data)
-       :else (map (fn [entry#] [:entry (map vec entry#)]) ~data))])))
+  `(prxml [:response (cond
+     (map? ~data) (map vec (errors-or-data ~data)) ; only errors on invalid PUTs
+     :else (map (fn [entry#] [:entry (map vec entry#)]) ~data))]))
 
 (def xml  (reify Output
   (render [self status data]
