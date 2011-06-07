@@ -13,9 +13,15 @@
    :headers {"Content-Type" "text/plain"}
    :body    "405 Method Not Allowed"})
 
+(defmacro head-handler [get-handler]
+  `(fn [req# matches#]
+    (let [result# (~get-handler req# matches#)]
+      {:status  (:status result#)
+       :headers (merge (:headers result#) {"Content-Length" (str (count (:body result#)))})
+       :body    nil})))
+
 (def default-handlers
   {:get      method-na-handler
-   :head     method-na-handler
    :options  method-na-handler
    :put      method-na-handler
    :post     method-na-handler
@@ -27,8 +33,10 @@
       (conj @routes
         {:route   (route-compile url)
          :handler (fn [req matches]
-                    (let [rm (first (select-keys (:query-params req) ["_method"]))]
-                      (((if rm (keyword (get rm 1)) (:request-method req)) (merge default-handlers handlers)) req matches)))}))))
+                    (let [rm (first (select-keys (:query-params req) ["_method"]))
+                          handlers (merge default-handlers handlers)
+                          handler (if rm (keyword (get rm 1)) (:request-method req))]
+                      ((if (= handler :head) (head-handler (:get handlers)) (handler handlers)) req matches)))}))))
 
 (defn main-handler [req]
   (let [route
