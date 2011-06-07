@@ -1,7 +1,7 @@
 (ns ringfinger.db
   (:use ringfinger.util))
 
-(defprotocol database
+(defprotocol Database
   (create   [self coll data])
   (get_many [self coll query])
   (get_one  [self coll query])

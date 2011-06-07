@@ -2,10 +2,10 @@
   (:use clojure.contrib.json, clojure.contrib.prxml,
         [clojure.contrib.string :only [substring?]]))
 
-(defprotocol output
+(defprotocol Output
   (render [self status data]))
 
-(def json (reify output
+(def json (reify Output
   (render [self status data]
           {:status  status
            :headers {"Content-Type" "application/json; charset=utf-8"}
@@ -18,7 +18,7 @@
        (map? ~data) (map vec ~data)
        :else (map (fn [entry#] [:entry (map vec entry#)]) ~data))])))
 
-(def xml  (reify output
+(def xml  (reify Output
   (render [self status data]
           {:status  status
            :headers {"Content-Type" "application/xml; charset=utf-8"}
@@ -28,12 +28,12 @@
 (def views   (ref {}))
 
 (defmacro defoutput [name fun]
-  `(dosync (ref-set outputs (merge @outputs {~name (reify output
+  `(dosync (ref-set outputs (merge @outputs {~name (reify Output
      (render [self status# data#] (~fun status# data#)))}))))
 
 (defmacro defview [res action fun]
   `(dosync (ref-set views (merge @views {(str ~res "/" ~action)
-     (reify output
+     (reify Output
        (render [self status# data#]
          {:status  status#
           :headers {"Content-Type" "text/html; charset=utf-8"}

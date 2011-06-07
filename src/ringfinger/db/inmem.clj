@@ -4,7 +4,7 @@
 
 (def base (ref {}))
 
-(def inmem (reify database
+(def inmem (reify Database
   (create [self coll data]
     (dosync
       (if (false? (coll base))
