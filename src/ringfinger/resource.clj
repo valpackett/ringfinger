@@ -88,7 +88,8 @@
        :post (fn [req matches]
                (let [form (keywordize (:form-params req))]
                  (i_validate req form
-                   #((create store coll (typeize form))
+                   (fn []
+                     (create store coll (typeize form))
                      (i_redirect req form))
                    (fn [errors]
                      (respond req 400 {:data (get_many store coll (params-to-query (:query-params req)))
@@ -104,7 +105,8 @@
                     entry (i_get_one matches)
                     updated-entry (merge entry form)]
                 (i_validate req updated-entry
-                  #((update store coll entry (typeize form))
+                  (fn []
+                    (update store coll entry (typeize form))
                     (i_redirect req form))
                   (fn [errors]
                     (respond req 400 {:data updated-entry :errors errors} collname "get")))))
