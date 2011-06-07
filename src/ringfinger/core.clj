@@ -1,6 +1,6 @@
 (ns ringfinger.core
   (:use clout.core, (ring.middleware params session),
-        ringfinger.session))
+        ringfinger.session, ringfinger.db.inmem))
 
 (defn method-na-handler [req matches]
   {:status  405
@@ -42,7 +42,7 @@
           (let [route (first (filter (fn [route] (route-matches (:route route) req)) allroutes))]
             ((:handler route) req (route-matches (:route route) req))))
         wrap-params
-        (wrap-session {:store (:session-store options)}))))
+        (wrap-session {:store (or (:session-store options) (db-store inmem))}))))
 
 (defn defapp [nname options & routes]
   (intern *ns* (symbol nname) (app options routes)))
