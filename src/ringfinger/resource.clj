@@ -6,7 +6,7 @@
         [clojure.contrib.string :only [as-str, split, substring?]]
         [clojure.contrib.seq    :only [includes?]]))
 
-(defmacro normalize [a]
+(defmacro keywordize [a]
   `(zipmap (map (fn [b#] (keyword b#)) (keys ~a)) (vals ~a)))
 
 ; oh snap
@@ -52,7 +52,7 @@
     {:get (fn [req matches]
             (respond req 200 {:data (get_many store coll (params-to-query (:query-params req)))} collname "index"))
      :post (fn [req matches]
-             (let [form (normalize (:form-params req))]
+             (let [form (keywordize (:form-params req))]
                (i_validate req form
                  (fn []
                    (create store coll (typeize form))
@@ -67,7 +67,7 @@
                 (respond req 200 {:data entry} collname "get")
                 (respond req 404 {} collname "not-found"))))
      :put (fn [req matches]
-            (let [form (normalize (:form-params req))
+            (let [form (keywordize (:form-params req))
                   entry (i_get_one matches)
                   updated-entry (merge entry form)]
               (i_validate req updated-entry
