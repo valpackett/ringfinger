@@ -1,17 +1,18 @@
 (ns ringfinger.core
-  (:use clout.core, (ring.middleware params)))
-
-(def routes (ref (list
-  {:route (route-compile "/*")
-   :handler (fn [req matches]
-    {:status  404
-     :headers {"Content-Type" "text/plain"}
-     :body    "404 Not Found"})})))
+  (:use clout.core, (ring.middleware params session),
+        ringfinger.session))
 
 (defn method-na-handler [req matches]
   {:status  405
    :headers {"Content-Type" "text/plain"}
    :body    "405 Method Not Allowed"})
+
+(def not-found-handler
+  {:route   (route-compile "/*")
+   :handler (fn [req matches]
+              {:status  404
+               :headers {"Content-Type" "text/plain"}
+               :body    "404 Not Found"})})
 
 (defmacro head-handler [get-handler]
   `(fn [req# matches#]
@@ -27,23 +28,22 @@
    :post     method-na-handler
    :delete   method-na-handler})
 
-(defn defroute [url handlers]
-  (dosync
-    (ref-set routes
-      (conj @routes
-        {:route   (route-compile url)
-         :handler (fn [req matches]
-                    (let [rm (first (select-keys (:query-params req) ["_method"]))
-                          handlers (merge default-handlers handlers)
-                          handler (if rm (keyword (get rm 1)) (:request-method req))]
-                      ((if (= handler :head) (head-handler (:get handlers)) (handler handlers)) req matches)))}))))
+(defmacro route [url handlers]
+  `{:route   (route-compile ~url)
+    :handler (fn [req# matches#]
+               (let [rm#       (first (select-keys (:query-params req#) ["_method"]))
+                     handlers# (merge default-handlers ~handlers)
+                     method#   (if rm# (keyword (get rm# 1)) (:request-method req#))]
+                       ((if (= method# :head) (head-handler (:get handlers#)) (get handlers# method#)) req# matches#)))})
 
-(defn main-handler [req]
-  (let [route
-     (first
-        (filter (fn [route] (route-matches (:route route) req)) @routes))]
-     ((:handler route) req (route-matches (:route route) req))))
+(defn app [options & routes]
+  (let [allroutes (concat (flatten routes) (list not-found-handler))]
+    (prn allroutes)
+    (-> (fn [req]
+          (let [route (first (filter (fn [route] (route-matches (:route route) req)) allroutes))]
+            ((:handler route) req (route-matches (:route route) req))))
+        wrap-params
+        (wrap-session {:store (:session-store options)}))))
 
-(def app
-  (-> main-handler
-      wrap-params))
+(defn defapp [nname options & routes]
+  (intern *ns* (symbol nname) (app options routes)))
