@@ -1,5 +1,5 @@
 (ns ringfinger.test.resource
-  (:use ringfinger.core, ringfinger.resource, ringfinger.db, ringfinger.db.inmem,
+  (:use (ringfinger core resource db), ringfinger.db.inmem,
         valip.predicates, ring.mock.request, clojure.test))
 
 (defresource "todos"

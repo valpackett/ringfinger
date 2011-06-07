@@ -1,5 +1,5 @@
 (ns ringfinger.resource
-  (:use ringfinger.core, ringfinger.db, ringfinger.output, ringfinger.util,
+  (:use (ringfinger core db output util)
         ring.util.response,
         hiccup.core,
         valip.core,
