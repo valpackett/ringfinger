@@ -8,7 +8,7 @@
 (def json (reify output
   (render [self status data]
           {:status  status
-           :headers {"Content-Type" "application/json"}
+           :headers {"Content-Type" "application/json; charset=utf-8"}
            :body    (json-str data)})))
 
 (defmacro to-xml [data]
@@ -21,7 +21,7 @@
 (def xml  (reify output
   (render [self status data]
           {:status  status
-           :headers {"Content-Type" "application/xml"}
+           :headers {"Content-Type" "application/xml; charset=utf-8"}
            :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" (with-out-str (to-xml data)))})))
 
 (def outputs (ref {}))
@@ -36,7 +36,7 @@
      (reify output
        (render [self status# data#]
          {:status  status#
-          :headers {"Content-Type" "text/html"}
+          :headers {"Content-Type" "text/html; charset=utf-8"}
           :body (~fun data#)}))}))))
 
 (defn getoutput [ctype res action]
