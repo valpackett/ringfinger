@@ -38,7 +38,6 @@
 
 (defn app [options & routes]
   (let [allroutes (concat (flatten routes) (list not-found-handler))]
-    (prn allroutes)
     (-> (fn [req]
           (let [route (first (filter (fn [route] (route-matches (:route route) req)) allroutes))]
             ((:handler route) req (route-matches (:route route) req))))
