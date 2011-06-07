@@ -7,7 +7,7 @@
         [clojure.contrib.seq    :only [includes?]]))
 
 (defmacro keywordize [a]
-  `(zipmap (map (fn [b#] (keyword b#)) (keys ~a)) (vals ~a)))
+  `(zipmap (map #((keyword %)) (keys ~a)) (vals ~a)))
 
 ; oh snap
 (defmacro typeize [a]
@@ -43,7 +43,7 @@
         pk (:pk options)
         coll (keyword collname)
         fields (let [v (group-by first validations)]
-                 (zipmap (keys v) (map (fn [a] (apply merge (map (fn [b] (:html (meta (get b 1)))) a))) (vals v))))
+                 (zipmap (keys v) (map (fn [a] (apply merge (map #((:html (meta (get % 1)))) a))) (vals v))))
         i_validate (fn [req data yep nope] (let [result (apply validate data validations)]
                       (if (= result nil) (yep) (nope result))))
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
@@ -59,9 +59,9 @@
               (form-fields fields data errors [:div] [:div {:class "error"}] :placeholder)
               [:button {:type "submit"} "Add"]]
             [:table
-              [:tr (map (fn [f] [:th f]) fieldnames)]
+              [:tr (map #([:th %]) fieldnames)]
               (map (fn [e] [:tr
-                 (map (fn [f] [:td (get e f)]) fieldnames)
+                 (map #([:td (get e %)]) fieldnames)
                  [:td [:a {:href (str "/" collname "/" (get e pk))} "edit"]]
                  [:td [:a {:href (str "/" collname "/" (get e pk) "?_method=delete")} "delete"]]
               ]) data)]
@@ -88,8 +88,7 @@
        :post (fn [req matches]
                (let [form (keywordize (:form-params req))]
                  (i_validate req form
-                   (fn []
-                     (create store coll (typeize form))
+                   #((create store coll (typeize form))
                      (i_redirect req form))
                    (fn [errors]
                      (respond req 400 {:data (get_many store coll (params-to-query (:query-params req)))
@@ -105,8 +104,7 @@
                     entry (i_get_one matches)
                     updated-entry (merge entry form)]
                 (i_validate req updated-entry
-                  (fn []
-                    (update store coll entry (typeize form))
+                  #((update store coll entry (typeize form))
                     (i_redirect req form))
                   (fn [errors]
                     (respond req 400 {:data updated-entry :errors errors} collname "get")))))
