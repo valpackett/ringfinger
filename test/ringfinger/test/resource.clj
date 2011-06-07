@@ -2,49 +2,51 @@
   (:use ringfinger.core, ringfinger.resource, ringfinger.db, ringfinger.db.inmem,
         valip.predicates, ring.mock.request, clojure.test))
 
-(defresource :todos
+(defresource "todos"
   {:store inmem
    :pk    :body}
   [:body  present? "should be present"])
 
+(defapp 'testapp {} todos)
+
 (deftest right-create
-  (is (= (app (body (request :post "/todos?format=json") {:body  "test"
-                                                          :state false}))
+  (is (= (testapp (body (request :post "/todos?format=json") {:body  "test"
+                                                              :state false}))
          {:status  302
           :headers {"Location" "/todos/test?format=json"}
           :body    ""})))
 
 (deftest wrong-create
-  (is (= (app (body (request :post "/todos?format=json") {:state false}))
+  (is (= (testapp (body (request :post "/todos?format=json") {:state false}))
          {:status  400
           :headers {"Content-Type" "application/json"}
           :body    "{\"body\":[\"should be present\"]}"})))
 
 (deftest right-update
-  (is (= (app (body (request :put "/todos/test?format=json") {:body  "test"
-                                                              :state true}))
+  (is (= (testapp (body (request :put "/todos/test?format=json") {:body  "test"
+                                                                  :state true}))
          {:status  302
           :headers {"Location" "/todos/test?format=json"}
           :body    ""})))
 
 (deftest right-show
-  (is (= (app (request :get "/todos/test?format=json"))
+  (is (= (testapp (request :get "/todos/test?format=json"))
          {:status  200
           :headers {"Content-Type" "application/json"}
           :body    "{\"state\":true,\"body\":\"test\"}"}))
-  (is (= (app (header (request :get "/todos/test") "Accept" "text/xml"))
+  (is (= (testapp (header (request :get "/todos/test") "Accept" "text/xml"))
           {:status  200
           :headers {"Content-Type" "application/xml"}
           :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><state>true</state><body>test</body></response>"})))
 
 (deftest right-index
-  (is (= (app (request :get "/todos?format=json"))
+  (is (= (testapp (request :get "/todos?format=json"))
          {:status  200
           :headers {"Content-Type" "application/json"}
           :body "[{\"state\":true,\"body\":\"test\"}]"})))
 
 (deftest right-delete
-  (is (= (app (request :delete "/todos/test?format=json"))
+  (is (= (testapp (request :delete "/todos/test?format=json"))
           {:status  200
            :headers {"Content-Type" "application/json"}
            :body    "{}"}))

@@ -7,7 +7,7 @@
         [clojure.contrib.seq    :only [includes?]]))
 
 (defmacro keywordize [a]
-  `(zipmap (map #((keyword %)) (keys ~a)) (vals ~a)))
+  `(zipmap (map keyword (keys ~a)) (vals ~a)))
 
 ; oh snap
 (defmacro typeize [a]
@@ -43,7 +43,7 @@
         pk (:pk options)
         coll (keyword collname)
         fields (let [v (group-by first validations)]
-                 (zipmap (keys v) (map (fn [a] (apply merge (map #((:html (meta (get % 1)))) a))) (vals v))))
+                 (zipmap (keys v) (map (fn [a] (apply merge (map (fn [b] (:html (meta (get b 1)))) a))) (vals v))))
         i_validate (fn [req data yep nope] (let [result (apply validate data validations)]
                       (if (= result nil) (yep) (nope result))))
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
