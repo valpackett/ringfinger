@@ -14,12 +14,19 @@
            :headers {"Content-Type" "application/json; charset=utf-8"}
            :body    (json-str (errors-or-data data))})))
 
+; I HATE YOU, XML
+(defn- to-xml [data]
+  (let [errs (:errors data) dt (:data data)]
+    (cond errs      (map (fn [k v] [k (map (fn [t] [:error t]) v)]) (keys errs) (vals errs))
+          (map? dt) (map vec dt)
+          :else     (map (fn [e] [:entry (map vec e)]) dt))))
+
 (def xml  (reify Output
   (render [self status data]
           {:status  status
            :headers {"Content-Type" "application/xml; charset=utf-8"}
            :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
-                         (with-out-str (prxml [:response (map vec (errors-or-data data))])))})))
+                         (with-out-str (prxml [:response (to-xml data)])))})))
 
 (def outputs (ref {}))
 (def views   (ref {}))
