@@ -14,16 +14,12 @@
            :headers {"Content-Type" "application/json; charset=utf-8"}
            :body    (json-str (errors-or-data data))})))
 
-(defmacro to-xml [data]
-  `(prxml [:response (cond
-     (map? ~data) (map vec (errors-or-data ~data)) ; only errors on invalid PUTs
-     :else (map (fn [entry#] [:entry (map vec entry#)]) ~data))]))
-
 (def xml  (reify Output
   (render [self status data]
           {:status  status
            :headers {"Content-Type" "application/xml; charset=utf-8"}
-           :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" (with-out-str (to-xml data)))})))
+           :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
+                         (with-out-str (prxml [:response (map vec (errors-or-data data))])))})))
 
 (def outputs (ref {}))
 (def views   (ref {}))
