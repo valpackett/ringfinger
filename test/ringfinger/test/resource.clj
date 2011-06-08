@@ -20,7 +20,11 @@
   (is (= (testapp (body (request :post "/todos?format=json") {:state false}))
          {:status  400
           :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body    "{\"body\":[\"should be present\"]}"})))
+          :body    "{\"body\":[\"should be present\"]}"}))
+  (is (= (testapp (header (request :post "/todos") "Accept" "application/xml"))
+         {:status  400
+          :headers {"Content-Type" "application/xml; charset=utf-8"}
+          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"})))
 
 (deftest right-update
   (is (= (testapp (body (request :put "/todos/test?format=json") {:body  "test"
@@ -34,7 +38,7 @@
          {:status  200
           :headers {"Content-Type" "application/json; charset=utf-8"}
           :body    "{\"state\":true,\"body\":\"test\"}"}))
-  (is (= (testapp (header (request :get "/todos/test") "Accept" "text/xml"))
+  (is (= (testapp (header (request :get "/todos/test") "Accept" "application/xml"))
           {:status  200
           :headers {"Content-Type" "application/xml; charset=utf-8"}
           :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><state>true</state><body>test</body></response>"})))
@@ -43,7 +47,11 @@
   (is (= (testapp (request :get "/todos?format=json"))
          {:status  200
           :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body "[{\"state\":true,\"body\":\"test\"}]"})))
+          :body "[{\"state\":true,\"body\":\"test\"}]"}))
+  (is (= (testapp (header (request :get "/todos") "Accept" "application/xml"))
+         {:status  200
+          :headers {"Content-Type" "application/xml; charset=utf-8"}
+          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><state>true</state><body>test</body></entry></response>"})))
 
 (deftest right-delete
   (is (= (testapp (request :delete "/todos/test?format=json"))
