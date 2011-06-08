@@ -3,8 +3,7 @@
         ring.util.response,
         hiccup.core,
         valip.core,
-        [clojure.contrib.string :only [as-str, split, substring?]]
-        [clojure.contrib.seq    :only [includes?]]))
+        [clojure.contrib.string :only [as-str, split, substring?]]))
 
 (defmacro keywordize [a]
   `(zipmap (map keyword (keys ~a)) (vals ~a)))
