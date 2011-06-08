@@ -59,9 +59,9 @@
               (form-fields fields data errors [:div] [:div {:class "error"}] :placeholder)
               [:button {:type "submit"} "Add"]]
             [:table
-              [:tr (map #([:th %]) fieldnames)]
+              [:tr (map (fn [a] [:th a]) fieldnames)]
               (map (fn [e] [:tr
-                 (map #([:td (get e %)]) fieldnames)
+                 (map (fn [a] [:td (get e a)]) fieldnames)
                  [:td [:a {:href (str "/" collname "/" (get e pk))} "edit"]]
                  [:td [:a {:href (str "/" collname "/" (get e pk) "?_method=delete")} "delete"]]
               ]) data)]
