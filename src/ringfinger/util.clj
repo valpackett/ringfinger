@@ -17,7 +17,7 @@
 (defmacro typeize [a]
   `(zipmap (keys ~a) (map typeify (vals ~a))))
 
-(defmacro curry [f v] `(fn [a#] (~f ~v a#))) ; such a shame it's not in clojure's core
+(defmacro curry [f v] `(fn [& a#] (apply ~f ~v a#))) ; such a shame it's not in clojure's core
 
 (defmacro form-fields [fields data errors wrap-html err-html style]
   `(map (fn [f# fval#] (let [title# (as-str f#)] (conj ~wrap-html

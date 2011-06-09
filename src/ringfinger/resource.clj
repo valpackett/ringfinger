@@ -8,13 +8,15 @@
 (defn- qsformat [req]
   (let [fmt (first (select-keys (:query-params req) ["format"]))]
     (if fmt
-      (str "?" (first fmt) "=" (get fmt 1))
+      (str "?" (first fmt) "=" (second fmt))
       nil)))
 
 (defmacro respond [req status data res action]
-  `(render (getoutput (first (filter identity (list
-                                                (qsformat ~req)
-                                                (get (:headers ~req) "accept")))) ~res ~action) ~status ~data))
+  `(render (getoutput (first
+      (filter identity (list
+                          (qsformat ~req)
+                          (get (:headers ~req) "accept") ; it must be lowercase!
+                         ))) ~res ~action) ~status ~data))
 
 (defmacro qs [a] `(keyword (str "$" ~a)))
 
@@ -41,7 +43,8 @@
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
         i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
     (defview collname "index" (fn [stuff]
-      (let [data (:data stuff) errors (:errors stuff) fieldnames (keys fields)]
+      (let [data (:data stuff) errors (:errors stuff) fieldnames (keys fields)
+            urlbase (str "/" collname "/")]
         (str "<!DOCTYPE html>" (html [:html
           [:head [:title (str collname " / index")]
                  [:style default-style]]
@@ -54,8 +57,8 @@
               [:tr (map (fn [a] [:th a]) fieldnames)]
               (map (fn [e] [:tr
                  (map (fn [a] [:td (get e a)]) fieldnames)
-                 [:td [:a {:href (str "/" collname "/" (get e pk))} "edit"]]
-                 [:td [:a {:href (str "/" collname "/" (get e pk) "?_method=delete")} "delete"]]
+                 [:td [:a {:href (str urlbase (get e pk))} "edit"]]
+                 [:td [:a {:href (str urlbase (get e pk) "?_method=delete")} "delete"]]
               ]) data)]
           ]])))))
     (defview collname "get" (fn [stuff]
