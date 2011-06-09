@@ -5,13 +5,6 @@
         valip.core,
         [clojure.contrib.string :only [as-str, split, substring?]]))
 
-(defmacro keywordize [a]
-  `(zipmap (map keyword (keys ~a)) (vals ~a)))
-
-; oh snap
-(defmacro typeize [a]
-  `(zipmap (keys ~a) (map typeify (vals ~a))))
-
 (defn- qsformat [req]
   (let [fmt (first (select-keys (:query-params req) ["format"]))]
     (if fmt

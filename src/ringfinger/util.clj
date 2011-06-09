@@ -11,6 +11,12 @@
         (digits? s)   (Integer/parseInt s)
         :else         s))
 
+(defmacro keywordize [a]
+  `(zipmap (map keyword (keys ~a)) (vals ~a)))
+
+(defmacro typeize [a]
+  `(zipmap (keys ~a) (map typeify (vals ~a))))
+
 (defmacro form-fields [fields data errors wrap-html err-html style]
   `(map (fn [f# fval#] (let [title# (as-str f#)] (conj ~wrap-html
     (if (= ~style :label) [:label {:for title#} title#] nil)
