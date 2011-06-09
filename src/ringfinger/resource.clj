@@ -6,9 +6,9 @@
         [clojure.contrib.string :only [as-str, split, substring?]]))
 
 (defn- qsformat [req]
-  (let [fmt (first (select-keys (:query-params req) ["format"]))]
+  (let [fmt (get (:query-params req) "format")]
     (if fmt
-      (str "?" (first fmt) "=" (second fmt))
+      (str "?format=" fmt)
       nil)))
 
 (defmacro respond [req status data res action]

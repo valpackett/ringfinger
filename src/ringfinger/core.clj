@@ -31,9 +31,9 @@
 (defmacro route [url handlers]
   `{:route   (route-compile ~url)
     :handler (fn [req# matches#]
-               (let [rm#       (first (select-keys (:query-params req#) ["_method"]))
+               (let [rm#       (get (:query-params req#) "_method")
                      handlers# (merge default-handlers ~handlers)
-                     method#   (if rm# (keyword (get rm# 1)) (:request-method req#))]
+                     method#   (if rm# (keyword rm#) (:request-method req#))]
                        ((if (= method# :head) (head-handler (:get handlers#)) (get handlers# method#)) req# matches#)))})
 
 (defn app [options & routes]
