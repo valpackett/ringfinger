@@ -4,11 +4,18 @@
   (:import org.apache.commons.codec.digest.DigestUtils,
            org.apache.commons.codec.binary.Base64))
 
-(defn- get-user [db coll username password]
+(defn get-user [db coll username password]
   (let [user (get_one db coll {:username username})]
-    (if (= (:password user) password)
+    (if (= (:password_hash user) (DigestUtils/sha256Hex (str (:password_salt user) password)))
       user
       nil)))
+
+(defn make-user [db coll username password]
+  (let [salt (str (int (* (rand) 10000)))]
+    (create db coll
+      {:username      username
+       :password_salt salt
+       :password_hash (DigestUtils/sha256Hex (str salt password))})))
 
 (defn wrap-auth
   ([handler] (wrap-auth handler {:db inmem, :coll :ringfinger_auth}))
