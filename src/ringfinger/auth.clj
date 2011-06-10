@@ -10,12 +10,12 @@
       user
       nil)))
 
-(defn make-user [db coll username password]
+(defn make-user [db coll user password]
   (let [salt (str (int (* (rand) 10000)))]
     (create db coll
-      {:username      username
-       :password_salt salt
-       :password_hash (DigestUtils/sha256Hex (str salt password))})))
+      (merge user
+        {:password_salt salt
+         :password_hash (DigestUtils/sha256Hex (str salt password))}))))
 
 (defn wrap-auth
   ([handler] (wrap-auth handler {:db inmem, :coll :ringfinger_auth}))
