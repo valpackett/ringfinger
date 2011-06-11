@@ -11,7 +11,7 @@
       nil)))
 
 (defn make-user [db coll user password]
-  (let [salt (str (int (* (rand) 10000)))]
+  (let [salt (str (rand))]
     (create db coll
       (merge user
         {:password_salt salt
