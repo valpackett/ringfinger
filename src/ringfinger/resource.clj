@@ -37,7 +37,7 @@
         pk (:pk options)
         coll (keyword collname)
         fields (let [v (group-by first validations)]
-                 (zipmap (keys v) (map (fn [a] (apply merge (map (fn [b] (:html (meta (get b 1)))) a))) (vals v))))
+                 (zipmap (keys v) (map (fn [a] (apply merge (map (fn [b] (:html (meta (var (get b 1))))) a))) (vals v))))
         i_validate (fn [req data yep nope] (let [result (apply validate data validations)]
                       (if (= result nil) (yep) (nope result))))
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
