@@ -62,7 +62,6 @@
                    (let [form (keywordize (:form-params req))
                          fval (apply validate form hvalds)
                          user (get-user db coll (:username form) (:password form))]
-                     (prn fval)
                      (if (nil? fval)
                        (if (nil? user)
                          {:status  400
