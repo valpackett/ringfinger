@@ -1,11 +1,11 @@
 (ns ringfinger.test.resource
-  (:use (ringfinger core resource db), ringfinger.db.inmem,
-        valip.predicates, ring.mock.request, clojure.test))
+  (:use (ringfinger core resource db validation), ringfinger.db.inmem,
+        clojure.test, ring.mock.request))
 
 (defresource "todos"
   {:store inmem
    :pk    :body}
-  [:body  present? "should be present"])
+  [:body  (required) "should be present"])
 
 (defapp 'testapp {} todos)
 
