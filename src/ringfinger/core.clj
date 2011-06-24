@@ -42,8 +42,8 @@
           (let [route (first (filter (fn [route] (route-matches (:route route) req)) allroutes))]
             ((:handler route) req (route-matches (:route route) req))))
         wrap-params
-        (wrap-auth {:db (or (:auth-db options) inmem) :coll (or (:auth-coll options) :ringfinger_auth)})
-        (wrap-session {:store (or (:session-store options) (db-store inmem))}))))
+        (wrap-session {:store (or (:session-store options) (db-store inmem))})
+        (wrap-auth {:db (or (:auth-db options) inmem) :coll (or (:auth-coll options) :ringfinger_auth)}))))
 
 (defn defapp [nname options & routes]
   (intern *ns* (symbol nname) (app options routes)))

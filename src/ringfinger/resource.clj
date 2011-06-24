@@ -30,14 +30,12 @@
   ([qp] (apply merge (map params-to-query (keys qp) (vals qp))))
   ([q v] (if (substring? "_" q) (param-to-query (flatten (list (split #"_" q) (typeify v)))) nil)))
 
-(def default-style "html{background:#cece9e}body{margin:4%;padding:2%;background:#fff;color:#333;font:14px \"Lucida Grande\", sans-serif}input,button{display: block}.error,input:invalid{background:#dd9090;color:#f4f4f4}")
-
 (defn resource [collname options & validations]
   (let [store (:store options)
         pk (:pk options)
         coll (keyword collname)
         fields (let [v (group-by first validations)]
-                 (zipmap (keys v) (map (fn [a] (apply merge (map (fn [b] (:html (meta (var (get b 1))))) a))) (vals v))))
+                 (zipmap (keys v) (map (fn [a] (apply merge (map (fn [b] (:html (meta (let [va (second b)] `(var ~va))))) a))) (vals v))))
         i_validate (fn [req data yep nope] (let [result (apply validate data validations)]
                       (if (= result nil) (yep) (nope result))))
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))

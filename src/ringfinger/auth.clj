@@ -23,9 +23,11 @@
    (let [db   (:db options)
          coll (:coll options)]
      (fn [req]
-       (let [auth-hdr (or (get (:headers req) "authorization") "")]
+       (let [auth-hdr (or (get (:headers req) "authorization") "")
+             session-username (:username (:session req))]
          (handler (assoc req :user
             (cond (cstr/substring? "Basic" auth-hdr)
                     (let [cr (cstr/split #":" (new String (Base64/decodeBase64 (cstr/drop 6 auth-hdr))))]
                       (get-user db coll (first cr) (second cr)))
+                  session-username (get_one db coll {:username session-username})
                   :else nil))))))))
