@@ -35,11 +35,13 @@
         pk (:pk options)
         coll (keyword collname)
         fields (let [v (group-by first validations)]
-                 (zipmap (keys v) (map (fn [a] (apply merge (map (fn [b] (:html (meta (let [va (second b)] `(var ~va))))) a))) (vals v))))
-        i_validate (fn [req data yep nope] (let [result (apply validate data validations)]
+                 (zipmap (keys v) (map (fn [a] (apply merge (map #(:html (second %)) a))) (vals v))))
+        valds (map #(assoc % 1 (:clj (second %))) validations)
+        i_validate (fn [req data yep nope] (let [result (apply validate data valds)]
                       (if (= result nil) (yep) (nope result))))
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
         i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
+    (prn valds)
     (defview collname "index" (fn [stuff]
       (let [data (:data stuff) errors (:errors stuff) fieldnames (keys fields)
             urlbase (str "/" collname "/")]
