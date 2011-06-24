@@ -41,7 +41,6 @@
                       (if (= result nil) (yep) (nope result))))
         i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
         i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
-    (prn valds)
     (defview collname "index" (fn [stuff]
       (let [data (:data stuff) errors (:errors stuff) fieldnames (keys fields)
             urlbase (str "/" collname "/")]
