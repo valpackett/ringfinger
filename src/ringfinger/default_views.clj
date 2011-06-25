@@ -1,5 +1,6 @@
 (ns ringfinger.default-views
-  (:use (ringfinger util), hiccup.core))
+  (:use (ringfinger util),
+        (hiccup core page-helpers)))
 
 (defn default-index [stuff]
   (let [data       (:data stuff)
@@ -8,7 +9,7 @@
         fields     (:fields stuff)
         fieldnames (keys fields)
         urlbase    (str "/" collname "/")]
-    (str "<!DOCTYPE html>" (html [:html
+    (html5 [:html
       [:head [:title (str collname " / index")]
              [:style default-style]]
       [:body
@@ -23,23 +24,23 @@
              [:td [:a {:href (str urlbase (get e pk))} "edit"]]
              [:td [:a {:href (str urlbase (get e pk) "?_method=delete")} "delete"]]
           ]) data)]
-      ]]))))
+      ]])))
 
 (defn default-get [stuff]
   (let [data     (:data stuff)
         collname (:collname stuff)
         pk       (:pk stuff)]
-    (str "<!DOCTYPE html>" (html [:html
+    (html5 [:html
       [:head [:title (str collname " / " (get data pk))]
              [:style default-style]]
       [:body
         [:h1 [:a {:href (str "/" collname)} collname] (str " / " (get data pk))]
         [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put")}
           (form-fields (:fields stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
-       [:button {:type "submit"} "Save"]]]]))))
+       [:button {:type "submit"} "Save"]]]])))
 
 (defn default-not-found [stuff]
-  (str "<!DOCTYPE html>" (html [:html
+  (html5 [:html
     [:head [:title (str (:collname stuff) " / not found")]
            [:style default-style]]
-    [:body [:h1 "Not found :-("]]])))
+    [:body [:h1 "Not found :-("]]]))
