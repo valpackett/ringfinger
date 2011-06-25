@@ -62,7 +62,7 @@
           {:status  302
            :headers {"Location" "/todos"}
            :body    ""}))
-  (is (= (get_one inmem :todos {:body "test"}) nil)))
+  (is (= (get-one inmem :todos {:body "test"}) nil)))
 
 (defn test-ns-hook []
   (wrong-create)

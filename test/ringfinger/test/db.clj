@@ -5,13 +5,13 @@
   (is (= {:test [{:key "value"}]} (create inmem :test {:key "value"}))))
 
 (deftest reading
-  (is (= {:key "value"} (get_one inmem :test {:key "value"}))))
+  (is (= {:key "value"} (get-one inmem :test {:key "value"}))))
 
 (deftest updating
-  (is (= {:test [{:key "updated"}]} (update inmem :test (get_one inmem :test {:key "value"}) {:key "updated"}))))
+  (is (= {:test [{:key "updated"}]} (update inmem :test (get-one inmem :test {:key "value"}) {:key "updated"}))))
 
 (deftest deleting
-  (is (= {:test []} (delete inmem :test (get_one inmem :test {:key "updated"})))))
+  (is (= {:test []} (delete inmem :test (get-one inmem :test {:key "updated"})))))
 
 (defn test-ns-hook [] ; order matters here
   (creation)

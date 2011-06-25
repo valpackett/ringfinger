@@ -38,10 +38,10 @@
         fields (let [v (group-by first validations)]
                  (zipmap (keys v) (map (fn [a] (apply merge (map #(:html (second %)) a))) (vals v))))
         valds (map #(assoc % 1 (:clj (second %))) validations)
-        i_validate (fn [req data yep nope] (let [result (apply validate data valds)]
+        i-validate (fn [req data yep nope] (let [result (apply validate data valds)]
                       (if (= result nil) (yep) (nope result))))
-        i_get_one  (fn [matches] (get_one store coll {pk (typeify (:pk matches))}))
-        i_redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
+        i-get-one  (fn [matches] (get-one store coll {pk (typeify (:pk matches))}))
+        i-redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
     (defview collname "index" (fn [stuff]
       (let [data (:data stuff) errors (:errors stuff) fieldnames (keys fields)
             urlbase (str "/" collname "/")]
@@ -79,34 +79,34 @@
   (list
     (route (str "/" collname)
       {:get (fn [req matches]
-              (respond req 200 {:data (get_many store coll (or (params-to-query (:query-params req)) default-query))} collname "index"))
+              (respond req 200 {:data (get-many store coll (or (params-to-query (:query-params req)) default-query))} collname "index"))
        :post (fn [req matches]
                (let [form (keywordize (:form-params req))]
-                 (i_validate req form
+                 (i-validate req form
                    (fn []
                      (create store coll (typeize form))
-                     (i_redirect req form))
+                     (i-redirect req form))
                    (fn [errors]
-                     (respond req 400 {:data (get_many store coll (params-to-query (:query-params req)))
+                     (respond req 400 {:data (get-many store coll (or (params-to-query (:query-params req)) default-query))
                                        :errors errors} collname "index")))))})
     (route (str "/" collname "/:pk")
       {:get (fn [req matches]
-              (let [entry (i_get_one matches)]
+              (let [entry (i-get-one matches)]
                 (if entry
                   (respond req 200 {:data entry} collname "get")
                   (respond req 404 {} collname "not-found"))))
        :put (fn [req matches]
               (let [form (keywordize (:form-params req))
-                    entry (i_get_one matches)
+                    entry (i-get-one matches)
                     updated-entry (merge entry form)]
-                (i_validate req updated-entry
+                (i-validate req updated-entry
                   (fn []
                     (update store coll entry (typeize form))
-                    (i_redirect req form))
+                    (i-redirect req form))
                   (fn [errors]
                     (respond req 400 {:data updated-entry :errors errors} collname "get")))))
        :delete (fn [req matches]
-                 (delete store coll (i_get_one matches))
+                 (delete store coll (i-get-one matches))
                  (redirect (str "/" collname)))}))))
 
 (defn defresource [collname options & validations]

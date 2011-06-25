@@ -3,8 +3,8 @@
 
 (defprotocol Database
   (create   [self coll data])
-  (get_many [self coll query])
-  (get_one  [self coll query])
+  (get-many [self coll query])
+  (get-one  [self coll query])
   (update   [self coll entry data])
   (delete   [self coll entry]))
 
