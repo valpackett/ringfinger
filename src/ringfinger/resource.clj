@@ -27,13 +27,14 @@
 ; db doesnt't handle deeper stuff anyway
 
 (defn params-to-query
-  ([qp] (apply merge (map params-to-query (keys qp) (vals qp))))
+  ([qp] (if (empty? qp) nil (apply merge (map params-to-query (keys qp) (vals qp)))))
   ([q v] (if (substring? "_" q) (param-to-query (flatten (list (split #"_" q) (typeify v)))) nil)))
 
 (defn resource [collname options & validations]
   (let [store (:store options)
         pk (:pk options)
         coll (keyword collname)
+        default-query (or (:default-query options) {})
         fields (let [v (group-by first validations)]
                  (zipmap (keys v) (map (fn [a] (apply merge (map #(:html (second %)) a))) (vals v))))
         valds (map #(assoc % 1 (:clj (second %))) validations)
@@ -78,7 +79,7 @@
   (list
     (route (str "/" collname)
       {:get (fn [req matches]
-              (respond req 200 {:data (get_many store coll (params-to-query (:query-params req)))} collname "index"))
+              (respond req 200 {:data (get_many store coll (or (params-to-query (:query-params req)) default-query))} collname "index"))
        :post (fn [req matches]
                (let [form (keywordize (:form-params req))]
                  (i_validate req form

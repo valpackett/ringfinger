@@ -47,7 +47,11 @@
   (is (= (testapp (request :get "/todos?format=json"))
          {:status  200
           :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body "[{\"state\":true,\"body\":\"test\"}]"}))
+          :body    "[{\"state\":true,\"body\":\"test\"}]"}))
+  (is (= (testapp (request :get "/todos?format=json&state_ne=true"))
+         {:status  200
+          :headers {"Content-Type" "application/json; charset=utf-8"}
+          :body    "[]"}))
   (is (= (testapp (header (request :get "/todos") "Accept" "application/xml"))
          {:status  200
           :headers {"Content-Type" "application/xml; charset=utf-8"}
