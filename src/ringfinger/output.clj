@@ -28,23 +28,22 @@
            :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
                          (with-out-str (prxml [:response (to-xml data)])))})))
 
+(deftype HTMLOutput [view default-data] Output
+  (render [self status data]
+          {:status  status
+           :headers {"Content-Type" "text/html; charset=utf-8"}
+           :body    (view (merge default-data data))}))
+
+(defn html-output [view dd] (HTMLOutput. view dd))
+
 (def outputs (ref {}))
-(def views   (ref {}))
 
 (defmacro defoutput [name fun]
   `(dosync (ref-set outputs (merge @outputs {~name (reify Output
      (render [self status# data#] (~fun status# data#)))}))))
 
-(defmacro defview [res action fun]
-  `(dosync (ref-set views (merge @views {(str ~res "/" ~action)
-     (reify Output
-       (render [self status# data#]
-         {:status  status#
-          :headers {"Content-Type" "text/html; charset=utf-8"}
-          :body (~fun data#)}))}))))
-
-(defn getoutput [ctype res action]
-  (cond (substring? "html" ctype) (get @views (str res "/" action))
+(defn getoutput [ctype html]
+  (cond (substring? "html" ctype) html
         (substring? "json" ctype) json
         (substring? "xml"  ctype)  xml
         :else (get @outputs ctype)))
