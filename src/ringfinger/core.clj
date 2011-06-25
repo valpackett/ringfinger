@@ -2,6 +2,9 @@
   (:use clout.core, (ring.middleware params session),
         (ringfinger session auth), ringfinger.db.inmem))
 
+(defmacro if-env [env yep nope]
+  `(if (= (or (get (System/getenv) "RING_ENV") "development") env) yep nope))
+
 (defn method-na-handler [req matches]
   {:status  405
    :headers {"Content-Type" "text/plain"}
