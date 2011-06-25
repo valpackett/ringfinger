@@ -1,7 +1,7 @@
 (ns ringfinger.test.core
   (:use ringfinger.core, clojure.test, ring.mock.request))
 
-(defapp 'testapp {}
+(defapp 'testapp {:static-dir "src"}
   (route "/test/:a"
     {:get (fn [req matches]
             {:status  200

@@ -1,9 +1,10 @@
 (ns ringfinger.core
-  (:use clout.core, (ring.middleware params session),
+  (:use clout.core,
+        (ring.middleware params session stacktrace flash file),
         (ringfinger session auth), ringfinger.db.inmem))
 
 (defmacro if-env [env yep nope]
-  `(if (= (or (get (System/getenv) "RING_ENV") "development") env) yep nope))
+  `(if (= (or (get (System/getenv) "RING_ENV") "development") ~env) ~yep ~nope))
 
 (defn method-na-handler [req matches]
   {:status  405
@@ -40,13 +41,19 @@
                        ((if (= method# :head) (head-handler (:get handlers#)) (get handlers# method#)) req# matches#)))})
 
 (defn app [options & routes]
-  (let [allroutes (concat (flatten routes) (list not-found-handler))]
-    (-> (fn [req]
-          (let [route (first (filter (fn [route] (route-matches (:route route) req)) allroutes))]
-            ((:handler route) req (route-matches (:route route) req))))
-        wrap-params
-        (wrap-session {:store (or (:session-store options) (db-store inmem))})
-        (wrap-auth {:db (or (:auth-db options) inmem) :coll (or (:auth-coll options) :ringfinger_auth)}))))
+  (let [allroutes (concat (flatten routes) (list not-found-handler))
+        h (-> (fn [req]
+                (let [route (first (filter #(route-matches (:route %) req) allroutes))]
+                  ((:handler route) req (route-matches (:route route) req))))
+              wrap-params
+              (wrap-session {:store (or (:session-store options) (db-store inmem))})
+              wrap-flash
+              (wrap-auth {:db (or (:auth-db options) inmem) :coll (or (:auth-coll options) :ringfinger_auth)})
+              (wrap-file (or (:static-dir options) "static")))]
+    (if-env "development"
+      (-> h
+          wrap-stacktrace)
+      h)))
 
 (defn defapp [nname options & routes]
   (intern *ns* (symbol nname) (app options routes)))

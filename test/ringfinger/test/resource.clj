@@ -7,7 +7,7 @@
    :pk    :body}
   [:body  (required) "should be present"])
 
-(defapp 'testapp {} todos)
+(defapp 'testapp {:static-dir "src"} todos)
 
 (deftest right-create
   (is (= (testapp (body (request :post "/todos?format=json") {:body  "test"
