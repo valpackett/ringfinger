@@ -5,6 +5,7 @@
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.2.1"]
+                 [org.clojure/clojure-contrib "1.2.0"]
                  [commons-codec       "1.5"  ]
                  [commons-email       "1.1"  ]
                  [ring                "0.3.8"]
