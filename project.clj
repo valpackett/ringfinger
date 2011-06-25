@@ -6,6 +6,7 @@
             :distribution :repo}
   :dependencies [[org.clojure/clojure "1.2.1"]
                  [commons-codec       "1.5"  ]
+                 [commons-email       "1.1"  ]
                  [ring                "0.3.8"]
                  [ring-mock           "0.1.1"]
                  [hiccup              "0.3.4"]
