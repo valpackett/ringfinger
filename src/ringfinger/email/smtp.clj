@@ -5,18 +5,20 @@
 (deftype SMTPMailer [host port username password tls] Mailer
   (send-mail [self from to subject body]
     (doto (SimpleEmail.)
-        (.setAuthenticator (DefaultAuthenticator. username password))
-        (.setHostName host)
-        (.setSmtpPort port)
-        (.setTLS      tls)
-        (.setFrom     from)
-        (.setSubject  subject)
-        (.setMsg      body)
-        (.addTo       to)
-        (.send))))
+      (if (and username password)
+        (.setAuthenticator (DefaultAuthenticator. username password)))
+      (.setHostName host)
+      (.setSmtpPort port)
+      (.setTLS      tls)
+      (.setFrom     from)
+      (.setSubject  subject)
+      (.setMsg      body)
+      (.addTo       to)
+      (.send))))
 
 (defn smtp
-  ([host port username password] (smtp host port username password false))
+  ([host port] (SMTPMailer. host port nil nil false))
+  ([host port username password] (SMTPMailer. host port username password false))
   ([host port username password tls] (SMTPMailer. host port username password tls)))
 
 (defn gmail [username password]
