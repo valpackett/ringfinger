@@ -4,8 +4,7 @@
 
 (deftype SMTPMailer [host port username password tls] Mailer
   (send-mail [self from to subject body]
-    (let [email (SimpleEmail.)]
-      (doto email
+    (doto (SimpleEmail.)
         (.setAuthenticator (DefaultAuthenticator. username password))
         (.setHostName host)
         (.setSmtpPort port)
@@ -14,7 +13,7 @@
         (.setSubject  subject)
         (.setMsg      body)
         (.addTo       to)
-        (.send)))))
+        (.send))))
 
 (defn smtp
   ([host port username password] (smtp host port username password false))
