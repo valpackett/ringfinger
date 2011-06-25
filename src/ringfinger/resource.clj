@@ -34,8 +34,7 @@
         pk (:pk options)
         coll (keyword collname)
         default-query (or (:default-query options) {})
-        fields (let [v (group-by first validations)]
-                 (zipmap (keys v) (map (fn [a] (apply merge (map #(:html (second %)) a))) (vals v))))
+        fields (fields-from-validations validations)
         valds (map #(assoc % 1 (:clj (second %))) validations)
         default-data {:collname collname :pk pk :fields fields}
         html-index (html-output (or (:index (:views options)) default-index) default-data)
@@ -48,7 +47,8 @@
      (list
        (route (str "/" collname)
          {:get (fn [req matches]
-                 (respond req 200 {:data (get-many store coll (or (params-to-query (:query-params req)) default-query))} html-index))
+                 (respond req 200 {:flash (:flash req)
+                                   :data  (get-many store coll (or (params-to-query (:query-params req)) default-query))} html-index))
           :post (fn [req matches]
                   (let [form (keywordize (:form-params req))]
                     (i-validate req form
@@ -56,14 +56,15 @@
                         (create store coll (typeize form))
                         (i-redirect req form))
                       (fn [errors]
-                        (respond req 400 {:data (get-many store coll (or (params-to-query (:query-params req)) default-query))
+                        (respond req 400 {:data   (get-many store coll (or (params-to-query (:query-params req)) default-query))
+                                          :flash  (:flash req)
                                           :errors errors} html-index)))))})
        (route (str "/" collname "/:pk")
          {:get (fn [req matches]
                  (let [entry (i-get-one matches)]
                    (if entry
-                     (respond req 200 {:data entry} html-get)
-                     (respond req 404 {} html-not-found))))
+                     (respond req 200 {:data  entry :flash (:flash req)} html-get)
+                     (respond req 404 {:flash (:flash req)} html-not-found))))
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        entry (i-get-one matches)
@@ -73,7 +74,9 @@
                        (update store coll entry (typeize form))
                        (i-redirect req form))
                      (fn [errors]
-                       (respond req 400 {:data updated-entry :errors errors} html-get)))))
+                       (respond req 400 {:data   updated-entry
+                                         :flash  (:flash req)
+                                         :errors errors} html-get)))))
           :delete (fn [req matches]
                     (delete store coll (i-get-one matches))
                     (redirect (str "/" collname)))}))))

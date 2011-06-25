@@ -14,6 +14,7 @@
              [:style default-style]]
       [:body
         [:h1 collname]
+        (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
         [:form {:method "post" :action ""}
           (form-fields fields data (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
           [:button {:type "submit"} "Add"]]
@@ -35,6 +36,7 @@
              [:style default-style]]
       [:body
         [:h1 [:a {:href (str "/" collname)} collname] (str " / " (get data pk))]
+        (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
         [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put")}
           (form-fields (:fields stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
        [:button {:type "submit"} "Save"]]]])))

@@ -8,9 +8,11 @@
   (write-session  [self kkey data]
     (let [key (or kkey (str (UUID/randomUUID)))
           ex (get-one db coll {:_sid key})]
-      (if (nil? ex)
-        (create db coll (merge data {:_sid key}))
-        (update db coll ex data))
+      ; update won't work properly there
+      ; in sessions, we need to be able to delete fields
+      ; sessions are completely schema-less
+      (if (not (nil? ex)) (delete db coll ex))
+      (create db coll (merge data {:_sid key}))
       key))
   (delete-session [self key] (delete db coll (get-one db coll {:_sid key})) nil))
 

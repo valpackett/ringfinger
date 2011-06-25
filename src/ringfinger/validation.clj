@@ -22,7 +22,7 @@
 
 (defn minlength [n]
   "Sets the minimum length to the given number"
-  {:html {:pattern (str ".{" min ",}")}
+  {:html {:pattern (str ".{" n ",}")}
    :clj  #(>= (count %) n)})
 
 (defn email []

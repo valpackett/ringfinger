@@ -45,10 +45,10 @@
         h (-> (fn [req]
                 (let [route (first (filter #(route-matches (:route %) req) allroutes))]
                   ((:handler route) req (route-matches (:route route) req))))
-              wrap-params
-              (wrap-session {:store (or (:session-store options) (db-store inmem))})
-              wrap-flash
               (wrap-auth {:db (or (:auth-db options) inmem) :coll (or (:auth-coll options) :ringfinger_auth)})
+              wrap-flash
+              (wrap-session {:store (or (:session-store options) (db-store inmem))})
+              wrap-params
               (wrap-file (or (:static-dir options) "static")))]
     (if-env "development"
       (-> h
