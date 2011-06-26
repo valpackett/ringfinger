@@ -1,6 +1,5 @@
 (ns ringfinger.resource
   (:use (ringfinger core db output util default-views)
-        ring.util.response,
         valip.core,
         [clojure.contrib.string :only [as-str, split, substring?]]))
 
@@ -30,6 +29,7 @@
   ([q v] (if (substring? "_" q) (param-to-query (flatten (list (split #"_" q) (typeify v)))) nil)))
 
 (defn resource [collname options & validations]
+  ; biggest let EVAR?
   (let [store (:store options)
         pk (:pk options)
         coll (keyword collname)
@@ -40,10 +40,18 @@
         html-index (html-output (or (:index (:views options)) default-index) default-data)
         html-get   (html-output (or (:get   (:views options)) default-get) default-data)
         html-not-found (html-output (or (:not-found (:views options)) default-not-found) default-data)
+        ; TODO: allow functions, flash msgs should be able to contain instance data
+        flash-created (or (:created (:flash options)) "Created!")
+        flash-updated (or (:updated (:flash options)) "Saved!")
+        flash-deleted (or (:deleted (:flash options)) "Deleted!")
         i-validate (fn [req data yep nope] (let [result (apply validate data valds)]
                       (if (= result nil) (yep) (nope result))))
         i-get-one  (fn [matches] (get-one store coll {pk (typeify (:pk matches))}))
-        i-redirect (fn [req form] (redirect (str "/" collname "/" (get form pk) (qsformat req))))]
+        i-redirect (fn [req form flash]
+                     {:status  302
+                      :headers {"Location" (str "/" collname "/" (get form pk) (qsformat req))}
+                      :flash   flash
+                      :body    nil})]
      (list
        (route (str "/" collname)
          {:get (fn [req matches]
@@ -54,7 +62,7 @@
                     (i-validate req form
                       (fn []
                         (create store coll (typeize form))
-                        (i-redirect req form))
+                        (i-redirect req form flash-created))
                       (fn [errors]
                         (respond req 400 {:data   (get-many store coll (or (params-to-query (:query-params req)) default-query))
                                           :flash  (:flash req)
@@ -72,14 +80,17 @@
                    (i-validate req updated-entry
                      (fn []
                        (update store coll entry (typeize form))
-                       (i-redirect req form))
+                       (i-redirect req form flash-updated))
                      (fn [errors]
                        (respond req 400 {:data   updated-entry
                                          :flash  (:flash req)
                                          :errors errors} html-get)))))
           :delete (fn [req matches]
                     (delete store coll (i-get-one matches))
-                    (redirect (str "/" collname)))}))))
+                    {:status  302
+                     :headers {"Location" (str "/" collname)}
+                     :flash   flash-deleted
+                     :body    nil})}))))
 
 (defn defresource [collname options & validations]
   (intern *ns* (symbol collname) (apply resource collname options validations)))
