@@ -14,8 +14,8 @@
   (let [salt (str (rand))]
     (create db coll
       (merge user
-        {:password_salt (str salt fixed-salt-part)
-         :password_hash (DigestUtils/sha256Hex (str salt password))}))))
+        {:password_salt salt
+         :password_hash (DigestUtils/sha256Hex (str salt fixed-salt-part password))}))))
 
 (defn wrap-auth
   ([handler] (wrap-auth handler {:db inmem, :coll :ringfinger_auth}))

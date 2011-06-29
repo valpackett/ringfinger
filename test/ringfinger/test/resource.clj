@@ -10,11 +10,11 @@
 (defapp 'testapp {:static-dir "src"} todos)
 
 (deftest right-create
-  (is (= (testapp (body (request :post "/todos?format=json") {:body  "test"
-                                                              :state false}))
-         {:status  302
-          :headers {"Location" "/todos/test?format=json"}
-          :body    ""})))
+  (let [res (testapp (body (request :post "/todos?format=json")
+                           {:body  "test"
+                            :state false}))]
+    (is (= (:status res 302)))
+    (is (= (get (:headers res) "Location") "/todos/test?format=json"))))
 
 (deftest wrong-create
   (is (= (testapp (body (request :post "/todos?format=json") {:state false}))
@@ -27,11 +27,11 @@
           :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"})))
 
 (deftest right-update
-  (is (= (testapp (body (request :put "/todos/test?format=json") {:body  "test"
-                                                                  :state true}))
-         {:status  302
-          :headers {"Location" "/todos/test?format=json"}
-          :body    ""})))
+  (let [res (testapp (body (request :put "/todos/test?format=json")
+                           {:body  "test"
+                            :state true}))]
+    (is (= (:status res) 302))
+    (is (= (get (:headers res) "Location") "/todos/test?format=json"))))
 
 (deftest right-show
   (is (= (testapp (request :get "/todos/test?format=json"))
@@ -58,10 +58,9 @@
           :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><state>true</state><body>test</body></entry></response>"})))
 
 (deftest right-delete
-  (is (= (testapp (request :delete "/todos/test?format=json"))
-          {:status  302
-           :headers {"Location" "/todos"}
-           :body    ""}))
+  (let [res (testapp (request :delete "/todos/test?format=json"))]
+    (is (= (:status res) 302))
+    (is (= (get (:headers res) "Location") "/todos")))
   (is (= (get-one inmem :todos {:body "test"}) nil)))
 
 (defn test-ns-hook []
