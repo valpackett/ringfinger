@@ -41,6 +41,7 @@
                                        :login-invalid  "Wrong username/password."
                                        :signup-success "Welcome!"
                                        :logout         "Good bye!"}
+                         :fixed-salt  "ringfingerFTW"
                          :redir-to    "/"
                          :redir-param "redirect"
                          :db          inmem
@@ -51,6 +52,7 @@
                                             [:password (minlength 6)  "Should be at least 6 characters"])} custom-options)
         views    (:views       options)
         flash    (:flash       options)
+        fixed-s  (:fixed-salt  options)
         url-base (:url-base    options)
         redir-to (:redir-to    options)
         redir-p  (:redir-param options)
@@ -80,7 +82,7 @@
                  (if-not-user req
                    (let [form (keywordize (:form-params req))
                          fval (apply validate form hvalds)
-                         user (get-user db coll (:username form) (:password form))]
+                         user (get-user db coll (:username form) (:password form) fixed-s)]
                      (if (nil? fval)
                        (if (nil? user)
                          {:status  400
@@ -124,7 +126,7 @@
                     (let [form (keywordize (:form-params req))
                           fval (apply validate form hvalds)]
                       (if (nil? fval)
-                        (let [user (make-user db coll {:username (:username form)} (:password form))]
+                        (let [user (make-user db coll {:username (:username form)} (:password form) fixed-s)]
                           {:status  302
                            :headers {"Location" (or (get (:query-params req) redir-p) redir-to)}
                            :session {:username (:username form)}
