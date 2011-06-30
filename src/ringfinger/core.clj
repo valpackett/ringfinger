@@ -45,7 +45,7 @@
         h (-> (fn [req]
                 (let [route (first (filter #(route-matches (:route %) req) allroutes))]
                   ((:handler route) req (route-matches (:route route) req))))
-              (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth)})
+              (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth) :salt (:fixed-salt options "ringfingerFTW")})
               wrap-flash
               (wrap-session {:store (:session-store options (db-store inmem))})
               wrap-params

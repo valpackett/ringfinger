@@ -1,8 +1,9 @@
 (ns ringfinger.auth-handler
-  (:use (ringfinger auth core util validation), ringfinger.db.inmem,
+  (:use (ringfinger auth core util db email validation), ringfinger.db.inmem,
         valip.core)
   (:require [clojure.contrib.string :as cstr]
-            [hiccup.page-helpers    :as hic]))
+            [hiccup.page-helpers    :as hic])
+  (:import java.util.UUID))
 
 (defn get-action [req nm]
   (str (:uri req)
@@ -32,30 +33,45 @@
      [:form {:method "post" :action (:action stuff)}
       (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
       [:button {:type "submit"} "Sign up!"]
-      ]]]))})
+      ]]]))
+   :confirm (fn [stuff] (hic/html5 [:html
+    [:head [:title "Confirm"]
+           [:style default-style]]
+    [:body
+     [:h1 "Confirm"]
+     (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
+     "Check your email."
+     ]]))
+   })
+
+(defn demo-mail-template [data]
+  (str "Welcome! To activate your account, click this link: " (:url data)))
 
 (defn auth-handlers [options]
   (let [views    (:views       options auth-demo-views)
         flash    (:flash       options {:login-success  "Welcome back!"
                                         :login-invalid  "Wrong username/password."
                                         :signup-success "Welcome!"
-                                        :logout         "Good bye!"})
+                                        :logout         "Good bye!"
+                                        :confirm-success   "Welcome!"
+                                        :confirm-fail   "Invalid confirmaton key."})
         fixed-s  (:fixed-salt  options "ringfingerFTW")
         url-base (:url-base    options "/auth/")
         redir-to (:redir-to    options "/")
         redir-p  (:redir-param options "redirect")
         db       (:db          options inmem)
         coll     (:coll        options :ringfinger_auth)
+        confirm  (:confirm     options)
         valds    (:validations options (list [:username (required)     "Shouldn't be empty"]
-                                             [:username (alphanumeric) "Should be alphanumeric"]
                                              [:password (required)     "Shouldn't be empty"]
                                              [:password (minlength 6)  "Should be at least 6 characters"]))
         hvalds   (map #(assoc % 1 (:clj (second %))) valds)
         fields   (fields-from-validations valds)
+        getloc   #(get (:query-params %) redir-p redir-to)
         if-not-user (fn [req cb]
                       (if (:user req)
                         {:status  302
-                         :headers {"Location" (get (:query-params req) redir-p redir-to)}
+                         :headers {"Location" (getloc req)}
                          :body    nil}
                         cb))]
     (list
@@ -84,7 +100,7 @@
                                                     :flash  (:login-invalid flash)
                                                     :action (get-action req redir-p)})}
                          {:status  302
-                          :headers {"Location" (get (:query-params req) redir-p redir-to)}
+                          :headers {"Location" (getloc req)}
                           :session {:username (:username user)}
                           :flash   (:login-success flash)
                           :body    nil})
@@ -98,10 +114,28 @@
       (route (str url-base "logout")
         {:get (fn [req m]
                 {:status  302
-                 :headers {"Location" (get (:query-params req) redir-p redir-to)}
+                 :headers {"Location" (getloc req)}
                  :session {:username nil}
                  :flash   (:logout flash)
                  :body    nil})})
+      (if confirm
+        (route (str url-base "confirm/:akey")
+          {:get (fn [req m]
+                  (if-not-user req
+                    (let [user (get-one db coll {:_confirm_key (:akey m)})]
+                      (if (nil? user)
+                        {:status  302
+                         :headers {"Location" (getloc req)}
+                         :flash   (:confirm-fail flash)
+                         :body    nil}
+                        (let []
+                          (delete db coll user)
+                          (create db coll (dissoc user :_confirm_key))
+                          {:status  302
+                           :headers {"Location" (getloc req)}
+                           :flash   (:confirm-success flash)
+                           :session {:username (:username user)}
+                           :body    nil})))))}))
       (route (str url-base "signup")
         {:get (fn [req m]
                 (if-not-user req
@@ -112,21 +146,47 @@
                                               :fields fields
                                               :flash  (:flash req)
                                               :action (get-action req redir-p)})}))
-         :post (fn [req m]
-                 (if-not-user req
-                    (let [form (keywordize (:form-params req))
-                          fval (apply validate form hvalds)]
-                      (if (nil? fval)
-                        (let [user (make-user db coll {:username (:username form)} (:password form) fixed-s)]
-                          {:status  302
-                           :headers {"Location" (get (:query-params req) redir-p redir-to)}
-                           :session {:username (:username form)}
-                           :flash   (:signup-success flash)
-                           :body    nil})
-                        {:status  400
-                         :headers {"Content-Type" "text/html; encoding=utf-8"}
-                         :body    ((:login views) {:errors fval
-                                                   :data   form
-                                                   :fields fields
-                                                   :flash  (:flash req)
-                                                   :action (get-action req redir-p)})}))))}))))
+          :post (if confirm
+                   (fn [req m]
+                     (if-not-user req
+                        (let [form (keywordize (:form-params req))
+                              fval (apply validate form hvalds)]
+                          (if (nil? fval)
+                            (let [akey (str (UUID/randomUUID))
+                                  user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form) fixed-s)]
+                              (send-mail (:mailer confirm)
+                                         (:from confirm)
+                                         ((:email-field confirm :username) user)
+                                         (:subject confirm)
+                                         ((:mail-template confirm demo-mail-template)
+                                            {:data  form
+                                             :url   (str (cstr/as-str (:scheme req)) "://" (get (:headers req) "host") url-base "confirm/" akey "?" redir-p "=" (getloc req))}))
+                              {:status  200
+                               :headers {"Content-Type" "text/html; encoding=utf-8"}
+                               :body    ((:confirm views) {:data  form
+                                                           :flash (:flash req)})})
+                            {:status  400
+                             :headers {"Content-Type" "text/html; encoding=utf-8"}
+                             :body    ((:login views) {:errors fval
+                                                       :data   form
+                                                       :fields fields
+                                                       :flash  (:flash req)
+                                                       :action (get-action req redir-p)})}))))
+                   (fn [req m]
+                     (if-not-user req
+                        (let [form (keywordize (:form-params req))
+                              fval (apply validate form hvalds)]
+                          (if (nil? fval)
+                            (let [user (make-user db coll {:username (:username form)} (:password form) fixed-s)]
+                              {:status  302
+                               :headers {"Location" (getloc req)}
+                               :session {:username (:username form)}
+                               :flash   (:signup-success flash)
+                               :body    nil})
+                            {:status  400
+                             :headers {"Content-Type" "text/html; encoding=utf-8"}
+                             :body    ((:login views) {:errors fval
+                                                       :data   form
+                                                       :fields fields
+                                                       :flash  (:flash req)
+                                                       :action (get-action req redir-p)})})))))}))))
