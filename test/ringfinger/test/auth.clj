@@ -5,7 +5,6 @@
 
 (deftest read-user
   (let [usr (get-user inmem :test_auth "test" "demo" "salt")]
-    (prn usr)
     (is (= (:username usr) "test"))
     (is (= (:password_hash usr) (DigestUtils/sha256Hex (str (:password_salt usr) "saltdemo"))))))
 

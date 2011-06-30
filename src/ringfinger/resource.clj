@@ -38,16 +38,16 @@
   (let [store (:store options)
         pk (:pk options)
         coll (keyword collname)
-        default-query (or (:default-query options) {})
+        default-query (:default-query options {})
         fields (fields-from-validations validations)
         valds (map #(assoc % 1 (:clj (second %))) validations)
         default-data {:collname collname :pk pk :fields fields}
-        html-index (html-output (or (:index (:views options)) default-index) default-data)
-        html-get   (html-output (or (:get   (:views options)) default-get) default-data)
-        html-not-found (html-output (or (:not-found (:views options)) default-not-found) default-data)
-        flash-created (or (:created (:flash options)) #(str "Created: " (get % pk)))
-        flash-updated (or (:updated (:flash options)) #(str "Saved: "   (get % pk)))
-        flash-deleted (or (:deleted (:flash options)) #(str "Deleted: " (get % pk)))
+        html-index (html-output (:index (:views options) default-index) default-data)
+        html-get   (html-output (:get   (:views options) default-get) default-data)
+        html-not-found (html-output (:not-found (:views options) default-not-found) default-data)
+        flash-created (:created (:flash options) #(str "Created: " (get % pk)))
+        flash-updated (:updated (:flash options) #(str "Saved: "   (get % pk)))
+        flash-deleted (:deleted (:flash options) #(str "Deleted: " (get % pk)))
         i-validate (fn [req data yep nope] (let [result (apply validate data valds)]
                       (if (= result nil) (yep) (nope result))))
         i-get-one  (fn [matches] (get-one store coll {pk (typeify (:pk matches))}))
@@ -97,5 +97,8 @@
                        :flash   (call-flash flash-deleted inst)
                        :body    nil}))}))))
 
-(defn defresource [collname options & validations]
-  (intern *ns* (symbol collname) (apply resource collname options validations)))
+(defmacro defresource [nname options & validations]
+  ; dirty magic
+  (intern *ns* nname
+    (let [nnname (str nname)]
+      (eval `(resource ~nnname ~options ~@validations)))))

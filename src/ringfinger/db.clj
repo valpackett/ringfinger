@@ -13,15 +13,15 @@
 ; http://www.mongodb.org/display/DOCS/Advanced+Queries
 (defn- make-query [kk vv]
   (apply andf (map (fn [k v]
-    (cond
-      (= k :$not)    (not (make-query kk v))
-      (= k :$lt)     (< kk v)
-      (= k :$lte)    (<= kk v)
-      (= k :$gt)     (> kk v)
-      (= k :$gte)    (>= kk v)
-      (= k :$exists) (if (false? v) (nil? kk) (not (nil? kk)))
-      (= k :$ne)     (not (= kk v))
-      :else          (= kk v))) (keys vv) (vals vv))))
+    (condp = k
+      :$not    (not (make-query kk v))
+      :$lt     (< kk v)
+      :$lte    (<= kk v)
+      :$gt     (> kk v)
+      :$gte    (>= kk v)
+      :$exists (if (false? v) (nil? kk) (not (nil? kk)))
+      :$ne     (not (= kk v))
+               (= kk v))) (keys vv) (vals vv))))
 
 (defn make-filter [query]
   (fn [entry]

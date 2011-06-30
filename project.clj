@@ -9,7 +9,7 @@
                  [commons-codec       "1.5"  ]
                  [commons-email       "1.1"  ]
                  [ring                "0.3.8"]
-                 [ring-mock           "0.1.1"]
                  [hiccup              "0.3.4"]
                  [clout               "0.4.1"]
-                 [valip               "0.2.0"]])
+                 [valip               "0.2.0"]]
+  :dev-dependencies [[ring-mock       "0.1.1"]])

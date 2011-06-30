@@ -8,7 +8,7 @@
   (str (:uri req)
        (let [hdrs (:headers req)
              dmn  (str (cstr/as-str (:scheme req)) "://" (get hdrs "host"))
-             rf   (or (get hdrs "referer") "")]
+             rf   (get hdrs "referer" "")]
          (if (cstr/substring? dmn rf)
            (str "?" nm "=" (cstr/drop (count dmn) rf))
            ""))))
@@ -34,37 +34,28 @@
       [:button {:type "submit"} "Sign up!"]
       ]]]))})
 
-(defn auth-handlers [custom-options]
-  (let [options  (merge {:url-base    "/auth/"
-                         :views       auth-demo-views
-                         :flash       {:login-success  "Welcome back!"
-                                       :login-invalid  "Wrong username/password."
-                                       :signup-success "Welcome!"
-                                       :logout         "Good bye!"}
-                         :fixed-salt  "ringfingerFTW"
-                         :redir-to    "/"
-                         :redir-param "redirect"
-                         :db          inmem
-                         :coll        :ringfinger_auth
-                         :validations (list [:username (required)     "Shouldn't be empty"]
-                                            [:username (alphanumeric) "Should be alphanumeric"]
-                                            [:password (required)     "Shouldn't be empty"]
-                                            [:password (minlength 6)  "Should be at least 6 characters"])} custom-options)
-        views    (:views       options)
-        flash    (:flash       options)
-        fixed-s  (:fixed-salt  options)
-        url-base (:url-base    options)
-        redir-to (:redir-to    options)
-        redir-p  (:redir-param options)
-        db       (:db          options)
-        coll     (:coll        options)
-        valds    (:validations options)
+(defn auth-handlers [options]
+  (let [views    (:views       options auth-demo-views)
+        flash    (:flash       options {:login-success  "Welcome back!"
+                                        :login-invalid  "Wrong username/password."
+                                        :signup-success "Welcome!"
+                                        :logout         "Good bye!"})
+        fixed-s  (:fixed-salt  options "ringfingerFTW")
+        url-base (:url-base    options "/auth/")
+        redir-to (:redir-to    options "/")
+        redir-p  (:redir-param options "redirect")
+        db       (:db          options inmem)
+        coll     (:coll        options :ringfinger_auth)
+        valds    (:validations options (list [:username (required)     "Shouldn't be empty"]
+                                             [:username (alphanumeric) "Should be alphanumeric"]
+                                             [:password (required)     "Shouldn't be empty"]
+                                             [:password (minlength 6)  "Should be at least 6 characters"]))
         hvalds   (map #(assoc % 1 (:clj (second %))) valds)
         fields   (fields-from-validations valds)
         if-not-user (fn [req cb]
                       (if (:user req)
                         {:status  302
-                         :headers {"Location" (or (get (:query-params req) redir-p) redir-to)}
+                         :headers {"Location" (get (:query-params req) redir-p redir-to)}
                          :body    nil}
                         cb))]
     (list
@@ -93,7 +84,7 @@
                                                     :flash  (:login-invalid flash)
                                                     :action (get-action req redir-p)})}
                          {:status  302
-                          :headers {"Location" (or (get (:query-params req) redir-p) redir-to)}
+                          :headers {"Location" (get (:query-params req) redir-p redir-to)}
                           :session {:username (:username user)}
                           :flash   (:login-success flash)
                           :body    nil})
@@ -107,7 +98,7 @@
       (route (str url-base "logout")
         {:get (fn [req m]
                 {:status  302
-                 :headers {"Location" (or (get (:query-params req) redir-p) redir-to)}
+                 :headers {"Location" (get (:query-params req) redir-p redir-to)}
                  :session {:username nil}
                  :flash   (:logout flash)
                  :body    nil})})
@@ -128,7 +119,7 @@
                       (if (nil? fval)
                         (let [user (make-user db coll {:username (:username form)} (:password form) fixed-s)]
                           {:status  302
-                           :headers {"Location" (or (get (:query-params req) redir-p) redir-to)}
+                           :headers {"Location" (get (:query-params req) redir-p redir-to)}
                            :session {:username (:username form)}
                            :flash   (:signup-success flash)
                            :body    nil})

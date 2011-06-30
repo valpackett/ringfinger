@@ -2,12 +2,12 @@
   (:use (ringfinger core resource db validation), ringfinger.db.inmem,
         clojure.test, ring.mock.request))
 
-(defresource "todos"
+(defresource todos
   {:store inmem
    :pk    :body}
   [:body  (required) "should be present"])
 
-(defapp 'testapp {:static-dir "src"} todos)
+(defapp testapp {:static-dir "src"} todos)
 
 (deftest right-create
   (let [res (testapp (body (request :post "/todos?format=json")

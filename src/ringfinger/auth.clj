@@ -23,7 +23,7 @@
    (let [db   (:db options)
          coll (:coll options)]
      (fn [req]
-       (let [auth-hdr (or (get (:headers req) "authorization") "")
+       (let [auth-hdr (get (:headers req) "authorization" "")
              session-username (:username (:session req))]
          (handler (assoc req :user
             (cond (cstr/substring? "Basic" auth-hdr)
