@@ -49,9 +49,10 @@
               wrap-flash
               (wrap-session {:store (or (:session-store options) (db-store inmem))})
               wrap-params
-              (wrap-file (or (:static-dir options) "static")))]
+              )]
     (if-env "development"
       (-> h
+          (wrap-file (or (:static-dir options) "static"))
           wrap-stacktrace)
       h)))
 
