@@ -156,7 +156,7 @@
                                   user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form) fixed-s)]
                               (send-mail (:mailer confirm)
                                          (:from confirm)
-                                         ((:email-field confirm :username) user)
+                                         (get form (:email-field confirm :username))
                                          (:subject confirm)
                                          ((:mail-template confirm demo-mail-template)
                                             {:data  form
