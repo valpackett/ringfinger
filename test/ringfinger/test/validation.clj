@@ -31,6 +31,12 @@
   (is (= ((:clj (url)) "http://floatboth.com") true))
   (is (= ((:clj (url)) "not@an.address!!")     false)))
 
+(deftest t-ipv4
+  (is (= ((:clj (ipv4)) "127.0.0.1")       true))
+  (is (= ((:clj (ipv4)) "255.255.255.255") true))
+  (is (= ((:clj (ipv4)) "256.0.0.0")       false))
+  (is (= ((:clj (ipv4)) "127.0.lolwut")    false)))
+
 (deftest t-color
   (is (= ((:clj (color)) "1f4")     true))
   (is (= ((:clj (color)) "#00fF00") true))

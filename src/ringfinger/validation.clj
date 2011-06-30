@@ -40,6 +40,14 @@
   {:html {:type "url"}
    :clj  v/url?})
 
+(defn ipv4 []
+  "Validates IPv4 addresses"
+  {:html {:pattern "([0-9]{1,3}\\.){3}[0-9]{1,3}"}
+   :clj  (fn [a]
+           (= '(false false false false)
+              (map #(> (Integer/parseInt %) 255)
+                   (drop 1 (re-matches #"([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})" a)))))})
+
 (defn color []
   "Validates hexadecimal color codes"
   {:html {:type "color"}
