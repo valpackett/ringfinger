@@ -59,8 +59,10 @@
      (list
        (route (str "/" collname)
          {:get (fn [req matches]
-                 (respond req 200 {:flash (:flash req)
-                                   :data  (get-many store coll (or (params-to-query (:query-params req)) default-query))} html-index))
+                 (respond req 200
+                          {:flash (:flash req)
+                           :data  (get-many store coll (or (params-to-query (:query-params req)) default-query))}
+                          {"html" html-index}))
           :post (fn [req matches]
                   (let [form (keywordize (:form-params req))]
                     (i-validate req form
@@ -68,15 +70,22 @@
                         (create store coll (typeize form))
                         (i-redirect req form flash-created))
                       (fn [errors]
-                        (respond req 400 {:data   (get-many store coll (or (params-to-query (:query-params req)) default-query))
-                                          :flash  (:flash req)
-                                          :errors errors} html-index)))))})
+                        (respond req 400
+                                 {:data   (get-many store coll (or (params-to-query (:query-params req)) default-query))
+                                  :flash  (:flash req)
+                                  :errors errors}
+                                 {"html" html-index})))))})
        (route (str "/" collname "/:pk")
          {:get (fn [req matches]
                  (let [entry (i-get-one matches)]
                    (if entry
-                     (respond req 200 {:data  entry :flash (:flash req)} html-get)
-                     (respond req 404 {:flash (:flash req)} html-not-found))))
+                     (respond req 200
+                              {:data  entry
+                               :flash (:flash req)}
+                              {"html" html-get})
+                     (respond req 404
+                              {:flash (:flash req)}
+                              {"html" html-not-found}))))
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        entry (i-get-one matches)
@@ -86,9 +95,11 @@
                        (update store coll entry (typeize form))
                        (i-redirect req form flash-updated))
                      (fn [errors]
-                       (respond req 400 {:data   updated-entry
-                                         :flash  (:flash req)
-                                         :errors errors} html-get)))))
+                       (respond req 400
+                                {:data   updated-entry
+                                 :flash  (:flash req)
+                                 :errors errors}
+                                {"html" html-get})))))
           :delete (fn [req matches]
                     (let [inst (i-get-one matches)]
                       (delete store coll inst)

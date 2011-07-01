@@ -1,5 +1,5 @@
 (ns ringfinger.output
-  (:use clojure.contrib.json, clojure.contrib.prxml,
+  (:use (clojure.contrib json prxml),
         [clojure.contrib.string :only [substring?]]))
 
 (defprotocol Output
@@ -36,14 +36,11 @@
 
 (defn html-output [view dd] (HTMLOutput. view dd))
 
-(def outputs (ref {}))
-
-(defmacro defoutput [name fun]
-  `(dosync (ref-set outputs (merge @outputs {~name (reify Output
-     (render [self status# data#] (~fun status# data#)))}))))
-
-(defn getoutput [ctype html]
-  (cond (substring? "html" ctype) html
-        (substring? "json" ctype) json
-        (substring? "xml"  ctype)  xml
-        :else (get @outputs ctype)))
+(defn getoutput [ctype custom]
+  ; FIXME: better solution is possible... or not?!
+  (let [outputs (merge {"json" json "xml" xml} custom)] ; html before xml
+    (first
+      (filter identity
+              (map #(if (substring? %1 ctype) %2)
+                   (keys outputs)
+                   (vals outputs))))))
