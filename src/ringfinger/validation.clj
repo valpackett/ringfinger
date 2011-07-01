@@ -73,7 +73,7 @@
   {:html {:max n}
    :clj  (v/lte n)})
 
-(defn nbetween [min max]
+(defn nbetween [minn maxn]
   "Sets the minimum and maximum numbers to given ones"
-  {:html {:min min :max max}
-   :clj (v/between min max)})
+  {:html {:min minn :max maxn}
+   :clj (v/between minn maxn)})
