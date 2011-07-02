@@ -1,6 +1,6 @@
 (ns ringfinger.db.inmem
   "In-memory data storage FOR TESTING USE ONLY"
-  (:use (ringfinger db util)))
+  (:use (ringfinger db)))
 
 (def base (ref {}))
 
@@ -19,7 +19,7 @@
       (ref-set base (assoc @base coll (replace {entry (merge entry data)} (get @base coll))))))
   (delete [self coll entry]
     (dosync
-      (ref-set base (assoc @base coll (remove (curry = entry) (get @base coll))))))))
+      (ref-set base (assoc @base coll (remove (partial = entry) (get @base coll))))))))
 
 (defn reset-inmem-db []
   (dosync (ref-set base {})))

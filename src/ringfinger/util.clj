@@ -17,8 +17,6 @@
 (defmacro typeize [a]
   `(zipmap (keys ~a) (map typeify (vals ~a))))
 
-(defmacro curry [f v] `(fn [& a#] (apply ~f ~v a#))) ; such a shame it's not in clojure's core
-
 (defmacro sorted-zipmap [ks vs] `(zipmap (reverse ~ks) (reverse ~vs))) ; this should be built into zipmap, dammit
 
 (def default-style "html{background:#cece9e}body{margin:4%;padding:2%;background:#fff;color:#333;font:14px \"Lucida Grande\", sans-serif}input,button{display: block}.error,input:invalid{background:#dd9090;color:#f4f4f4}.flash{background:#aba210;color:white;padding:4px}")
