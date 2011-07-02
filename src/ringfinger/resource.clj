@@ -9,12 +9,18 @@
       (str "?format=" fmt)
       nil)))
 
-(defmacro respond [req status data html]
-  `(render (getoutput (first
-      (filter identity (list
-                          (qsformat ~req)
-                          (get (:headers ~req) "accept") ; it must be lowercase!
-                         ))) ~html) ~status ~data))
+(defmacro respond [req status data outputs default]
+  `(render
+     (getoutput
+       (first
+         (filter identity
+           (list
+             (qsformat ~req)
+             (get (:headers ~req) "accept") ; it must be lowercase!
+             ~default
+           )))
+     ~outputs)
+   ~status ~data))
 
 (defmacro qs [a] `(keyword (str "$" ~a)))
 
@@ -62,7 +68,8 @@
                  (respond req 200
                           {:flash (:flash req)
                            :data  (get-many store coll (or (params-to-query (:query-params req)) default-query))}
-                          {"html" html-index}))
+                          {"html" html-index}
+                          "html"))
           :post (fn [req matches]
                   (let [form (keywordize (:form-params req))]
                     (i-validate req form
@@ -74,7 +81,8 @@
                                  {:data   (get-many store coll (or (params-to-query (:query-params req)) default-query))
                                   :flash  (:flash req)
                                   :errors errors}
-                                 {"html" html-index})))))})
+                                 {"html" html-index}
+                                 "html")))))})
        (route (str "/" collname "/:pk")
          {:get (fn [req matches]
                  (let [entry (i-get-one matches)]
@@ -82,10 +90,12 @@
                      (respond req 200
                               {:data  entry
                                :flash (:flash req)}
-                              {"html" html-get})
+                              {"html" html-get}
+                              "html")
                      (respond req 404
                               {:flash (:flash req)}
-                              {"html" html-not-found}))))
+                              {"html" html-not-found}
+                              "html"))))
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        entry (i-get-one matches)
@@ -99,7 +109,8 @@
                                 {:data   updated-entry
                                  :flash  (:flash req)
                                  :errors errors}
-                                {"html" html-get})))))
+                                {"html" html-get}
+                                "html")))))
           :delete (fn [req matches]
                     (let [inst (i-get-one matches)]
                       (delete store coll inst)

@@ -18,11 +18,11 @@
          :password_hash (DigestUtils/sha256Hex (str salt fixed-salt-part password))}))))
 
 (defn wrap-auth
-  ([handler] (wrap-auth handler {:db inmem, :coll :ringfinger_auth}))
+  ([handler] (wrap-auth handler {}))
   ([handler options]
-   (let [db   (:db options)
-         coll (:coll options)
-         salt (:salt options)]
+   (let [db   (:db   options inmem)
+         coll (:coll options :ringfinger_auth)
+         salt (:salt options "ringfingerFTW")]
      (fn [req]
        (let [auth-hdr (get (:headers req) "authorization" "")
              session-username (:username (:session req))]
