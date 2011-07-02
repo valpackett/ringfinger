@@ -4,7 +4,7 @@
         (ringfinger session auth), ringfinger.db.inmem))
 
 (defmacro if-env [env yep nope]
-  `(if (= (get (System/getenv) "RING_ENV" "development") ~env) ~yep ~nope))
+  `(if (= (or (System/getenv "RING_ENV") "development") ~env) ~yep ~nope))
 
 (defn method-na-handler [req matches]
   {:status  405
