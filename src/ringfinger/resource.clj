@@ -67,6 +67,7 @@
          {:get (fn [req matches]
                  (respond req 200
                           {:flash (:flash req)
+                           :csrf-token (:csrf-token req)
                            :data  (get-many store coll (or (params-to-query (:query-params req)) default-query))}
                           {"html" html-index}
                           "html"))
@@ -74,11 +75,12 @@
                   (let [form (keywordize (:form-params req))]
                     (i-validate req form
                       (fn []
-                        (create store coll (typeize form))
+                        (create store coll (dissoc (typeize form) :csrftoken))
                         (i-redirect req form flash-created))
                       (fn [errors]
                         (respond req 400
                                  {:data   (get-many store coll (or (params-to-query (:query-params req)) default-query))
+                                  :csrf-token (:csrf-token req)
                                   :flash  (:flash req)
                                   :errors errors}
                                  {"html" html-index}
@@ -89,6 +91,7 @@
                    (if entry
                      (respond req 200
                               {:data  entry
+                               :csrf-token (:csrf-token req)
                                :flash (:flash req)}
                               {"html" html-get}
                               "html")
@@ -102,12 +105,13 @@
                        updated-entry (merge entry form)]
                    (i-validate req updated-entry
                      (fn []
-                       (update store coll entry (typeize form))
+                       (update store coll entry (dissoc (typeize form) :csrftoken))
                        (i-redirect req form flash-updated))
                      (fn [errors]
                        (respond req 400
                                 {:data   updated-entry
                                  :flash  (:flash req)
+                                 :csrf-token (:csrf-token req)
                                  :errors errors}
                                 {"html" html-get}
                                 "html")))))

@@ -56,7 +56,7 @@
 (defn date []
   "Validates dates"
   {:html {:type "date"}
-   :clj  v/html5-date?})
+   :clj  #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
 (defn number []
   "Validates integer numbers"

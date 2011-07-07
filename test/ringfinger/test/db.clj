@@ -14,6 +14,7 @@
   (is (= {:test []} (delete inmem :test (get-one inmem :test {:key "updated"})))))
 
 (defn test-ns-hook [] ; order matters here
+  (reset-inmem-db)
   (creation)
   (reading)
   (updating)

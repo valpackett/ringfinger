@@ -1,7 +1,7 @@
 (ns ringfinger.core
   (:use clout.core,
         (ring.middleware params session stacktrace flash file),
-        (ringfinger session auth), ringfinger.db.inmem))
+        (ringfinger session csrf auth), ringfinger.db.inmem))
 
 (defmacro if-env [env yep nope]
   `(if (= (or (System/getenv "RING_ENV") "development") ~env) ~yep ~nope))
@@ -45,6 +45,7 @@
         h (-> (fn [req]
                 (let [route (first (filter #(route-matches (:route %) req) allroutes))]
                   ((:handler route) req (route-matches (:route route) req))))
+              wrap-csrf
               (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth) :salt (:fixed-salt options "ringfingerFTW")})
               wrap-flash
               (wrap-session {:store (:session-store options (db-store inmem))})

@@ -17,6 +17,7 @@
         (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
         [:form {:method "post" :action ""}
           (form-fields fields data (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
+          [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
           [:button {:type "submit"} "Add"]]
         [:table
           [:tr (map (fn [a] [:th a]) fieldnames)]
@@ -39,6 +40,7 @@
         (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
         [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put")}
           (form-fields (:fields stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
+          [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
        [:button {:type "submit"} "Save"]]]])))
 
 (defn default-not-found [stuff]
