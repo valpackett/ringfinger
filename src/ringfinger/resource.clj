@@ -48,6 +48,7 @@
         coll (keyword collname) ; TODO: custom prefix
         fields (fields-from-validations validations)
         valds (map #(assoc % 1 (:clj (second %))) validations) ; only clojure validators, no html
+        whitelist (concat (:whitelist options (list)) (keys fields)) ; cut off :csrftoken, don't allow users to store everything
         default-data {:collname collname :pk pk :fields fields}
         html-index (html-output (:index (:views options) default-index) default-data)
         html-get   (html-output (:get   (:views options) default-get) default-data)
@@ -57,7 +58,7 @@
         flash-deleted (:deleted (:flash options) #(str "Deleted: " (get % pk)))
         flash-forbidden (:forbidden (:flash options) "Forbidden.")
         ; --- functions ---
-        clear-entry #(dissoc (typeize %) :csrftoken) ; TODO: option for dissoc'ing fields w/ no validations, whitelisting, etc
+        clear-entry #(select-keys (typeize %) whitelist)
         i-validate (fn [req data yep nope] (let [result (apply validate data valds)]
                       (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one store coll {pk (typeify (:pk %))})

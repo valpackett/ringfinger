@@ -5,7 +5,8 @@
 
 (defresource todos
   {:store inmem
-   :pk    :body}
+   :pk    :body
+   :whitelist '(:state)}
   [:body  (required) "should be present"])
 
 (defresource owned
@@ -52,11 +53,11 @@
   (is (= (testapp (request :get "/todos/test?format=json"))
          {:status  200
           :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body    "{\"state\":true,\"body\":\"test\"}"}))
+          :body    "{\"body\":\"test\",\"state\":true}"}))
   (is (= (testapp (header (request :get "/todos/test") "Accept" "application/xml"))
           {:status  200
           :headers {"Content-Type" "application/xml; charset=utf-8"}
-          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><state>true</state><body>test</body></response>"}))
+          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body>test</body><state>true</state></response>"}))
   (is (= (:body (testapp (request :get "/owned/wassup?format=json")))
          "{\"owner\":\"test\",\"name\":\"wassup\"}")))
 
@@ -64,7 +65,7 @@
   (is (= (testapp (request :get "/todos?format=json"))
          {:status  200
           :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body    "[{\"state\":true,\"body\":\"test\"}]"}))
+          :body    "[{\"body\":\"test\",\"state\":true}]"}))
   (is (= (testapp (request :get "/todos?format=json&state_ne=true"))
          {:status  200
           :headers {"Content-Type" "application/json; charset=utf-8"}
@@ -72,7 +73,7 @@
   (is (= (testapp (header (request :get "/todos") "Accept" "application/xml"))
          {:status  200
           :headers {"Content-Type" "application/xml; charset=utf-8"}
-          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><state>true</state><body>test</body></entry></response>"})))
+          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><body>test</body><state>true</state></entry></response>"})))
 
 (deftest t-delete
   (let [res (testapp (request :delete "/todos/test?format=json"))]
