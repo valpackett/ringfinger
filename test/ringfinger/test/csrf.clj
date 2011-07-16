@@ -17,4 +17,4 @@
                                              "User-Agent" "Mozilla/5.0"))) 403))
     (is (= (:status (testapp (header (header (body (request :post "/todos") {"body" "test" "csrftoken" token})
                                              "Cookie" (str "csrftoken=" token))
-                                             "User-Agent" "Mozilla/5.0"))) 302))))
+                                             "User-Agent" "Mozilla/5.0"))) 201))))

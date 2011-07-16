@@ -61,8 +61,8 @@
         i-validate (fn [req data yep nope] (let [result (apply validate data valds)]
                       (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one store coll {pk (typeify (:pk %))})
-        i-redirect (fn [req form flash] ; TODO: diff status
-                     {:status  302
+        i-redirect (fn [req form flash status]
+                     {:status  status
                       :headers {"Location" (str "/" collname "/" (get form pk) (qsformat req))}
                       :flash   (call-flash flash form)
                       :body    nil})
@@ -100,7 +100,7 @@
                     (i-validate req form
                       (fn []
                         (create store coll (process-new req form))
-                        (i-redirect req form flash-created))
+                        (i-redirect req form flash-created 201))
                       (fn [errors]
                         (respond req 400
                                  {:data   (get-many store coll (i-get-query req))
@@ -132,7 +132,7 @@
                        (i-validate req updated-entry
                          (fn []
                            (update store coll entry (clear-entry form))
-                           (i-redirect req form flash-updated))
+                           (i-redirect req form flash-updated 302))
                          (fn [errors]
                            (respond req 400
                                     {:data   updated-entry

@@ -26,7 +26,7 @@
   (let [res (testapp (body (request :post "/todos?format=json")
                            {:body  "test"
                             :state false}))]
-    (is (= (:status res 302)))
+    (is (= (:status res 201)))
     (is (= (get (:headers res) "Location") "/todos/test?format=json")))
   (is (= (testapp (body (request :post "/todos?format=json") {:state false}))
          {:status  400
@@ -37,7 +37,7 @@
           :headers {"Content-Type" "application/xml; charset=utf-8"}
           :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"}))
 
-  (is (= (:status (testapp (body (authd (request :post "/owned?format=json")) {:name "sup"}))) 302)))
+  (is (= (:status (testapp (body (authd (request :post "/owned?format=json")) {:name "sup"}))) 201)))
 
 (deftest t-update
   (let [res (testapp (body (request :put "/todos/test?format=json")
