@@ -1,4 +1,5 @@
 (ns ringfinger.validation
+  (:use ringfinger.db, ringfinger.db.inmem)
   (:require [valip.predicates :as v]))
 
 (defn required []
@@ -76,4 +77,4 @@
 (defn nbetween [minn maxn]
   "Sets the minimum and maximum numbers to given ones"
   {:html {:min minn :max maxn}
-   :clj (v/between minn maxn)})
+   :clj  (v/between minn maxn)})

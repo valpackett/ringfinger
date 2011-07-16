@@ -43,10 +43,11 @@
   ; biggest let EVAR?
   (let [store (:store options)
         pk (:pk options)
-        coll (keyword collname)
+        owner-field (:owner-field options)
         default-query (:default-query options {})
+        coll (keyword collname) ; TODO: custom prefix
         fields (fields-from-validations validations)
-        valds (map #(assoc % 1 (:clj (second %))) validations)
+        valds (map #(assoc % 1 (:clj (second %))) validations) ; only clojure validators, no html
         default-data {:collname collname :pk pk :fields fields}
         html-index (html-output (:index (:views options) default-index) default-data)
         html-get   (html-output (:get   (:views options) default-get) default-data)
@@ -54,32 +55,55 @@
         flash-created (:created (:flash options) #(str "Created: " (get % pk)))
         flash-updated (:updated (:flash options) #(str "Saved: "   (get % pk)))
         flash-deleted (:deleted (:flash options) #(str "Deleted: " (get % pk)))
+        flash-forbidden (:forbidden (:flash options) "Forbidden.")
+        ; --- functions ---
+        clear-entry #(dissoc (typeize %) :csrftoken) ; TODO: option for dissoc'ing fields w/ no validations, whitelisting, etc
         i-validate (fn [req data yep nope] (let [result (apply validate data valds)]
                       (if (= result nil) (yep) (nope result))))
-        i-get-one  (fn [matches] (get-one store coll {pk (typeify (:pk matches))}))
-        i-redirect (fn [req form flash]
+        i-get-one  #(get-one store coll {pk (typeify (:pk %))})
+        i-redirect (fn [req form flash] ; TODO: diff status
                      {:status  302
                       :headers {"Location" (str "/" collname "/" (get form pk) (qsformat req))}
                       :flash   (call-flash flash form)
-                      :body    nil})]
+                      :body    nil})
+        i-get-query (if owner-field
+                      #(assoc (or (params-to-query (:query-params %)) default-query) owner-field (get-in % [:user :username]))
+                      #(or (params-to-query (:query-params %)) default-query))
+        if-allowed  (if owner-field
+                      ; [req entry yep]
+                       #(if (= (get-in %1 [:user :username]) (get %2 owner-field))
+                          (%3)
+                          (if (from-browser? %1)
+                            {:status  302
+                             :headers {"Location" (str "/" collname)}
+                             :flash   (call-flash flash-forbidden %2)
+                             :body    nil}
+                            {:status  403
+                             :headers {"Content-Type" "text/plain"}
+                             :body    "Forbidden"}))
+                       #(%3))
+        process-new  (if owner-field
+                       ; [req form]
+                       #(assoc (clear-entry %2) owner-field (get-in %1 [:user :username]))
+                       #(clear-entry %2))]
      (list
        (route (str "/" collname)
          {:get (fn [req matches]
                  (respond req 200
                           {:flash (:flash req)
                            :csrf-token (:csrf-token req)
-                           :data  (get-many store coll (or (params-to-query (:query-params req)) default-query))}
+                           :data  (get-many store coll (i-get-query req))}
                           {"html" html-index}
                           "html"))
           :post (fn [req matches]
                   (let [form (keywordize (:form-params req))]
                     (i-validate req form
                       (fn []
-                        (create store coll (dissoc (typeize form) :csrftoken))
+                        (create store coll (process-new req form))
                         (i-redirect req form flash-created))
                       (fn [errors]
                         (respond req 400
-                                 {:data   (get-many store coll (or (params-to-query (:query-params req)) default-query))
+                                 {:data   (get-many store coll (i-get-query req))
                                   :csrf-token (:csrf-token req)
                                   :flash  (:flash req)
                                   :errors errors}
@@ -103,25 +127,29 @@
                  (let [form (keywordize (:form-params req))
                        entry (i-get-one matches)
                        updated-entry (merge entry form)]
-                   (i-validate req updated-entry
+                   (if-allowed req entry
                      (fn []
-                       (update store coll entry (dissoc (typeize form) :csrftoken))
-                       (i-redirect req form flash-updated))
-                     (fn [errors]
-                       (respond req 400
-                                {:data   updated-entry
-                                 :flash  (:flash req)
-                                 :csrf-token (:csrf-token req)
-                                 :errors errors}
-                                {"html" html-get}
-                                "html")))))
+                       (i-validate req updated-entry
+                         (fn []
+                           (update store coll entry (clear-entry form))
+                           (i-redirect req form flash-updated))
+                         (fn [errors]
+                           (respond req 400
+                                    {:data   updated-entry
+                                     :flash  (:flash req)
+                                     :csrf-token (:csrf-token req)
+                                     :errors errors}
+                                    {"html" html-get}
+                                    "html")))))))
           :delete (fn [req matches]
-                    (let [inst (i-get-one matches)]
-                      (delete store coll inst)
-                      {:status  302
-                       :headers {"Location" (str "/" collname)}
-                       :flash   (call-flash flash-deleted inst)
-                       :body    nil}))}))))
+                    (let [entry (i-get-one matches)]
+                      (if-allowed req entry
+                        (fn []
+                          (delete store coll entry)
+                          {:status  302
+                           :headers {"Location" (str "/" collname)}
+                           :flash   (call-flash flash-deleted entry)
+                           :body    nil}))))}))))
 
 (defmacro defresource [nname options & validations]
   ; dirty magic

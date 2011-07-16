@@ -1,11 +1,12 @@
 (ns ringfinger.csrf
   "CSRF protection middleware for Ring"
+  (:use ringfinger.util)
   (:import org.apache.commons.codec.digest.DigestUtils))
 
 (defn wrap-csrf [handler]
   (fn [req]
     ; stop early if the req isn't coming from a browser
-    (if (boolean (re-matches #"(Mozilla|Opera).*" (or (get-in req [:headers "user-agent"]) "")))
+    (if (from-browser? req)
       (if (and (= :post (:request-method req))
                (not (= (get-in req [:form-params "csrftoken"])
                        (get-in req [:cookies "csrftoken" :value]))))
