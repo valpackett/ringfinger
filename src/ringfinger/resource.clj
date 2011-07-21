@@ -119,7 +119,7 @@
                     (i-validate req form
                       (fn []
                         (create store coll (process-new req form))
-                        (i-redirect req form flash-created 201))
+                        (i-redirect req form flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
                         (respond req 400
                                  {:data   (get-many store coll (i-get-query req))

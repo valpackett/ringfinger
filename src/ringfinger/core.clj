@@ -47,7 +47,7 @@
 (defn app [options & routes]
   "Creates a Ring handler with given options and routes, automatically wrapped with params, session, flash, auth and csrf middleware (+ stacktrace and file in development env)
   Accepted options:
-   :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes
+   :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
    :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!
    :session-db -- database for session middleware
    :static-dir -- directory with static files for serving them in development"

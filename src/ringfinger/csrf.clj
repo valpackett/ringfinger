@@ -5,9 +5,10 @@
 (defn wrap-csrf [handler]
   "CSRF protection middleware for Ring"
   (fn [req]
+    (prn req)
     ; stop early if the req isn't coming from a browser
     (if (from-browser? req)
-      (if (and (= :post (:request-method req))
+      (if (and (= :post (:request-method req)) ; method override doesn't affect it here
                (not (= (get-in req [:form-params "csrftoken"])
                        (get-in req [:cookies "csrftoken" :value]))))
         {:status  403
