@@ -1,4 +1,4 @@
-(ns ringfinger.csrf
+(ns ringfinger.security
   (:use ringfinger.util)
   (:import org.apache.commons.codec.digest.DigestUtils))
 
@@ -16,3 +16,18 @@
         (let [token (DigestUtils/md5Hex (str (rand)))]
           (assoc-in (handler (assoc req :csrf-token token)) [:cookies "csrftoken"] token)))
       (handler req))))
+
+(defn wrap-refcheck [handler]
+  "Referer checking middleware for Ring"
+  (fn [req]
+    (if (or (= :get (:request-method req)) (= :head (:request-method req)))
+      (handler req)
+      (let [referer (get-in req [:headers "referer"])]
+        (if (or (= referer nil)
+                (boolean (re-matches
+                           (re-pattern (str "https?://[a-zA-Z0-9\\.]*\\.?" (get-in req [:headers "host"]) ".*"))
+                           referer)))
+          (handler req)
+          {:status  403
+           :headers {"Content-Type" "text/plain"}
+           :body    (str "You can't " (:request-method req) " from other domains.")})))))

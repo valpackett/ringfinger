@@ -1,7 +1,7 @@
 (ns ringfinger.core
   (:use clout.core,
         (ring.middleware params session stacktrace flash file),
-        (ringfinger session csrf auth), ringfinger.db.inmem))
+        (ringfinger session security auth), ringfinger.db.inmem))
 
 (defmacro if-env [env yep nope]
   "Checks if the current RING_ENV = env"
@@ -45,7 +45,7 @@
                       ((if (= method :head) (head-handler (:get handlers)) (get handlers method)) req matches)))})
 
 (defn app [options & routes]
-  "Creates a Ring handler with given options and routes, automatically wrapped with params, session, flash, auth and csrf middleware (+ stacktrace and file in development env)
+  "Creates a Ring handler with given options and routes, automatically wrapped with params, session, flash, auth and some security middleware (+ stacktrace and file in development env)
   Accepted options:
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
    :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!
@@ -57,11 +57,12 @@
         h (-> (fn [req]
                 (let [route (first (filter #(rmf (:route %) req) allroutes))]
                   ((:handler route) req (rmf (:route route) req))))
-              wrap-csrf
               (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth) :salt (:fixed-salt options "ringfingerFTW")})
               wrap-flash
+              wrap-csrf
               (wrap-session {:store (:session-db options (db-store inmem))})
               wrap-params
+              wrap-refcheck
               )]
     (if-env "development"
       (-> h
