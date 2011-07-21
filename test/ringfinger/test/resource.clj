@@ -9,6 +9,15 @@
    :whitelist '(:state)}
   [:body  (required) "should be present"])
 
+(defresource hooked
+  {:store inmem
+   :pk :name
+   :whitelist '(:ondata :onpost :onput)
+   :hooks {:data #(assoc % :ondata "yo")
+           :post #(assoc % :onpost "posted")
+           :put  #(assoc % :onput  "put")}}
+  [:name (required) ""])
+
 (defresource owned
   {:store inmem
    :pk :name
@@ -18,7 +27,7 @@
 (defapp testapp
   {:static-dir "src"
    :fixed-salt "salt"}
-  todos, owned)
+  todos, hooked, owned)
 
 (defn authd [req]
   (header req "Authorization" (str "Basic " (Base64/encodeBase64String (. "test:demo" getBytes)))))
@@ -37,7 +46,7 @@
          {:status  400
           :headers {"Content-Type" "application/xml; charset=utf-8"}
           :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"}))
-
+  (is (= (:status (testapp (body (request :post "/hooked?format=json") {:name "test"}))) 201))
   (is (= (:status (testapp (body (authd (request :post "/owned?format=json")) {:name "sup"}))) 201)))
 
 (deftest t-update
@@ -46,6 +55,7 @@
                             :state true}))]
     (is (= (:status res) 302))
     (is (= (get (:headers res) "Location") "/todos/test?format=json")))
+  (is (= (:status (testapp (body (request :put "/hooked/test?format=json") {:name "test2"}))) 302))
   (is (= (:status (testapp (body (request :put "/owned/sup?format=json") {:name "hacked"}))) 403))
   (is (= (:status (testapp (body (authd (request :put "/owned/sup?format=json")) {:name "wassup"}))) 302)))
 
@@ -58,6 +68,8 @@
           {:status  200
           :headers {"Content-Type" "application/xml; charset=utf-8"}
           :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body>test</body><state>true</state></response>"}))
+  (is (= (:body (testapp (request :get "/hooked/test2?format=json")))
+         "{\"onput\":\"put\",\"onpost\":\"posted\",\"ondata\":\"yo\",\"name\":\"test2\"}"))
   (is (= (:body (testapp (request :get "/owned/wassup?format=json")))
          "{\"owner\":\"test\",\"name\":\"wassup\"}")))
 

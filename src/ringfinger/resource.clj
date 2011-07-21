@@ -58,7 +58,13 @@
         flash-deleted (:deleted (:flash options) #(str "Deleted: " (get % pk)))
         flash-forbidden (:forbidden (:flash options) "Forbidden.")
         ; --- functions ---
-        clear-entry #(select-keys (typeize %) whitelist)
+        clear-form #(select-keys (typeize %) whitelist)
+        user-data-hook (get-in options [:hooks :data] identity)
+        user-post-hook (get-in options [:hooks :post] identity)
+        user-put-hook  (get-in options [:hooks :put]  identity)
+        data-hook #(-> % clear-form user-data-hook)
+        post-hook #(-> % data-hook  user-post-hook)
+        put-hook  #(-> % data-hook  user-put-hook)
         i-validate (fn [req data yep nope] (let [result (apply validate data valds)]
                       (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one store coll {pk (typeify (:pk %))})
@@ -85,8 +91,8 @@
                        #(%3))
         process-new  (if owner-field
                        ; [req form]
-                       #(assoc (clear-entry %2) owner-field (get-in %1 [:user :username]))
-                       #(clear-entry %2))]
+                       #(assoc (post-hook %2) owner-field (get-in %1 [:user :username]))
+                       #(post-hook %2))]
      (list
        (route (str "/" collname)
          {:get (fn [req matches]
@@ -132,7 +138,7 @@
                      (fn []
                        (i-validate req updated-entry
                          (fn []
-                           (update store coll entry (clear-entry form))
+                           (update store coll entry (put-hook form))
                            (i-redirect req form flash-updated 302))
                          (fn [errors]
                            (respond req 400
