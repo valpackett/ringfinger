@@ -5,12 +5,14 @@
            org.apache.commons.codec.binary.Base64))
 
 (defn get-user [db coll username password fixed-salt-part]
+  "Returns a user from coll in db with given username and password if the password is valid"
   (let [user (get-one db coll {:username username})]
     (if (= (:password_hash user) (DigestUtils/sha256Hex (str (:password_salt user) fixed-salt-part password)))
       (if (nil? (:_confirm_key user)) user nil)
       nil)))
 
 (defn make-user [db coll user password fixed-salt-part]
+  "Creates a user in coll in db with given fields (username and whatever you want) and password"
   (let [salt (str (rand))]
     (create db coll
       (merge user
@@ -18,6 +20,7 @@
          :password_hash (DigestUtils/sha256Hex (str salt fixed-salt-part password))}))))
 
 (defn wrap-auth
+  "Ring middleware that adds :user if there's a user logged in. Supports session/form-based auth and HTTP Basic auth"
   ([handler] (wrap-auth handler {}))
   ([handler options]
    (let [db   (:db   options inmem)

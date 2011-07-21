@@ -4,22 +4,22 @@
   (:import org.apache.commons.codec.binary.Base64))
 
 (defresource todos
-  {:store inmem
-   :pk    :body
+  {:db inmem
+   :pk :body
    :whitelist '(:state)}
-  [:body  (required) "should be present"])
+  [:body (required) "should be present"])
 
 (defresource hooked
-  {:store inmem
+  {:db inmem
    :pk :name
    :whitelist '(:ondata :onpost :onput)
-   :hooks {:data #(assoc % :ondata "yo")
-           :post #(assoc % :onpost "posted")
-           :put  #(assoc % :onput  "put")}}
+   :hooks {:data    #(assoc % :ondata "yo")
+           :create  #(assoc % :onpost "posted")
+           :update  #(assoc % :onput  "put")}}
   [:name (required) ""])
 
 (defresource owned
-  {:store inmem
+  {:db inmem
    :pk :name
    :owner-field :owner}
   [:name (required) "hey where's the name?"])

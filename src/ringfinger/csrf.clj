@@ -1,9 +1,9 @@
 (ns ringfinger.csrf
-  "CSRF protection middleware for Ring"
   (:use ringfinger.util)
   (:import org.apache.commons.codec.digest.DigestUtils))
 
 (defn wrap-csrf [handler]
+  "CSRF protection middleware for Ring"
   (fn [req]
     ; stop early if the req isn't coming from a browser
     (if (from-browser? req)

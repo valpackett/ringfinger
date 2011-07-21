@@ -31,17 +31,29 @@
 ; db doesnt't handle deeper stuff anyway
 
 (defn params-to-query
+  "Turns ring query-params into a db query, eg. field_ne=3 becomes {:field {:$ne 3}}"
   ([qp] (if (empty? qp) nil (apply merge (map params-to-query (keys qp) (vals qp)))))
   ([q v] (if (substring? "_" q) (param-to-query (flatten (list (split #"_" q) (typeify v)))) nil)))
 
 (defmacro call-flash [flash inst]
+  "If a flash message is a string, returns it. If it's a callable, calls it with inst and returns the result"
   `(if (ifn? ~flash)
      (~flash ~inst)
      ~flash))
 
 (defn resource [collname options & validations]
+  "Creates a list of two routes (/collname and /collname/pk) for RESTful Create/Read/Update/Delete of records in collname
+  Accepted options:
+   :db -- database (required!)
+   :pk -- primary key (required!)
+   :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames
+   :default-query -- default database query for index pages
+   :whitelist -- allowed fields (you don't need to include fields you have validations for!!)
+   :views -- map of HTML views :index, :get and :not-found
+   :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)
+   :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)"
   ; biggest let EVAR?
-  (let [store (:store options)
+  (let [store (:db options)
         pk (:pk options)
         owner-field (:owner-field options)
         default-query (:default-query options {})
@@ -59,9 +71,9 @@
         flash-forbidden (:forbidden (:flash options) "Forbidden.")
         ; --- functions ---
         clear-form #(select-keys (typeize %) whitelist)
-        user-data-hook (get-in options [:hooks :data] identity)
-        user-post-hook (get-in options [:hooks :post] identity)
-        user-put-hook  (get-in options [:hooks :put]  identity)
+        user-data-hook (get-in options [:hooks :data]    identity)
+        user-post-hook (get-in options [:hooks :create]  identity)
+        user-put-hook  (get-in options [:hooks :update]  identity)
         data-hook #(-> % clear-form user-data-hook)
         post-hook #(-> % data-hook  user-post-hook)
         put-hook  #(-> % data-hook  user-put-hook)

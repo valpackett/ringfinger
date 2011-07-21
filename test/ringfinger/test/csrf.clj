@@ -4,8 +4,8 @@
         clojure.test, ring.mock.request))
 
 (defresource todos
-  {:store inmem
-   :pk    :body}
+  {:db inmem
+   :pk :body}
   [:body  (required) "should be present"])
 
 (defapp testapp {:static-dir "src"} todos)
