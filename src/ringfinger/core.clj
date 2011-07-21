@@ -50,11 +50,13 @@
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
    :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!
    :session-db -- database for session middleware
-   :static-dir -- directory with static files for serving them in development"
+   :static-dir -- directory with static files for serving them in development
+   :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default"
   (let [allroutes (concat (flatten routes) (list not-found-handler))
+        rmf (if (= (:memoize-routing options true) true) (memoize route-matches) route-matches)
         h (-> (fn [req]
-                (let [route (first (filter #(route-matches (:route %) req) allroutes))]
-                  ((:handler route) req (route-matches (:route route) req))))
+                (let [route (first (filter #(rmf (:route %) req) allroutes))]
+                  ((:handler route) req (rmf (:route route) req))))
               wrap-csrf
               (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth) :salt (:fixed-salt options "ringfingerFTW")})
               wrap-flash
