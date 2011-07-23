@@ -1,4 +1,4 @@
-(ns ringfinger.auth-handler
+(ns ringfinger.auth-routes
   (:use (ringfinger auth core util db email validation), ringfinger.db.inmem,
         valip.core)
   (:require [clojure.contrib.string :as cstr]

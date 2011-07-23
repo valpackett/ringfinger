@@ -1,6 +1,6 @@
 (ns ringfinger.test.auth
   (:use clojure.test, ring.mock.request
-        ringfinger.db.inmem, (ringfinger auth auth-handler))
+        ringfinger.db.inmem, (ringfinger auth auth-routes))
   (:import org.apache.commons.codec.digest.DigestUtils))
 
 (deftest read-user
