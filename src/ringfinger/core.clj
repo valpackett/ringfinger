@@ -19,8 +19,9 @@
                :headers {"Content-Type" "text/plain"}
                :body    "404 Not Found"})})
 
-(defmacro head-handler [get-handler]
+(defmacro head-handler
   "Creates a handler for HEAD requests from a handler for GET requests"
+  [get-handler]
   `(fn [req# matches#]
     (let [result# (~get-handler req# matches#)]
       {:status  (:status result#)
@@ -34,9 +35,10 @@
    :post     method-na-handler
    :delete   method-na-handler})
 
-(defn route [url handlers]
+(defn route
   "Creates a route accepted by the app function from a url in Clout (Sinatra-like) format and a map of handlers
   eg. {:get (fn [req matches] {:status 200 :body nil})}"
+  [url handlers]
   {:route   (route-compile url)
    :handler (fn [req matches]
               (let [rm       (get (:query-params req) "_method")
@@ -44,7 +46,7 @@
                     method   (if rm (keyword rm) (:request-method req))]
                       ((if (= method :head) (head-handler (:get handlers)) (get handlers method)) req matches)))})
 
-(defn app [options & routes]
+(defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with params, session, flash, auth and some security middleware (+ stacktrace and file in development env)
   Accepted options:
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
@@ -52,6 +54,7 @@
    :session-db -- database for session middleware
    :static-dir -- directory with static files for serving them in development
    :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default"
+  [options & routes]
   (let [allroutes (concat (flatten routes) (list not-found-handler))
         rmf (if (= (:memoize-routing options true) true) (memoize route-matches) route-matches)
         h (-> (fn [req]
@@ -70,6 +73,5 @@
           wrap-stacktrace)
       h)))
 
-(defmacro defapp [nname options & routes]
-  "Short for (def nname (app options routes*))"
-  (intern *ns* nname (eval `(app ~options ~@routes))))
+(defmacro defapp "Short for (def nname (app options routes*))" [nname options & routes]
+    (intern *ns* nname (eval `(app ~options ~@routes))))

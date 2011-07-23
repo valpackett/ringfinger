@@ -47,8 +47,9 @@
 (defn demo-mail-template [data]
   (str "Welcome! To activate your account, click this link: " (:url data)))
 
-(defn auth-routes [options]
+(defn auth-routes
   "Creates auth routes with given options"
+  [options]
   (let [views    (:views       options auth-demo-views)
         flash    (:flash       options {:login-success  "Welcome back!"
                                         :login-invalid  "Wrong username/password."

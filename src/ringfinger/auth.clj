@@ -4,15 +4,17 @@
   (:import org.apache.commons.codec.digest.DigestUtils,
            org.apache.commons.codec.binary.Base64))
 
-(defn get-user [db coll username password fixed-salt-part]
+(defn get-user
   "Returns a user from coll in db with given username and password if the password is valid"
+  [db coll username password fixed-salt-part]
   (let [user (get-one db coll {:username username})]
     (if (= (:password_hash user) (DigestUtils/sha256Hex (str (:password_salt user) fixed-salt-part password)))
       (if (nil? (:_confirm_key user)) user nil)
       nil)))
 
-(defn make-user [db coll user password fixed-salt-part]
+(defn make-user
   "Creates a user in coll in db with given fields (username and whatever you want) and password"
+  [db coll user password fixed-salt-part]
   (let [salt (str (rand))]
     (create db coll
       (merge user

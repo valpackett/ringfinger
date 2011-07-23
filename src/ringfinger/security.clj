@@ -2,8 +2,7 @@
   (:use ringfinger.util)
   (:import org.apache.commons.codec.digest.DigestUtils))
 
-(defn wrap-csrf [handler]
-  "CSRF protection middleware for Ring"
+(defn wrap-csrf "CSRF protection middleware for Ring" [handler]
   (fn [req]
     ; stop early if the req isn't coming from a browser
     (if (from-browser? req)
@@ -17,8 +16,7 @@
           (assoc-in (handler (assoc req :csrf-token token)) [:cookies "csrftoken"] token)))
       (handler req))))
 
-(defn wrap-refcheck [handler]
-  "Referer checking middleware for Ring"
+(defn wrap-refcheck "Referer checking middleware for Ring" [handler]
   (fn [req]
     (if (or (= :get (:request-method req)) (= :head (:request-method req)))
       (handler req)

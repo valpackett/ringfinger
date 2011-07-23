@@ -35,13 +35,14 @@
   ([qp] (if (empty? qp) nil (apply merge (map params-to-query (keys qp) (vals qp)))))
   ([q v] (if (substring? "_" q) (param-to-query (flatten (list (split #"_" q) (typeify v)))) nil)))
 
-(defmacro call-flash [flash inst]
+(defmacro call-flash
   "If a flash message is a string, returns it. If it's a callable, calls it with inst and returns the result"
+  [flash inst]
   `(if (ifn? ~flash)
      (~flash ~inst)
      ~flash))
 
-(defn resource [collname options & validations]
+(defn resource
   "Creates a list of two routes (/collname and /collname/pk) for RESTful Create/Read/Update/Delete of records in collname
   Accepted options:
    :db -- database (required!)
@@ -52,6 +53,7 @@
    :views -- map of HTML views :index, :get and :not-found
    :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)
    :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)"
+  [collname options & validations]
   ; biggest let EVAR?
   (let [store (:db options)
         pk (:pk options)
