@@ -3,8 +3,7 @@
         (ring.middleware params session stacktrace flash file),
         (ringfinger session security auth), ringfinger.db.inmem))
 
-(defmacro if-env [env yep nope]
-  "Checks if the current RING_ENV = env"
+(defmacro if-env "Checks if the current RING_ENV == env" [env yep nope]
   `(if (= (or (System/getenv "RING_ENV") "development") ~env) ~yep ~nope))
 
 (defn method-na-handler [req matches]
@@ -12,7 +11,7 @@
    :headers {"Content-Type" "text/plain"}
    :body    "405 Method Not Allowed"})
 
-(def not-found-handler
+(def not-found-route
   {:route   (route-compile "/*")
    :handler (fn [req matches]
               {:status  404
@@ -55,7 +54,7 @@
    :static-dir -- directory with static files for serving them in development
    :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default"
   [options & routes]
-  (let [allroutes (concat (flatten routes) (list not-found-handler))
+  (let [allroutes (concat (flatten routes) (list not-found-route))
         rmf (if (= (:memoize-routing options true) true) (memoize route-matches) route-matches)
         h (-> (fn [req]
                 (let [route (first (filter #(rmf (:route %) req) allroutes))]
