@@ -6,7 +6,7 @@
   {:html {:required "required"}
    :clj  v/present?})
 
-(defn pattern "Validates according to given regexp" [e]
+(defn pattern "Validates according to given regexp" [re]
   {:html {:pattern (str re)}
    :clj  #(boolean (re-matches re %))})
 
