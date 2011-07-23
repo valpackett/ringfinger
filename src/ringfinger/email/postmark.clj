@@ -15,6 +15,7 @@
                                        "TextBody" body}))))
 
 (defn postmark
+  "Creates a Postmark mailer object. If no args are given, uses the POSTMARK_API_TEST API key w/o SSL"
   ([] (PostmarkMailer. "POSTMARK_API_TEST" false))
   ([apikey] (PostmarkMailer. apikey true))
   ([apikey ssl] (PostmarkMailer. apikey ssl)))

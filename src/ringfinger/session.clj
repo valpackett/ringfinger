@@ -17,5 +17,7 @@
   (delete-session [self key] (delete db coll (get-one db coll {:_sid key})) nil))
 
 (defn db-store
+  "Creates a new SessionStore object (for ring.middleware.session) with given db and coll.
+  The default coll is :ringfinger_sessions"
   ([db] (db-store db :ringfinger_sessions))
   ([db coll] (DBStore. db coll)))
