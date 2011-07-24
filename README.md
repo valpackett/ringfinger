@@ -26,7 +26,7 @@ You also can use lower-level database/validation/output/routing APIs if you can'
 
 ## Coming "soon" ##
 
-- a helper (& a pre-made hook) for making slugs ("My Title" -> "my-title")
+- a pre-made hook for making slugs ("My Title" -> "my-title") w/ [inflections-clj](https://github.com/r0man/inflections-clj)
 - middleware like django-paranoid-sessions
 - a pub/sub like thing (eg. for logging, adding jobs to queues or real-time pushing), publish on request, pre-made subscribers for Pusher/pubsub.io/hook.io
 - sorting

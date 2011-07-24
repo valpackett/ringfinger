@@ -4,13 +4,22 @@
   :license {:name "Apache License 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
-  :dependencies [[org.clojure/clojure "1.2.1"]
-                 [org.clojure/clojure-contrib "1.2.0"]
-                 [congomongo          "0.1.5"]
-                 [commons-codec       "1.5"  ]
-                 [commons-email       "1.1"  ]
-                 [ring                "0.3.8"]
-                 [hiccup              "0.3.4"]
-                 [clout               "0.4.1"]
-                 [valip               "0.2.0"]]
-  :dev-dependencies [[ring-mock       "0.1.1"]])
+  :autodoc {:name "Ringfinger"
+            :page-title "Ringfinger API docs"
+            :web-src-dir "https://github.com/myfreeweb/ringfinger/blob/"
+            :web-home "http://myfreeweb.github.com/ringfinger/"
+            :output-path "autodoc"
+            :trim-prefix "ringfinger."
+            :namespaces-to-document ["ringfinger"]
+            :load-except-list [#"/test/" #"project\.clj"]}
+    :dependencies ([org.clojure/clojure "1.2.1"]
+                   [org.clojure/clojure-contrib "1.2.0"]
+                   [congomongo "0.1.6-SNAPSHOT"]
+                   [commons-codec "1.5"]
+                   [commons-email "1.1"]
+                   [ring "0.3.11"]
+                   [hiccup "0.3.6"]
+                   [clout "0.4.1"]
+                   [valip "0.2.0"])
+    :dev-dependencies ([ring-mock "0.1.1"]
+                       [org.clojars.weavejester/autodoc "0.9.0"]))
