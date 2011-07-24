@@ -22,4 +22,5 @@
                    [clout "0.4.1"]
                    [valip "0.2.0"])
     :dev-dependencies ([ring-mock "0.1.1"]
+                       [ring-serve "0.1.1"]
                        [org.clojars.weavejester/autodoc "0.9.0"]))
