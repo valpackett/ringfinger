@@ -77,7 +77,16 @@ namespace.
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (auth-routes options)
 </pre>
-  <pre id="var-docstr">Creates auth routes with given options</pre>
+  <pre id="var-docstr">Creates auth routes with given options:
+:db, :coll -- database and collection
+:views -- map of views (:login, :signup and :confirm)
+:flash -- map of flash messages (:login-success, :login-invalid, :signup-success, :logout, :confirm-success and :confirm-fail)
+:fixed-salt -- fixed part of the salt, must be the same as you use with app. NEVER change this in production!!
+:url-base -- the starting part of auth URLs, the default is /auth/
+:redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /
+:redir-param -- query string parameter for keeping the redirect url, the default is redirect, you generally don't need to care about this
+:confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template
+:validations -- list of validations, defaults is requiring username and at least 6 characters password</pre>
   
   
   <a href="https://github.com/myfreeweb/ringfinger/blob/6446ccfead6202fa1bcb493f05662faac1961bda/src/ringfinger/auth_routes.clj#L50" id="var-source">Source</a>

@@ -140,7 +140,8 @@
    "https://github.com/myfreeweb/ringfinger/raw/6446ccfead6202fa1bcb493f05662faac1961bda/src/ringfinger/auth_routes.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//auth-routes-api.html#ringfinger.auth-routes/auth-routes",
-   :doc "Creates auth routes with given options",
+   :doc
+   "Creates auth routes with given options:\n:db, :coll -- database and collection\n:views -- map of views (:login, :signup and :confirm)\n:flash -- map of flash messages (:login-success, :login-invalid, :signup-success, :logout, :confirm-success and :confirm-fail)\n:fixed-salt -- fixed part of the salt, must be the same as you use with app. NEVER change this in production!!\n:url-base -- the starting part of auth URLs, the default is /auth/\n:redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /\n:redir-param -- query string parameter for keeping the redirect url, the default is redirect, you generally don't need to care about this\n:confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template\n:validations -- list of validations, defaults is requiring username and at least 6 characters password",
    :var-type "function",
    :line 50,
    :file
