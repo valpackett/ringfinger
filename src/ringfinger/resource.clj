@@ -1,6 +1,7 @@
 (ns ringfinger.resource
   (:use (ringfinger core db output util default-views)
         valip.core,
+        lamina.core,
         [clojure.contrib.string :only [as-str, split, substring?]]))
 
 (defn- qsformat [req]
@@ -52,7 +53,8 @@
    :whitelist -- allowed fields (you don't need to include fields you have validations for!!)
    :views -- map of HTML views :index, :get and :not-found
    :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)
-   :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)"
+   :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)
+   :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events"
   [collname options & validations]
   ; biggest let EVAR?
   (let [store (:db options)
@@ -71,6 +73,8 @@
         flash-updated (:updated (:flash options) #(str "Saved: "   (get % pk)))
         flash-deleted (:deleted (:flash options) #(str "Deleted: " (get % pk)))
         flash-forbidden (:forbidden (:flash options) "Forbidden.")
+        s-channels '(:create :update :delete)
+        channels (zipmap s-channels (map #(let [c (get-in options [:channels %])] (if c (fn [msg] (enqueue c msg)) (fn [msg]))) s-channels))
         ; --- functions ---
         clear-form #(select-keys (typeize %) whitelist)
         user-data-hook (get-in options [:hooks :data]    identity)
@@ -120,6 +124,7 @@
                   (let [form (keywordize (:form-params req))]
                     (i-validate req form
                       (fn []
+                        ((:create channels) form)
                         (create store coll (process-new req form))
                         (i-redirect req form flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
@@ -152,6 +157,7 @@
                      (fn []
                        (i-validate req updated-entry
                          (fn []
+                           ((:update channels) form)
                            (update store coll entry (put-hook form))
                            (i-redirect req form flash-updated 302))
                          (fn [errors]
@@ -166,6 +172,7 @@
                     (let [entry (i-get-one matches)]
                       (if-allowed req entry
                         (fn []
+                          ((:delete channels) entry)
                           (delete store coll entry)
                           {:status  302
                            :headers {"Location" (str "/" collname)}

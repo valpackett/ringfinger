@@ -14,6 +14,7 @@
             :load-except-list [#"/test/" #"project\.clj"]}
     :dependencies ([org.clojure/clojure "1.2.1"]
                    [org.clojure/clojure-contrib "1.2.0"]
+                   [lamina "0.4.0-alpha3-SNAPSHOT"]
                    [congomongo "0.1.6-SNAPSHOT"]
                    [commons-codec "1.5"]
                    [commons-email "1.1"]
