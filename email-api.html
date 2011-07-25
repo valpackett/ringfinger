@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="default-views-api.html" class="wiki_link">default-views</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li><li><a href="validation-api.html" class="wiki_link">validation</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li><li><a href="validation-api.html" class="wiki_link">validation</a></li>
       </ul>
     </div>
     
@@ -62,6 +62,8 @@ namespace.
   </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#email.smtp">email.smtp</a>
     <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.email.smtp/gmail">gmail</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.email.smtp/smtp">smtp</a>
     </div>
     <br />
@@ -105,6 +107,17 @@ namespace.
 
 <br />
 <div id="var-entry">
+  <hr />
+  <h2 id="ringfinger.email.smtp/gmail">gmail</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (gmail username password)
+</pre>
+  <pre id="var-docstr">Creates a new SMTP mailer object with given Gmail username and password.
+Shortcut for (smtp 'smtp.gmail.com' 587 username password true)</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3304a9bc2b48cffdeca5504b4d753b75d75ea358/src/ringfinger/email/smtp.clj#L25" id="var-source">Source</a>
+</div><div id="var-entry">
   <hr />
   <h2 id="ringfinger.email.smtp/smtp">smtp</h2>
   <span id="var-type">function</span><br />

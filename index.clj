@@ -5,7 +5,7 @@
    :name "ringfinger.auth",
    :doc nil}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/6446ccfead6202fa1bcb493f05662faac1961bda/src/ringfinger/auth_routes.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/80f1867b9c3c4de5a90e25ab188924ad7d1d011e/src/ringfinger/auth_routes.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/auth-routes-api.html",
    :name "ringfinger.auth-routes",
@@ -19,12 +19,6 @@
    "https://github.com/myfreeweb/ringfinger/blob/c0ed83c83a1b1ed8db8d766ac1f4b0498f0ab163/src/ringfinger/db.clj",
    :wiki-url "http://myfreeweb.github.com/ringfinger/db-api.html",
    :name "ringfinger.db",
-   :doc nil}
-  {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/5502f94909318e243c91fc621f0e5d6b83f67746/src/ringfinger/default_views.clj",
-   :wiki-url
-   "http://myfreeweb.github.com/ringfinger/default-views-api.html",
-   :name "ringfinger.default-views",
    :doc nil}
   {:source-url
    "https://github.com/myfreeweb/ringfinger/blob/1e29884cfe4f99e65bf3f6cb60717a085750e1f8/src/ringfinger/email.clj",
@@ -135,9 +129,9 @@
    :name "auth-routes",
    :namespace "ringfinger.auth-routes",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/6446ccfead6202fa1bcb493f05662faac1961bda/src/ringfinger/auth_routes.clj#L50",
+   "https://github.com/myfreeweb/ringfinger/blob/80f1867b9c3c4de5a90e25ab188924ad7d1d011e/src/ringfinger/auth_routes.clj#L50",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/6446ccfead6202fa1bcb493f05662faac1961bda/src/ringfinger/auth_routes.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/80f1867b9c3c4de5a90e25ab188924ad7d1d011e/src/ringfinger/auth_routes.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//auth-routes-api.html#ringfinger.auth-routes/auth-routes",
    :doc
@@ -635,6 +629,21 @@
    :line 17,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/email/postmark.clj"}
+  {:arglists ([username password]),
+   :name "gmail",
+   :namespace "ringfinger.email.smtp",
+   :source-url
+   "https://github.com/myfreeweb/ringfinger/blob/3304a9bc2b48cffdeca5504b4d753b75d75ea358/src/ringfinger/email/smtp.clj#L25",
+   :raw-source-url
+   "https://github.com/myfreeweb/ringfinger/raw/3304a9bc2b48cffdeca5504b4d753b75d75ea358/src/ringfinger/email/smtp.clj",
+   :wiki-url
+   "http://myfreeweb.github.com/ringfinger//email-api.html#ringfinger.email.smtp/gmail",
+   :doc
+   "Creates a new SMTP mailer object with given Gmail username and password.\nShortcut for (smtp 'smtp.gmail.com' 587 username password true)",
+   :var-type "function",
+   :line 25,
+   :file
+   "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/email/smtp.clj"}
   {:arglists
    ([host port]
     [host port username password]
