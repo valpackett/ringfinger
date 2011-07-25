@@ -84,7 +84,7 @@ namespace.
   <pre id="var-docstr">If a flash message is a string, returns it. If it's a callable, calls it with inst and returns the result</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj#L38" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L39" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -96,7 +96,7 @@ namespace.
   <pre id="var-docstr">Turns ring query-params into a db query, eg. field_ne=3 becomes {:field {:$ne 3}}</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj#L33" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L34" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -113,10 +113,11 @@ Accepted options:
  :whitelist -- allowed fields (you don't need to include fields you have validations for!!)
  :views -- map of HTML views :index, :get and :not-found
  :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)
- :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)</pre>
+ :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)
+ :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj#L45" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L46" id="var-source">Source</a>
 </div>
 
 

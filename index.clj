@@ -37,7 +37,7 @@
    :name "ringfinger.output",
    :doc nil}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/resource-api.html",
    :name "ringfinger.resource",
@@ -222,45 +222,45 @@
    :name "call-flash",
    :namespace "ringfinger.resource",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj#L38",
+   "https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L39",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//resource-api.html#ringfinger.resource/call-flash",
    :doc
    "If a flash message is a string, returns it. If it's a callable, calls it with inst and returns the result",
    :var-type "macro",
-   :line 38,
+   :line 39,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/resource.clj"}
   {:arglists ([qp] [q v]),
    :name "params-to-query",
    :namespace "ringfinger.resource",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj#L33",
+   "https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L34",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//resource-api.html#ringfinger.resource/params-to-query",
    :doc
    "Turns ring query-params into a db query, eg. field_ne=3 becomes {:field {:$ne 3}}",
    :var-type "function",
-   :line 33,
+   :line 34,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/resource.clj"}
   {:arglists ([collname options & validations]),
    :name "resource",
    :namespace "ringfinger.resource",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj#L45",
+   "https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L46",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/resource.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//resource-api.html#ringfinger.resource/resource",
    :doc
-   "Creates a list of two routes (/collname and /collname/pk) for RESTful Create/Read/Update/Delete of records in collname\nAccepted options:\n :db -- database (required!)\n :pk -- primary key (required!)\n :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames\n :default-query -- default database query for index pages\n :whitelist -- allowed fields (you don't need to include fields you have validations for!!)\n :views -- map of HTML views :index, :get and :not-found\n :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)\n :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)",
+   "Creates a list of two routes (/collname and /collname/pk) for RESTful Create/Read/Update/Delete of records in collname\nAccepted options:\n :db -- database (required!)\n :pk -- primary key (required!)\n :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames\n :default-query -- default database query for index pages\n :whitelist -- allowed fields (you don't need to include fields you have validations for!!)\n :views -- map of HTML views :index, :get and :not-found\n :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)\n :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)\n :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events",
    :var-type "function",
-   :line 45,
+   :line 46,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/resource.clj"}
   {:arglists ([handler]),
