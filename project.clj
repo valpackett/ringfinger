@@ -11,7 +11,7 @@
             :output-path "autodoc"
             :trim-prefix "ringfinger."
             :namespaces-to-document ["ringfinger"]
-            :load-except-list [#"/test/" #"project\.clj" #".*default-views\.clj"]}
+            :load-except-list [#"/test/" #"project\.clj"]}
     :dependencies ([org.clojure/clojure "1.2.1"]
                    [org.clojure/clojure-contrib "1.2.0"]
                    [lamina "0.4.0-alpha3-SNAPSHOT"]

@@ -1,4 +1,4 @@
-(ns ringfinger.default-views
+(ns #^{:skip-wiki true} ringfinger.default-views
   (:use (ringfinger util),
         (hiccup core page-helpers)))
 

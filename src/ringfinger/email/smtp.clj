@@ -22,7 +22,8 @@
   ([host port username password] (SMTPMailer. host port username password false))
   ([host port username password tls] (SMTPMailer. host port username password tls)))
 
-(defn gmail [username password]
+(defn gmail
   "Creates a new SMTP mailer object with given Gmail username and password.
   Shortcut for (smtp 'smtp.gmail.com' 587 username password true)"
+  [username password]
   (SMTPMailer. "smtp.gmail.com" 587 username password true))
