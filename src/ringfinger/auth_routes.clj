@@ -44,11 +44,20 @@
      ]]))
    })
 
-(defn demo-mail-template [data]
+(defn- demo-mail-template [data]
   (str "Welcome! To activate your account, click this link: " (:url data)))
 
 (defn auth-routes
-  "Creates auth routes with given options"
+  "Creates auth routes with given options:
+   :db, :coll -- database and collection
+   :views -- map of views (:login, :signup and :confirm)
+   :flash -- map of flash messages (:login-success, :login-invalid, :signup-success, :logout, :confirm-success and :confirm-fail)
+   :fixed-salt -- fixed part of the salt, must be the same as you use with app. NEVER change this in production!!
+   :url-base -- the starting part of auth URLs, the default is /auth/
+   :redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /
+   :redir-param -- query string parameter for keeping the redirect url, the default is redirect, you generally don't need to care about this
+   :confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template
+   :validations -- list of validations, defaults is requiring username and at least 6 characters password"
   [options]
   (let [views    (:views       options auth-demo-views)
         flash    (:flash       options {:login-success  "Welcome back!"
