@@ -1,5 +1,6 @@
 (ns #^{:skip-wiki true} ringfinger.default-views
-  (:use (ringfinger util),
+  (:use [ringfinger.fields :only [form-fields]],
+        ringfinger.util,
         (hiccup core page-helpers)))
 
 (defn default-index [stuff]

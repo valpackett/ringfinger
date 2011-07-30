@@ -1,5 +1,6 @@
 (ns ringfinger.fields
-  (:use ringfinger.db, ringfinger.db.inmem)
+  (:use (ringfinger db util), ringfinger.db.inmem,
+        [clojure.contrib.string :only [as-str]])
   (:require [valip.predicates :as v]))
 
 (defn required "Validates presence" []
@@ -64,3 +65,33 @@
 (defn nbetween "Sets the minimum and maximum numbers to given ones" [minn maxn]
   {:html {:min minn :max maxn}
    :clj  (v/between minn maxn)})
+
+; ---
+
+(defmacro html-from-fields
+  "Makes a map of field names - html attributes from a list of fields, eg.
+  ([:name {:clj (required) :html {:required 'required'}} 'y u no say ur name']
+   [:name {:clj (my-check) :html {:maxlength 10}} 'too long'])
+  becomes ([:name {:required 'required' :maxlength 10}])"
+  [fields]
+  `(let [v# (group-by first ~fields)]
+     (sorted-zipmap (keys v#) (map (fn [a#] (apply merge (map #(:html (second %)) a#))) (vals v#)))))
+
+(defmacro validations-from-fields
+  "Makes a list of validations from a list of fields, eg.
+  ([:name {:clj (required) :html {:required 'required'}} 'y u no say ur name']
+   [:name {:clj (my-check) :html {:maxlength 10}} 'too long'])
+  becomes ([:name (required) 'y u no say ur name']
+           [:name (my-check) 'too long']) ; the valip format"
+  [fields]
+  `(map #(assoc % 1 (:clj (second %))) ~fields))
+
+(defmacro form-fields
+  "HTML templating helper for rendering forms. Allowed styles are :label and :placeholder"
+  [fields-html data errors wrap-html err-html style]
+  `(map (fn [f# fval#] (let [title# (as-str f#)] (conj ~wrap-html
+    (if (= ~style :label) [:label {:for title#} title#] nil)
+    [:input (merge {:name title# :id title# :value (as-str (get ~data f#))}
+                    (if (= ~style :placeholder) {:placeholder title#} nil) fval#)]
+    (if (get ~errors f#) (conj ~err-html (map as-str (get ~errors f#))) nil)
+  ))) (keys ~fields-html) (vals ~fields-html)))

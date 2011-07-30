@@ -73,11 +73,11 @@
         db       (:db          options inmem)
         coll     (:coll        options :ringfinger_auth)
         confirm  (:confirm     options)
-        valds    (:fields      options (list [:username (required)     "Shouldn't be empty"]
+        fields   (:fields      options (list [:username (required)     "Shouldn't be empty"]
                                              [:password (required)     "Shouldn't be empty"]
                                              [:password (minlength 6)  "Should be at least 6 characters"]))
-        hvalds   (map #(assoc % 1 (:clj (second %))) valds)
-        fields   (html-from-fields valds)
+        fieldhtml(html-from-fields fields)
+        valds    (validations-from-fields fields)
         getloc   #(get (:query-params %) redir-p redir-to)
         if-not-user (fn [req cb]
                       (if (:user req)
@@ -93,13 +93,13 @@
                    :headers {"Content-Type" "text/html; encoding=utf-8"}
                    :body    ((:login views) {:errors {}
                                              :data   {}
-                                             :fields fields
+                                             :fields fieldhtml
                                              :flash  (:flash req)
                                              :action (get-action req redir-p)})}))
          :post (fn [req m]
                  (if-not-user req
                    (let [form (keywordize (:form-params req))
-                         fval (apply validate form hvalds)
+                         fval (apply validate form valds)
                          user (get-user db coll (:username form) (:password form) fixed-s)]
                      (if (nil? fval)
                        (if (nil? user)
@@ -107,7 +107,7 @@
                           :headers {"Content-Type" "text/html; encoding=utf-8"}
                           :body    ((:login views) {:errors {}
                                                     :data   (merge form {:password nil})
-                                                    :fields fields
+                                                    :fields fieldhtml
                                                     :flash  (:login-invalid flash)
                                                     :action (get-action req redir-p)})}
                          {:status  302
@@ -119,7 +119,7 @@
                         :headers {"Content-Type" "text/html; encoding=utf-8"}
                         :body    ((:login views) {:errors fval
                                                   :data   form
-                                                  :fields fields
+                                                  :fields fieldhtml
                                                   :flash  (:flash req)
                                                   :action (get-action req redir-p)})}))))})
       (route (str url-base "logout")
@@ -154,14 +154,14 @@
                    :headers {"Content-Type" "text/html; encoding=utf-8"}
                    :body    ((:signup views) {:errors {}
                                               :data   {}
-                                              :fields fields
+                                              :fields fieldhtml
                                               :flash  (:flash req)
                                               :action (get-action req redir-p)})}))
           :post (if confirm
                    (fn [req m]
                      (if-not-user req
                         (let [form (keywordize (:form-params req))
-                              fval (apply validate form hvalds)]
+                              fval (apply validate form valds)]
                           (if (nil? fval)
                             (let [akey (str (UUID/randomUUID))
                                   user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form) fixed-s)]
@@ -180,13 +180,13 @@
                              :headers {"Content-Type" "text/html; encoding=utf-8"}
                              :body    ((:login views) {:errors fval
                                                        :data   form
-                                                       :fields fields
+                                                       :fields fieldhtml
                                                        :flash  (:flash req)
                                                        :action (get-action req redir-p)})}))))
                    (fn [req m]
                      (if-not-user req
                         (let [form (keywordize (:form-params req))
-                              fval (apply validate form hvalds)]
+                              fval (apply validate form valds)]
                           (if (nil? fval)
                             (let [user (make-user db coll {:username (:username form)} (:password form) fixed-s)]
                               {:status  302
@@ -198,6 +198,6 @@
                              :headers {"Content-Type" "text/html; encoding=utf-8"}
                              :body    ((:login views) {:errors fval
                                                        :data   form
-                                                       :fields fields
+                                                       :fields fieldhtml
                                                        :flash  (:flash req)
                                                        :action (get-action req redir-p)})})))))}))))

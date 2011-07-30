@@ -1,5 +1,5 @@
 (ns ringfinger.resource
-  (:use (ringfinger core db output util default-views)
+  (:use (ringfinger core db output util fields default-views)
         valip.core,
         lamina.core,
         [clojure.contrib.string :only [as-str, split, substring?]]))
@@ -63,7 +63,7 @@
         default-query (:default-query options {})
         coll (keyword collname) ; TODO: custom prefix
         fieldhtml (html-from-fields fields)
-        valds (map #(assoc % 1 (:clj (second %))) fields) ; only clojure validators, no html
+        valds (validations-from-fields fields)
         whitelist (concat (:whitelist options (list)) (keys fieldhtml)) ; cut off :csrftoken, don't allow users to store everything
         default-data {:collname collname :pk pk :fields fieldhtml}
         html-index (html-output (:index (:views options) default-index) default-data)
