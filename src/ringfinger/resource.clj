@@ -44,10 +44,11 @@
      ~flash))
 
 (defn resource
-  "Creates a list of two routes (/collname and /collname/pk) for RESTful Create/Read/Update/Delete of records in collname
+  "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for RESTful Create/Read/Update/Delete of entries in collname
   Accepted options:
    :db -- database (required!)
    :pk -- primary key (required!)
+   :url-prefix -- a part of the URL before the collname, default is /
    :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames
    :default-query -- default database query for index pages
    :whitelist -- allowed extra fields (not required, not validated, automatically created, etc.)
@@ -61,7 +62,8 @@
         pk (:pk options)
         owner-field (:owner-field options)
         default-query (:default-query options {})
-        coll (keyword collname) ; TODO: custom prefix
+        coll (keyword collname)
+        urlbase (str (:url-prefix options "/") collname)
         fieldhtml (html-from-fields fields)
         valds (validations-from-fields fields)
         whitelist (concat (:whitelist options (list)) (keys fieldhtml)) ; cut off :csrftoken, don't allow users to store everything
@@ -88,7 +90,7 @@
         i-get-one  #(get-one store coll {:query {pk (typeify (:pk %))}})
         i-redirect (fn [req form flash status]
                      {:status  status
-                      :headers {"Location" (str "/" collname "/" (get form pk) (qsformat req))}
+                      :headers {"Location" (str urlbase "/" (get form pk) (qsformat req))}
                       :flash   (call-flash flash form)
                       :body    nil})
         i-get-query (if owner-field
@@ -100,7 +102,7 @@
                           (%3)
                           (if (from-browser? %1)
                             {:status  302
-                             :headers {"Location" (str "/" collname)}
+                             :headers {"Location" urlbase}
                              :flash   (call-flash flash-forbidden %2)
                              :body    nil}
                             {:status  403
@@ -112,7 +114,7 @@
                        #(assoc (post-hook %2) owner-field (get-in %1 [:user :username]))
                        #(post-hook %2))]
      (list
-       (route (str "/" collname)
+       (route urlbase
          {:get (fn [req matches]
                  (respond req 200
                           {:flash (:flash req)
@@ -135,7 +137,7 @@
                                   :errors errors}
                                  {"html" html-index}
                                  "html")))))})
-       (route (str "/" collname "/:pk")
+       (route (str urlbase "/:pk")
          {:get (fn [req matches]
                  (let [entry (i-get-one matches)]
                    (if entry
@@ -175,7 +177,7 @@
                           ((:delete channels) entry)
                           (delete store coll entry)
                           {:status  302
-                           :headers {"Location" (str "/" collname)}
+                           :headers {"Location" urlbase}
                            :flash   (call-flash flash-deleted entry)
                            :body    nil}))))}))))
 
