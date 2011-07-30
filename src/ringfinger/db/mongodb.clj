@@ -4,10 +4,10 @@
 (deftype MongoDB [conn] Database
   (create [self coll data]
     (with-mongo conn (insert! coll data)))
-  (get-many [self coll query]
-    (with-mongo conn (fetch coll :where query)))
-  (get-one [self coll query]
-    (with-mongo conn (fetch-one coll :where query)))
+  (get-many [self coll options]
+    (with-mongo conn (fetch coll :where (:query options) :one? (:one? options))))
+  (get-one [self coll options]
+    (get-many self coll (assoc options :one? true)))
   (update [self coll entry data]
     (with-mongo conn (update! coll entry data)))
   (delete [self coll entry]

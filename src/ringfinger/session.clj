@@ -4,10 +4,10 @@
   (:import java.util.UUID))
 
 (deftype DBStore [db coll] SessionStore
-  (read-session   [self key] (get-one db coll {:_sid key}))
+  (read-session   [self key] (get-one db coll {:query {:_sid key}}))
   (write-session  [self kkey data]
     (let [key (or kkey (str (UUID/randomUUID)))
-          ex (get-one db coll {:_sid key})]
+          ex (read-session self key)]
       ; update won't work properly there
       ; in sessions, we need to be able to delete fields
       ; sessions are completely schema-less

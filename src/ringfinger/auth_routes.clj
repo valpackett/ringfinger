@@ -133,7 +133,7 @@
         (route (str url-base "confirm/:akey")
           {:get (fn [req m]
                   (if-not-user req
-                    (let [user (get-one db coll {:_confirm_key (:akey m)})]
+                    (let [user (get-one db coll {:query {:_confirm_key (:akey m)}})]
                       (if (nil? user)
                         {:status  302
                          :headers {"Location" (getloc req)}
