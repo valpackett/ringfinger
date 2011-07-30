@@ -26,17 +26,16 @@ You also can use lower-level database/validation/output/routing APIs if you can'
 
 ## Coming "soon" ##
 
-- a pre-made hook for making slugs ("My Title" -> "my-title") w/ [inflections-clj](https://github.com/r0man/inflections-clj)
-- middleware like django-paranoid-sessions
-- pre-made Lamina subscribers for Pusher/pubsub.io/hook.io
 - sorting
-- pagination
-- atom/rss feeds for resources
+- pagination link helpers
+- a pre-made hook for making slugs ("My Title" -> "my-title") w/ [inflections-clj](https://github.com/r0man/inflections-clj)
+- enlive views quick builder
+- middleware like django-paranoid-sessions
+- atom feeds for resources
+- file attachments w/ GridFS support
 - asset system that doesn't suck & supports preprocessors (clojurescript, coffeescript, sass, whatever) & completely dynamic in dev mode & uploads to clouds for production
-- file attachments
+- pre-made Lamina subscribers for Pusher/pubsub.io/hook.io
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
+- automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus, yaml for ruby
 - easy full text search (elasticsearch, lucene)
-- automatic javascript model definitions for client-side mvc per resource, using clojurescript
-- "designer-friendly" templates (mustache w/ support for helpers?)
-- DOCUMENTATION!
