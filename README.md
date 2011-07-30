@@ -7,7 +7,7 @@ Not ready yet, but a lot of things work, including MongoDB support.
 ## Get excited ##
 
     (ns superapp.core
-      (:use (ringfinger core resource validation) ringfinger.db.inmem ring.adapter.netty))
+      (:use (ringfinger core resource fields) ringfinger.db.inmem ring.adapter.netty))
     
     (defresource contacts
       {:db inmem

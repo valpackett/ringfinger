@@ -1,4 +1,4 @@
-(ns ringfinger.validation
+(ns ringfinger.fields
   (:use ringfinger.db, ringfinger.db.inmem)
   (:require [valip.predicates :as v]))
 

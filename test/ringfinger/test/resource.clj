@@ -1,5 +1,5 @@
 (ns ringfinger.test.resource
-  (:use (ringfinger auth core resource db validation), ringfinger.db.inmem,
+  (:use (ringfinger auth core resource db fields), ringfinger.db.inmem,
         clojure.test, ring.mock.request)
   (:import org.apache.commons.codec.binary.Base64))
 

@@ -50,22 +50,22 @@
    :pk -- primary key (required!)
    :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames
    :default-query -- default database query for index pages
-   :whitelist -- allowed fields (you don't need to include fields you have validations for!!)
+   :whitelist -- allowed extra fields (not required, not validated, automatically created, etc.)
    :views -- map of HTML views :index, :get and :not-found
    :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)
    :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)
    :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events"
-  [collname options & validations]
+  [collname options & fields]
   ; biggest let EVAR?
   (let [store (:db options)
         pk (:pk options)
         owner-field (:owner-field options)
         default-query (:default-query options {})
         coll (keyword collname) ; TODO: custom prefix
-        fields (fields-from-validations validations)
-        valds (map #(assoc % 1 (:clj (second %))) validations) ; only clojure validators, no html
-        whitelist (concat (:whitelist options (list)) (keys fields)) ; cut off :csrftoken, don't allow users to store everything
-        default-data {:collname collname :pk pk :fields fields}
+        fieldhtml (html-from-fields fields)
+        valds (map #(assoc % 1 (:clj (second %))) fields) ; only clojure validators, no html
+        whitelist (concat (:whitelist options (list)) (keys fieldhtml)) ; cut off :csrftoken, don't allow users to store everything
+        default-data {:collname collname :pk pk :fields fieldhtml}
         html-index (html-output (:index (:views options) default-index) default-data)
         html-get   (html-output (:get   (:views options) default-get) default-data)
         html-not-found (html-output (:not-found (:views options) default-not-found) default-data)
@@ -179,8 +179,8 @@
                            :flash   (call-flash flash-deleted entry)
                            :body    nil}))))}))))
 
-(defmacro defresource [nname options & validations]
+(defmacro defresource [nname options & fields]
   ; dirty magic
   (intern *ns* nname
     (let [nnname (str nname)]
-      (eval `(resource ~nnname ~options ~@validations)))))
+      (eval `(resource ~nnname ~options ~@fields)))))

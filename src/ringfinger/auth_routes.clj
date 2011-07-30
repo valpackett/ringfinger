@@ -1,5 +1,5 @@
 (ns ringfinger.auth-routes
-  (:use (ringfinger auth core util db email validation), ringfinger.db.inmem,
+  (:use (ringfinger auth core util db email fields), ringfinger.db.inmem,
         valip.core)
   (:require [clojure.contrib.string :as cstr]
             [hiccup.page-helpers    :as hic])
@@ -57,7 +57,7 @@
    :redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /
    :redir-param -- query string parameter for keeping the redirect url, the default is redirect, you generally don't need to care about this
    :confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template
-   :validations -- list of validations, defaults is requiring username and at least 6 characters password"
+   :fields -- list of validations, defaults is requiring username and at least 6 characters password"
   [options]
   (let [views    (:views       options auth-demo-views)
         flash    (:flash       options {:login-success  "Welcome back!"
@@ -73,11 +73,11 @@
         db       (:db          options inmem)
         coll     (:coll        options :ringfinger_auth)
         confirm  (:confirm     options)
-        valds    (:validations options (list [:username (required)     "Shouldn't be empty"]
+        valds    (:fields      options (list [:username (required)     "Shouldn't be empty"]
                                              [:password (required)     "Shouldn't be empty"]
                                              [:password (minlength 6)  "Should be at least 6 characters"]))
         hvalds   (map #(assoc % 1 (:clj (second %))) valds)
-        fields   (fields-from-validations valds)
+        fields   (html-from-fields valds)
         getloc   #(get (:query-params %) redir-p redir-to)
         if-not-user (fn [req cb]
                       (if (:user req)

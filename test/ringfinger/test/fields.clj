@@ -1,5 +1,5 @@
-(ns ringfinger.test.validation
-  (:use clojure.test, ringfinger.validation))
+(ns ringfinger.test.fields
+  (:use clojure.test, ringfinger.fields))
 
 (deftest t-required
   (is (= ((:clj (required)) "s") true))

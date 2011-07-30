@@ -1,6 +1,6 @@
 (ns ringfinger.test.security
   (:require [clojure.contrib.string :as cstr])
-  (:use (ringfinger core resource db validation), ringfinger.db.inmem,
+  (:use (ringfinger core resource db fields), ringfinger.db.inmem,
         clojure.test, ring.mock.request))
 
 (defresource todos
