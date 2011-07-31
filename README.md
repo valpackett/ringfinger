@@ -33,10 +33,13 @@ You also can use lower-level database/validation/output/routing APIs if you can'
 - middleware like django-paranoid-sessions
 - extracting ringfinger.security into a separate ring-security package
 - atom feeds for resources
+- invite mode for registration
 - file attachments w/ GridFS support
 - asset system that doesn't suck & supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, supporting attachment storages
 - pre-made Lamina subscribers for Pusher/pubsub.io/hook.io
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
+- read-only mode
+- database and attachment migrations (eg. mongodb + gridfs to simpledb + s3)
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus, yaml for ruby
 - easy full text search (elasticsearch, lucene): lamina subscriber + route for querying
