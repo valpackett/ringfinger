@@ -29,8 +29,8 @@
          coll (:coll options :ringfinger_auth)
          salt (:salt options "ringfingerFTW")]
      (fn [req]
-       (let [auth-hdr (get (:headers req) "authorization" "")
-             session-username (:username (:session req))]
+       (let [auth-hdr (get-in req [:headers "authorization"] "")
+             session-username (get-in req [:session :username])]
          (handler (assoc req :user
             (cond session-username (let [user (get-one db coll {:query {:username session-username}})]
                                      (if (nil? (:_confirm_key user)) user nil))

@@ -60,12 +60,12 @@
    :fields -- list of validations, defaults is requiring username and at least 6 characters password"
   [options]
   (let [views    (:views       options auth-demo-views)
-        flash    (:flash       options {:login-success  "Welcome back!"
-                                        :login-invalid  "Wrong username/password."
-                                        :signup-success "Welcome!"
-                                        :logout         "Good bye!"
-                                        :confirm-success   "Welcome!"
-                                        :confirm-fail   "Invalid confirmaton key."})
+        flash    (:flash       options {:login-success   "Welcome back!"
+                                        :login-invalid   "Wrong username/password."
+                                        :signup-success  "Welcome!"
+                                        :logout          "Good bye!"
+                                        :confirm-success "Welcome!"
+                                        :confirm-fail    "Invalid confirmaton key."})
         fixed-s  (:fixed-salt  options "ringfingerFTW")
         url-base (:url-base    options "/auth/")
         redir-to (:redir-to    options "/")

@@ -6,9 +6,7 @@
 
 (defn- qsformat [req]
   (let [fmt (get (:query-params req) "format")]
-    (if fmt
-      (str "?format=" fmt)
-      nil)))
+    (if fmt (str "?format=" fmt) nil)))
 
 (defmacro respond [req status data outputs default]
   `(render
@@ -44,7 +42,8 @@
      ~flash))
 
 (defn resource
-  "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for RESTful Create/Read/Update/Delete of entries in collname
+  "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for
+  RESTful Create/Read/Update/Delete of entries in collname
   Accepted options:
    :db -- database (required!)
    :pk -- primary key (required!)
@@ -68,15 +67,17 @@
         valds (validations-from-fields fields)
         whitelist (concat (:whitelist options (list)) (keys fieldhtml)) ; cut off :csrftoken, don't allow users to store everything
         default-data {:collname collname :pk pk :fields fieldhtml}
-        html-index (html-output (:index (:views options) default-index) default-data)
-        html-get   (html-output (:get   (:views options) default-get) default-data)
-        html-not-found (html-output (:not-found (:views options) default-not-found) default-data)
+        html-index (html-output (get-in options [:index :views] default-index) default-data)
+        html-get   (html-output (get-in options [:get   :views] default-get) default-data)
+        html-not-found (html-output (get-in options [:not-found :views] default-not-found) default-data)
         flash-created (:created (:flash options) #(str "Created: " (get % pk)))
         flash-updated (:updated (:flash options) #(str "Saved: "   (get % pk)))
         flash-deleted (:deleted (:flash options) #(str "Deleted: " (get % pk)))
         flash-forbidden (:forbidden (:flash options) "Forbidden.")
-        s-channels '(:create :update :delete)
-        channels (zipmap s-channels (map #(let [c (get-in options [:channels %])] (if c (fn [msg] (enqueue c msg)) (fn [msg]))) s-channels))
+        s-channels [:create :update :delete]
+        channels (zipmap s-channels
+                   (map #(let [c (get-in options [:channels %])]
+                           (if c (fn [msg] (enqueue c msg)) (fn [msg]))) s-channels))
         ; --- functions ---
         clear-form #(select-keys (typeize %) whitelist)
         user-data-hook (get-in options [:hooks :data]    identity)
@@ -85,8 +86,9 @@
         data-hook #(-> % clear-form user-data-hook)
         post-hook #(-> % data-hook  user-post-hook)
         put-hook  #(-> % data-hook  user-put-hook)
-        i-validate (fn [req data yep nope] (let [result (apply validate data valds)]
-                      (if (= result nil) (yep) (nope result))))
+        i-validate (fn [req data yep nope]
+                     (let [result (apply validate data valds)]
+                       (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one store coll {:query {pk (typeify (:pk %))}})
         i-redirect (fn [req form flash status]
                      {:status  status

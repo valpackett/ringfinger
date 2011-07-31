@@ -19,7 +19,7 @@
                :body    "404 Not Found"})})
 
 (defmacro head-handler
-  "Creates a handler for HEAD requests from a handler for GET requests"
+  "Creates a handler for HEAD requests from a GET request handler"
   [get-handler]
   `(fn [req# matches#]
     (let [result# (~get-handler req# matches#)]
@@ -28,14 +28,10 @@
        :body    nil})))
 
 (def default-handlers
-  {:get      method-na-handler
-   :options  method-na-handler
-   :put      method-na-handler
-   :post     method-na-handler
-   :delete   method-na-handler})
+  (zipmap [:get :options :put :post :delete] (repeat method-na-handler)))
 
 (defn route
-  "Creates a route accepted by the app function from a url in Clout (Sinatra-like) format and a map of handlers
+  "Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format and a map of handlers
   eg. {:get (fn [req matches] {:status 200 :body nil})}"
   [url handlers]
   {:route   (route-compile url)
@@ -46,7 +42,8 @@
                       ((if (= method :head) (head-handler (:get handlers)) (get handlers method)) req matches)))})
 
 (defn app
-  "Creates a Ring handler with given options and routes, automatically wrapped with params, session, flash, auth and some security middleware (+ stacktrace and file in development env)
+  "Creates a Ring handler with given options and routes, automatically wrapped with
+  params, session, flash, auth and some security middleware (+ stacktrace and file in development env)
   Accepted options:
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
    :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!
@@ -73,4 +70,4 @@
       h)))
 
 (defmacro defapp "Short for (def nname (app options routes*))" [nname options & routes]
-    (intern *ns* nname (eval `(app ~options ~@routes))))
+  (intern *ns* nname (eval `(app ~options ~@routes))))
