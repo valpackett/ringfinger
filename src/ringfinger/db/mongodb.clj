@@ -14,5 +14,11 @@
     (with-mongo conn (destroy! coll entry))))
 
 (defn mongodb
-  "Creates a MongoDB data storage object using given Congomongo connection"
-  [conn] (MongoDB. conn))
+  "Creates a MongoDB data storage object using given db and a list of instances.
+  Each instance is a map containing :host and/or :port"
+  ([db] (MongoDB. (make-connection db {})))
+  ([db instances] (MongoDB. (make-connection db instances)))
+  ([db username password instances]
+   (let [conn (make-connection db instances)]
+     (authenticate conn username password)
+     (MongoDB. conn))))
