@@ -78,7 +78,7 @@
          {:status  200
           :headers {"Content-Type" "application/json; charset=utf-8"}
           :body    "[{\"body\":\"test\",\"state\":true}]"}))
-  (is (= (testapp (request :get "/todos?format=json&state_ne=true"))
+  (is (= (testapp (request :get "/todos?format=json&query_state_ne=true"))
          {:status  200
           :headers {"Content-Type" "application/json; charset=utf-8"}
           :body    "[]"}))
