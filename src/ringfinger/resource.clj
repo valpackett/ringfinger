@@ -5,7 +5,7 @@
         [clojure.contrib.string :only [as-str, split, substring?]]))
 
 (defn- qsformat [req]
-  (let [fmt (get (:query-params req) "format")]
+  (let [fmt (get-in req [:query-params "format"])]
     (if fmt (str "?format=" fmt) nil)))
 
 (defmacro respond [req status data outputs default]
@@ -15,7 +15,7 @@
          (filter identity
            (list
              (qsformat ~req)
-             (get (:headers ~req) "accept") ; it must be lowercase!
+             (get-in ~req [:headers "accept"]) ; it must be lowercase!
              ~default
            )))
      ~outputs)

@@ -36,7 +36,7 @@
   [url handlers]
   {:route   (route-compile url)
    :handler (fn [req matches]
-              (let [rm       (get (:query-params req) "_method")
+              (let [rm       (get-in req [:query-params "_method"])
                     handlers (merge default-handlers handlers)
                     method   (if rm (keyword rm) (:request-method req))]
                       ((if (= method :head) (head-handler (:get handlers)) (get handlers method)) req matches)))})
