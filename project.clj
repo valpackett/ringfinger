@@ -12,16 +12,16 @@
             :trim-prefix "ringfinger."
             :namespaces-to-document ["ringfinger"]
             :load-except-list [#"/test/" #"project\.clj"]}
-    :dependencies ([org.clojure/clojure "1.2.1"]
-                   [org.clojure/clojure-contrib "1.2.0"]
-                   [lamina "0.4.0-alpha3-SNAPSHOT"]
-                   [congomongo "0.1.6-SNAPSHOT"]
-                   [commons-codec "1.5"]
-                   [commons-email "1.1"]
-                   [ring "0.3.11"]
-                   [hiccup "0.3.6"]
-                   [clout "0.4.1"]
-                   [valip "0.2.0"])
-    :dev-dependencies ([ring-mock "0.1.1"]
-                       [ring-serve "0.1.1"]
-                       [org.clojars.weavejester/autodoc "0.9.0"]))
+  :dependencies ([org.clojure/clojure "1.2.1"]
+                 [org.clojure/clojure-contrib "1.2.0"]
+                 [lamina "0.4.0-alpha3-SNAPSHOT"]
+                 [congomongo "0.1.6-SNAPSHOT"]
+                 [commons-codec "1.5"]
+                 [commons-email "1.1"]
+                 [ring "0.3.11"]
+                 [hiccup "0.3.6"]
+                 [clout "0.4.1"]
+                 [valip "0.2.0"])
+  :dev-dependencies ([ring-mock "0.1.1"]
+                     [ring-serve "0.1.1"]
+                     [org.clojars.weavejester/autodoc "0.9.0"]))
