@@ -5,73 +5,73 @@
 
 (defn required "Validates presence" []
   {:html {:required "required"}
-   :clj  v/present?})
+   :pred v/present?})
 
 (defn pattern "Validates according to given regexp" [re]
   {:html {:pattern (str re)}
-   :clj  #(boolean (re-matches re %))})
+   :pred #(boolean (re-matches re %))})
 
 (defn alphanumeric "Validates alphanumeric strings" []
   (pattern #"[0-9a-zA-Z]+"))
 
 (defn maxlength "Sets the maximum length to the given number" [n]
   {:html {:maxlength n}
-   :clj  #(<= (count %) n)})
+   :pred #(<= (count %) n)})
 
 (defn minlength "Sets the minimum length to the given number" [n]
   {:html {:pattern (str ".{" n ",}")}
-   :clj  #(>= (count %) n)})
+   :pred #(>= (count %) n)})
 
 (defn email "Validates email addresses" []
   {:html {:type "email"}
-   :clj  v/email-address?})
+   :pred v/email-address?})
 
 (defn email-with-lookup
   "Validates email addresses with an additional DNS lookup. Safer, but slower" []
   {:html {:type "email"}
-   :clj  v/valid-email-domain?})
+   :pred v/valid-email-domain?})
 
 (defn url "Validates URLs" []
   {:html {:type "url"}
-   :clj  v/url?})
+   :pred v/url?})
 
 (defn ipv4 "Validates IPv4 addresses" []
   {:html {:pattern "([0-9]{1,3}\\.){3}[0-9]{1,3}"}
-   :clj  (fn [a]
+   :pred (fn [a]
            (= '(false false false false)
               (map #(> (Integer/parseInt %) 255)
                    (drop 1 (re-matches #"([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})" a)))))})
 
 (defn color "Validates hexadecimal color codes" []
   {:html {:type "color"}
-   :clj  #(boolean (re-matches #"#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})" %))})
+   :pred #(boolean (re-matches #"#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})" %))})
 
 (defn date "Validates dates" []
   {:html {:type "date"}
-   :clj  #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
+   :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
 (defn number "Validates integer numbers" []
   {:html {:type "number"}
-   :clj  v/integer-string?})
+   :pred v/integer-string?})
 
 (defn nmin "Sets the minimum number to the given one" [n]
   {:html {:min n}
-   :clj  (v/gte n)})
+   :pred (v/gte n)})
 
 (defn nmax "Sets the maximum number to the given one" [n]
   {:html {:max n}
-   :clj  (v/lte n)})
+   :pred (v/lte n)})
 
 (defn nbetween "Sets the minimum and maximum numbers to given ones" [minn maxn]
   {:html {:min minn :max maxn}
-   :clj  (v/between minn maxn)})
+   :pred (v/between minn maxn)})
 
 ; ---
 
 (defmacro html-from-fields
   "Makes a map of field names - html attributes from a list of fields, eg.
-  ([:name {:clj (required) :html {:required 'required'}} 'y u no say ur name']
-   [:name {:clj (my-check) :html {:maxlength 10}} 'too long'])
+  ([:name {:pred (required) :html {:required 'required'}} 'y u no say ur name']
+   [:name {:pred (my-check) :html {:maxlength 10}} 'too long'])
   becomes ([:name {:required 'required' :maxlength 10}])"
   [fields]
   `(let [v# (group-by first ~fields)]
@@ -79,12 +79,12 @@
 
 (defmacro validations-from-fields
   "Makes a list of validations from a list of fields, eg.
-  ([:name {:clj (required) :html {:required 'required'}} 'y u no say ur name']
-   [:name {:clj (my-check) :html {:maxlength 10}} 'too long'])
+  ([:name {:pred (required) :html {:required 'required'}} 'y u no say ur name']
+   [:name {:pred (my-check) :html {:maxlength 10}} 'too long'])
   becomes ([:name (required) 'y u no say ur name']
            [:name (my-check) 'too long']) ; the valip format"
   [fields]
-  `(map #(assoc % 1 (:clj (second %))) ~fields))
+  `(map #(assoc % 1 (:pred (second %))) ~fields))
 
 (defmacro form-fields
   "HTML templating helper for rendering forms. Allowed styles are :label and :placeholder"
