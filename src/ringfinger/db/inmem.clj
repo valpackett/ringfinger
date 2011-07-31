@@ -1,6 +1,6 @@
 (ns ringfinger.db.inmem
   "In-memory data storage FOR TESTING USE ONLY"
-  (:use (ringfinger db)))
+  (:use (ringfinger db util)))
 
 (def base (ref {}))
 
@@ -12,7 +12,7 @@
                               [data]
                               (conj (get @base coll) data))))))
   (get-many [self coll options]
-    (filter (make-filter (:query options)) (get @base coll)))
+    (sort-maps (filter (make-filter (:query options)) (get @base coll)) (:sort options)))
   (get-one [self coll options]
     (first (get-many self coll options)))
   (update  [self coll entry data]

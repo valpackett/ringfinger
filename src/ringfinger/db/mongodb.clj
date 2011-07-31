@@ -5,7 +5,9 @@
   (create [self coll data]
     (with-mongo conn (insert! coll data)))
   (get-many [self coll options]
-    (with-mongo conn (fetch coll :where (:query options) :one? (:one? options))))
+    (with-mongo conn (fetch coll :where (:query options)
+                                 :one?  (:one?  options)
+                                 :sort  (:sort  options))))
   (get-one [self coll options]
     (get-many self coll (assoc options :one? true)))
   (update [self coll entry data]
