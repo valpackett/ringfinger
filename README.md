@@ -1,8 +1,8 @@
 # ringfinger #
 Fun, fast, secure web development on top of [Clojure](http://clojure.org)/[Ring](https://github.com/mmcgrana/ring).
-A framework for the age of non-relational databases, content delivery networks, cloud hosting, HTML5 and coffee.
+A framework for the age of non-relational databases, content delivery networks, cloud hosting, HTML5 and coffee,
 Named after a great Nine Inch Nails song.
-Not ready yet, but a lot of things work, including MongoDB support.
+Not ready yet, but a lot of things work, including MongoDB support, ready-to-use customizable login/signup system and more.
 
 ## Get excited ##
 
@@ -26,15 +26,17 @@ You also can use lower-level database/validation/output/routing APIs if you can'
 
 ## Coming "soon" ##
 
+- good date/time support
 - pagination link helpers
 - a pre-made hook for making slugs ("My Title" -> "my-title") w/ [inflections-clj](https://github.com/r0man/inflections-clj)
 - enlive views quick builder
 - middleware like django-paranoid-sessions
+- extracting ringfinger.security into a separate ring-security package
 - atom feeds for resources
 - file attachments w/ GridFS support
-- asset system that doesn't suck & supports preprocessors (clojurescript, coffeescript, sass, whatever) & completely dynamic in dev mode & uploads to clouds for production
+- asset system that doesn't suck & supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, supporting attachment storages
 - pre-made Lamina subscribers for Pusher/pubsub.io/hook.io
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus, yaml for ruby
-- easy full text search (elasticsearch, lucene)
+- easy full text search (elasticsearch, lucene): lamina subscriber + route for querying
