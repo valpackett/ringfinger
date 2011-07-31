@@ -7,9 +7,10 @@
 (def inmem (reify Database
   (create [self coll data]
     (dosync
-      (if (false? (coll base))
-        (ref-set base (assoc @base coll [data]))
-        (ref-set base (assoc @base coll (conj (get @base coll) data))))))
+      (ref-set base
+        (assoc @base coll (if (false? (coll base))
+                              [data]
+                              (conj (get @base coll) data))))))
   (get-many [self coll options]
     (filter (make-filter (:query options)) (get @base coll)))
   (get-one [self coll options]
