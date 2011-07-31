@@ -30,6 +30,7 @@ You also can use lower-level database/validation/output/routing APIs if you can'
 - pagination link helpers
 - a pre-made hook for making slugs ("My Title" -> "my-title") w/ [inflections-clj](https://github.com/r0man/inflections-clj)
 - enlive views quick builder
+- automatic "API docs" route for resources & insert fake data route in dev mode
 - middleware like django-paranoid-sessions
 - extracting ringfinger.security into a separate ring-security package
 - atom feeds for resources
