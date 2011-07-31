@@ -7,6 +7,8 @@
   (get-many [self coll options]
     (with-mongo conn (fetch coll :where (:query options)
                                  :one?  (:one?  options)
+                                 :skip  (:skip  options)
+                                 :limit (:limit options)
                                  :sort  (:sort  options))))
   (get-one [self coll options]
     (get-many self coll (assoc options :one? true)))

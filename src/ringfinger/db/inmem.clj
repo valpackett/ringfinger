@@ -12,7 +12,12 @@
                               [data]
                               (conj (get @base coll) data))))))
   (get-many [self coll options]
-    (sort-maps (filter (make-filter (:query options)) (get @base coll)) (:sort options)))
+    (sort-maps (filter (make-filter (:query options))
+                       (let [a (get @base coll)
+                             s (:skip options)
+                             l (:limit options)
+                             b (if s (drop s a) a)]
+                         (if l (take l b) b))) (:sort options)))
   (get-one [self coll options]
     (first (get-many self coll options)))
   (update  [self coll entry data]
