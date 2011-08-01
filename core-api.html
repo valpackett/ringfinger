@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li><li><a href="validation-api.html" class="wiki_link">validation</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -85,7 +85,8 @@ namespace.
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (app options &amp; routes)
 </pre>
-  <pre id="var-docstr">Creates a Ring handler with given options and routes, automatically wrapped with params, session, flash, auth and some security middleware (+ stacktrace and file in development env)
+  <pre id="var-docstr">Creates a Ring handler with given options and routes, automatically wrapped with
+params, session, flash, auth and some security middleware (+ stacktrace and file in development env)
 Accepted options:
  :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
  :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!
@@ -94,7 +95,7 @@ Accepted options:
  :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/a18fd5c3b331f8f5eba697e45ee0ba13749f97e1/src/ringfinger/core.clj#L48" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/f0cefefcec40ebb313033eeac4f194f4f4712060/src/ringfinger/core.clj#L44" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -105,7 +106,7 @@ Accepted options:
   <pre id="var-docstr">Short for (def nname (app options routes*))</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/a18fd5c3b331f8f5eba697e45ee0ba13749f97e1/src/ringfinger/core.clj#L75" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/f0cefefcec40ebb313033eeac4f194f4f4712060/src/ringfinger/core.clj#L72" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -113,10 +114,10 @@ Accepted options:
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (head-handler get-handler)
 </pre>
-  <pre id="var-docstr">Creates a handler for HEAD requests from a handler for GET requests</pre>
+  <pre id="var-docstr">Creates a handler for HEAD requests from a GET request handler</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/a18fd5c3b331f8f5eba697e45ee0ba13749f97e1/src/ringfinger/core.clj#L21" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/f0cefefcec40ebb313033eeac4f194f4f4712060/src/ringfinger/core.clj#L21" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -127,7 +128,7 @@ Accepted options:
   <pre id="var-docstr">Checks if the current RING_ENV == env</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/a18fd5c3b331f8f5eba697e45ee0ba13749f97e1/src/ringfinger/core.clj#L6" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/f0cefefcec40ebb313033eeac4f194f4f4712060/src/ringfinger/core.clj#L6" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -135,11 +136,11 @@ Accepted options:
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (route url handlers)
 </pre>
-  <pre id="var-docstr">Creates a route accepted by the app function from a url in Clout (Sinatra-like) format and a map of handlers
+  <pre id="var-docstr">Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format and a map of handlers
 eg. {:get (fn [req matches] {:status 200 :body nil})}</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/a18fd5c3b331f8f5eba697e45ee0ba13749f97e1/src/ringfinger/core.clj#L37" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/f0cefefcec40ebb313033eeac4f194f4f4712060/src/ringfinger/core.clj#L33" id="var-source">Source</a>
 </div>
 
 

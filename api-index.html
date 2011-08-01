@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li><li><a href="validation-api.html" class="wiki_link">validation</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -77,7 +77,7 @@ Shortcuts:<br />
 <div id="index-body">
   <h2 id="A"><span id="section-head">A</span></h2>
   <pre>
-<span id="section-content"> <a href="validation-api.html#ringfinger.validation/alphanumeric">alphanumeric</a><span id="line-content">                 function      validation         Validates alphanumeric strings.
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/alphanumeric">alphanumeric</a><span id="line-content">                 function      fields             Validates alphanumeric strings.
 </span></span><span id="section-content"> <a href="util-api.html#ringfinger.util/andf">andf</a><span id="line-content">                         function      util               And function, just like and macro. For use with ap...
 </span></span><span id="section-content"> <a href="core-api.html#ringfinger.core/app">app</a><span id="line-content">                          function      core               Creates a Ring handler with given options and rout...
 </span></span><span id="section-content"> <a href="auth-routes-api.html#ringfinger.auth-routes/auth-routes">auth-routes</a><span id="line-content">                  function      auth-routes        Creates auth routes with given options: :db, :coll...
@@ -90,25 +90,25 @@ Shortcuts:<br />
   <h2 id="C"><span id="section-head">C</span></h2>
   <pre>
 <span id="section-content"> <a href="resource-api.html#ringfinger.resource/call-flash">call-flash</a><span id="line-content">                   macro         resource           If a flash message is a string, returns it. If it'...
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/color">color</a><span id="line-content">                        function      validation         Validates hexadecimal color codes.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/color">color</a><span id="line-content">                        function      fields             Validates hexadecimal color codes.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="D"><span id="section-head">D</span></h2>
   <pre>
-<span id="section-content"> <a href="validation-api.html#ringfinger.validation/date">date</a><span id="line-content">                         function      validation         Validates dates.
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/date">date</a><span id="line-content">                         function      fields             Validates dates.
 </span></span><span id="section-content"> <a href="session-api.html#ringfinger.session/db-store">db-store</a><span id="line-content">                     function      session            Creates a new SessionStore object (for ring.middle...
 </span></span><span id="section-content"> <a href="core-api.html#ringfinger.core/defapp">defapp</a><span id="line-content">                       macro         core               Short for (def nname (app options routes*)).
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="E"><span id="section-head">E</span></h2>
   <pre>
-<span id="section-content"> <a href="validation-api.html#ringfinger.validation/email">email</a><span id="line-content">                        function      validation         Validates email addresses.
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/email-with-lookup">email-with-lookup</a><span id="line-content">            function      validation         Validates email addresses with an additional DNS l...
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/email">email</a><span id="line-content">                        function      fields             Validates email addresses.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/email-with-lookup">email-with-lookup</a><span id="line-content">            function      fields             Validates email addresses with an additional DNS l...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="F"><span id="section-head">F</span></h2>
   <pre>
-<span id="section-content"> <a href="util-api.html#ringfinger.util/fields-from-validations">fields-from-validations</a><span id="line-content">      macro         util               Makes a map of fields from a list of validations, ...
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/form-fields">form-fields</a><span id="line-content">                  macro         fields             HTML templating helper for rendering forms. Allowe...
 </span></span><span id="section-content"> <a href="util-api.html#ringfinger.util/from-browser?">from-browser?</a><span id="line-content">                function      util               Returns true if the request comes from a web brows...
 </span></span></pre>
 </div><div id="index-body">
@@ -119,13 +119,14 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="H"><span id="section-head">H</span></h2>
   <pre>
-<span id="section-content"> <a href="core-api.html#ringfinger.core/head-handler">head-handler</a><span id="line-content">                 macro         core               Creates a handler for HEAD requests from a handler...
+<span id="section-content"> <a href="core-api.html#ringfinger.core/head-handler">head-handler</a><span id="line-content">                 macro         core               Creates a handler for HEAD requests from a GET req...
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/html-from-fields">html-from-fields</a><span id="line-content">             macro         fields             Makes a map of field names - html attributes from ...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="I"><span id="section-head">I</span></h2>
   <pre>
 <span id="section-content"> <a href="core-api.html#ringfinger.core/if-env">if-env</a><span id="line-content">                       macro         core               Checks if the current RING_ENV == env.
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/ipv4">ipv4</a><span id="line-content">                         function      validation         Validates IPv4 addresses.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/ipv4">ipv4</a><span id="line-content">                         function      fields             Validates IPv4 addresses.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="J"><span id="section-head">J</span></h2>
@@ -144,16 +145,16 @@ Shortcuts:<br />
   <h2 id="M"><span id="section-head">M</span></h2>
   <pre>
 <span id="section-content"> <a href="auth-api.html#ringfinger.auth/make-user">make-user</a><span id="line-content">                    function      auth               Creates a user in coll in db with given fields (us...
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/maxlength">maxlength</a><span id="line-content">                    function      validation         Sets the maximum length to the given number.
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/minlength">minlength</a><span id="line-content">                    function      validation         Sets the minimum length to the given number.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/maxlength">maxlength</a><span id="line-content">                    function      fields             Sets the maximum length to the given number.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/minlength">minlength</a><span id="line-content">                    function      fields             Sets the minimum length to the given number.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="N"><span id="section-head">N</span></h2>
   <pre>
-<span id="section-content"> <a href="validation-api.html#ringfinger.validation/nbetween">nbetween</a><span id="line-content">                     function      validation         Sets the minimum and maximum numbers to given ones.
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/nmax">nmax</a><span id="line-content">                         function      validation         Sets the maximum number to the given one.
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/nmin">nmin</a><span id="line-content">                         function      validation         Sets the minimum number to the given one.
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/number">number</a><span id="line-content">                       function      validation         Validates integer numbers.
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/nbetween">nbetween</a><span id="line-content">                     function      fields             Sets the minimum and maximum numbers to given ones.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/nmax">nmax</a><span id="line-content">                         function      fields             Sets the maximum number to the given one.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/nmin">nmin</a><span id="line-content">                         function      fields             Sets the minimum number to the given one.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/number">number</a><span id="line-content">                       function      fields             Validates integer numbers.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="O"><span id="section-head">O</span></h2>
@@ -162,8 +163,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="P"><span id="section-head">P</span></h2>
   <pre>
-<span id="section-content"> <a href="resource-api.html#ringfinger.resource/params-to-query">params-to-query</a><span id="line-content">              function      resource           Turns ring query-params into a db query, eg. field...
-</span></span><span id="section-content"> <a href="validation-api.html#ringfinger.validation/pattern">pattern</a><span id="line-content">                      function      validation         Validates according to given regexp.
+<span id="section-content"> <a href="resource-api.html#ringfinger.resource/params-to-dboptions">params-to-dboptions</a><span id="line-content">          function      resource           Turns ring query-params into db options eg. {'quer...
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/pattern">pattern</a><span id="line-content">                      function      fields             Validates according to given regexp.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="Q"><span id="section-head">Q</span></h2>
@@ -172,14 +173,15 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="R"><span id="section-head">R</span></h2>
   <pre>
-<span id="section-content"> <a href="validation-api.html#ringfinger.validation/required">required</a><span id="line-content">                     function      validation         Validates presence.
-</span></span><span id="section-content"> <a href="resource-api.html#ringfinger.resource/resource">resource</a><span id="line-content">                     function      resource           Creates a list of two routes (/collname and /colln...
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/required">required</a><span id="line-content">                     function      fields             Validates presence.
+</span></span><span id="section-content"> <a href="resource-api.html#ringfinger.resource/resource">resource</a><span id="line-content">                     function      resource           Creates a list of two routes (/url-prefix+collname...
 </span></span><span id="section-content"> <a href="core-api.html#ringfinger.core/route">route</a><span id="line-content">                        function      core               Creates a route accepted by the app function from ...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="S"><span id="section-head">S</span></h2>
   <pre>
-</pre>
+<span id="section-content"> <a href="util-api.html#ringfinger.util/sort-maps">sort-maps</a><span id="line-content">                    function      util               Sorts a sequence of maps using a map of sort args ...
+</span></span></pre>
 </div><div id="index-body">
   <h2 id="T"><span id="section-head">T</span></h2>
   <pre>
@@ -189,12 +191,13 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="U"><span id="section-head">U</span></h2>
   <pre>
-<span id="section-content"> <a href="validation-api.html#ringfinger.validation/url">url</a><span id="line-content">                          function      validation         Validates URLs.
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/url">url</a><span id="line-content">                          function      fields             Validates URLs.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="V"><span id="section-head">V</span></h2>
   <pre>
-</pre>
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/validations-from-fields">validations-from-fields</a><span id="line-content">      macro         fields             Makes a list of validations from a list of fields,...
+</span></span></pre>
 </div><div id="index-body">
   <h2 id="W"><span id="section-head">W</span></h2>
   <pre>

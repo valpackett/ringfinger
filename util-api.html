@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li><li><a href="validation-api.html" class="wiki_link">validation</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -54,11 +54,11 @@ namespace.
     <div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.util/andf">andf</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/fields-from-validations">fields-from-validations</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.util/from-browser?">from-browser?</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.util/keywordize">keywordize</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.util/sort-maps">sort-maps</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.util/typeify">typeify</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
@@ -92,18 +92,7 @@ namespace.
   <pre id="var-docstr">And function, just like and macro. For use with apply</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/util.clj#L4" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.util/fields-from-validations">fields-from-validations</h2>
-  <span id="var-type">macro</span><br />
-  <pre id="var-usage">Usage: (fields-from-validations validations)
-</pre>
-  <pre id="var-docstr">Makes a map of fields from a list of validations, eg. ([:name {:clj (required) :html {:required 'required'}} 'y u no say ur name'] [:name {:clj (my-check) :html {:maxlength 10}} 'too long']) becomes ([:name {:required 'required' :maxlength 10}])</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/util.clj#L36" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/util.clj#L4" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -114,7 +103,7 @@ namespace.
   <pre id="var-docstr">Returns true if the request comes from a web browser. Or something pretending to be a web browser, really</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/util.clj#L28" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/util.clj#L40" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -125,7 +114,18 @@ namespace.
   <pre id="var-docstr">Turns keys in map a into keywords</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/util.clj#L18" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/util.clj#L19" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.util/sort-maps">sort-maps</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (sort-maps m sargs)
+</pre>
+  <pre id="var-docstr">Sorts a sequence of maps using a map of sort args that maps keys to -1 for desc and 1 for asc order</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/util.clj#L29" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -133,10 +133,10 @@ namespace.
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (typeify s)
 </pre>
-  <pre id="var-docstr">Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, if a string with digits only - parses it as an integer</pre>
+  <pre id="var-docstr">Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles </pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/util.clj#L10" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/util.clj#L10" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -147,7 +147,7 @@ namespace.
   <pre id="var-docstr">Maps typeify to values of map a</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/93b478980a820b24c1e529f532a86045633eba30/src/ringfinger/util.clj#L22" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/util.clj#L23" id="var-source">Source</a>
 </div>
 
 

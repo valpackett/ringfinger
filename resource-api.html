@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li><li><a href="validation-api.html" class="wiki_link">validation</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -54,7 +54,7 @@ namespace.
     <div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.resource/call-flash">call-flash</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.resource/params-to-query">params-to-query</a>
+      <a href="#ringfinger.resource/params-to-dboptions">params-to-dboptions</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.resource/resource">resource</a>
     </div>
@@ -84,40 +84,44 @@ namespace.
   <pre id="var-docstr">If a flash message is a string, returns it. If it's a callable, calls it with inst and returns the result</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L39" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/resource.clj#L41" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.resource/params-to-query">params-to-query</h2>
+  <h2 id="ringfinger.resource/params-to-dboptions">params-to-dboptions</h2>
   <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (params-to-query qp)
-       (params-to-query q v)
+  <pre id="var-usage">Usage: (params-to-dboptions qp)
+       (params-to-dboptions q v)
 </pre>
-  <pre id="var-docstr">Turns ring query-params into a db query, eg. field_ne=3 becomes {:field {:$ne 3}}</pre>
+  <pre id="var-docstr">Turns ring query-params into db options
+eg. {'query_field_ne' 3, 'sort_field' -1}
+becomes {:query {:field {:$ne 3}}, :sort {:field -1}}</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L34" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/resource.clj#L34" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
   <h2 id="ringfinger.resource/resource">resource</h2>
   <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (resource collname options &amp; validations)
+  <pre id="var-usage">Usage: (resource collname options &amp; fields)
 </pre>
-  <pre id="var-docstr">Creates a list of two routes (/collname and /collname/pk) for RESTful Create/Read/Update/Delete of records in collname
+  <pre id="var-docstr">Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for
+RESTful Create/Read/Update/Delete of entries in collname
 Accepted options:
  :db -- database (required!)
  :pk -- primary key (required!)
+ :url-prefix -- a part of the URL before the collname, default is /
  :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames
- :default-query -- default database query for index pages
- :whitelist -- allowed fields (you don't need to include fields you have validations for!!)
+ :default-dboptions -- default database options (:query, :sort) for index pages
+ :whitelist -- allowed extra fields (not required, not validated, automatically created, etc.)
  :views -- map of HTML views :index, :get and :not-found
  :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)
  :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)
  :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/3f6c1a1ba734bd1da691bc46667180d97bb15838/src/ringfinger/resource.clj#L46" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/626b33d7c5e7923867330029944877a03c8d35e7/src/ringfinger/resource.clj#L48" id="var-source">Source</a>
 </div>
 
 

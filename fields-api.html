@@ -1,0 +1,330 @@
+<html>
+  <head>
+    <title>fields - Ringfinger nil API documentation</title>
+    <link href="static/favicon.png" rel="icon" />
+    <link href="static/favicon.png" rel="shortcut icon" />
+    <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/wiki.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/internal.css" rel="stylesheet" />
+    <style>.menuWrapper{height: 36px;}</style>
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" href="http://www.wikispaces.com/_/2009051601/s/internal_ie.css" type="text/css" />
+    <![endif]-->
+  </head>
+<!--
+This document was auto-generated from the source by the clojure autodoc system.
+To report errors or ask questions about the overall documentation structure, formatting,
+etc., contact Tom Faulhaber (google mail name: tomfaulhaber).
+For errors in the documentation of a particular namespace, contact the author of that
+namespace.
+-->
+  <body>
+    <div id="AllContentContainer">
+      <div id="Header">
+	<a id="Logo" href="index.html"><img alt="Clojure" height="100" width="100" src="static/clojure-icon.gif" /></a>
+	<h1><a title="page header title" id="page-header" href="index.html">Ringfinger API docs</a></h1>
+      </div>
+      <div id="leftcolumn"><div style="text-align: center;"></div>
+<div class="menu">
+  <div class="WikiCustomNav WikiElement wiki">
+    <span class="toc-header"><span id="project-name">Ringfinger</span> <span id="version"></span> API</span><br />
+    <ul>
+      <li><a class="wiki_link" href="index.html">Overview</a></li>
+      <li><a class="wiki_link" href="api-index.html">API Index</a></li>
+    </ul>
+    <div class="NamespaceTOC">
+      <span class="toc-header">Namespaces</span>
+      <ul id="left-sidebar-list">
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+      </ul>
+    </div>
+    
+    <a href="http://clojure.org" class="wiki_link">Clojure Home</a>
+  </div>
+</div>
+</div>
+      <div id="rightcolumn">
+	<div id="Content">
+	  <div class="contentBox"><div class="innerContentBox">
+              <div id="content_view" class="wiki wikiPage">
+                <div id="right-sidebar"><div id="toc">
+  <h1 class="nopad">Table of Contents</h1>
+  <div style="margin-left: 1em;" class="toc-section">
+    <a href="#toc0">Overview</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/alphanumeric">alphanumeric</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/color">color</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/date">date</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/email">email</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/email-with-lookup">email-with-lookup</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/form-fields">form-fields</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/html-from-fields">html-from-fields</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/ipv4">ipv4</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/maxlength">maxlength</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/minlength">minlength</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/nbetween">nbetween</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/nmax">nmax</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/nmin">nmin</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/number">number</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/pattern">pattern</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/required">required</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/url">url</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/validations-from-fields">validations-from-fields</a>
+    </div>
+    <br />
+  </div>
+</div>
+</div>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">fields</span>
+  - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
+  </h1>
+
+<br />Full namespace name: <span id="long-name">ringfinger.fields</span>
+<p></p>
+<h2>Overview</h2>
+<pre id="namespace-docstr"></pre>
+
+
+<br />
+<h2>Public Variables and Functions</h2>
+<div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/alphanumeric">alphanumeric</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (alphanumeric)
+</pre>
+  <pre id="var-docstr">Validates alphanumeric strings</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L14" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/color">color</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (color)
+</pre>
+  <pre id="var-docstr">Validates hexadecimal color codes</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L45" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/date">date</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (date)
+</pre>
+  <pre id="var-docstr">Validates dates</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L49" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/email">email</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (email)
+</pre>
+  <pre id="var-docstr">Validates email addresses</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L25" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/email-with-lookup">email-with-lookup</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (email-with-lookup)
+</pre>
+  <pre id="var-docstr">Validates email addresses with an additional DNS lookup. Safer, but slower</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L29" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/form-fields">form-fields</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (form-fields fields-html data errors wrap-html err-html style)
+</pre>
+  <pre id="var-docstr">HTML templating helper for rendering forms. Allowed styles are :label and :placeholder</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L89" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/html-from-fields">html-from-fields</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (html-from-fields fields)
+</pre>
+  <pre id="var-docstr">Makes a map of field names - html attributes from a list of fields, eg.
+([:name {:pred (required) :html {:required 'required'}} 'y u no say ur name']
+ [:name {:pred (my-check) :html {:maxlength 10}} 'too long'])
+becomes ([:name {:required 'required' :maxlength 10}])</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L71" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/ipv4">ipv4</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (ipv4)
+</pre>
+  <pre id="var-docstr">Validates IPv4 addresses</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L38" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/maxlength">maxlength</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (maxlength n)
+</pre>
+  <pre id="var-docstr">Sets the maximum length to the given number</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L17" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/minlength">minlength</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (minlength n)
+</pre>
+  <pre id="var-docstr">Sets the minimum length to the given number</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L21" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/nbetween">nbetween</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (nbetween minn maxn)
+</pre>
+  <pre id="var-docstr">Sets the minimum and maximum numbers to given ones</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L65" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/nmax">nmax</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (nmax n)
+</pre>
+  <pre id="var-docstr">Sets the maximum number to the given one</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L61" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/nmin">nmin</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (nmin n)
+</pre>
+  <pre id="var-docstr">Sets the minimum number to the given one</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L57" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/number">number</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (number)
+</pre>
+  <pre id="var-docstr">Validates integer numbers</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L53" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/pattern">pattern</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (pattern re)
+</pre>
+  <pre id="var-docstr">Validates according to given regexp</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L10" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/required">required</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (required)
+</pre>
+  <pre id="var-docstr">Validates presence</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L6" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/url">url</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (url)
+</pre>
+  <pre id="var-docstr">Validates URLs</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L34" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/validations-from-fields">validations-from-fields</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (validations-from-fields fields)
+</pre>
+  <pre id="var-docstr">Makes a list of validations from a list of fields, eg.
+([:name {:pred (required) :html {:required 'required'}} 'y u no say ur name']
+ [:name {:pred (my-check) :html {:maxlength 10}} 'too long'])
+becomes ([:name (required) 'y u no say ur name']
+         [:name (my-check) 'too long']) ; the valip format</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L80" id="var-source">Source</a>
+</div>
+
+
+</div>
+              </div>
+            </div>
+          </div>
+	</div>
+	<div id="foot">
+	  <div style="text-align: center;" id="copyright">No copyright info </div>
+	</div>
+      </div>
+      <div id="DesignedBy">Logo &amp; site design by <a title="Visit Tom Hickey's website." href="http://www.tomhickey.com">Tom Hickey</a>.<br />
+      Clojure auto-documentation system by Tom Faulhaber.</div>
+    </div>
+    <!-- /AllContentContainer -->
+  </body>
+
+</html>
