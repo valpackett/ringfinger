@@ -62,6 +62,7 @@
    :hooks -- map of hooks :data (on both create and update), :create and :update, must be callables expecting
              the entry and returning it (with modifications you want) hooks receive data with correct
              types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time
+             Tip: compose hooks with ->
    :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events"
   [collname options & fields]
   ; biggest let EVAR?
