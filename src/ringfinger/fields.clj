@@ -1,5 +1,6 @@
 (ns ringfinger.fields
   (:use (ringfinger db util), ringfinger.db.inmem,
+        clj-time.coerce
         [clojure.contrib.string :only [as-str]])
   (:require [valip.predicates :as v]))
 
@@ -48,10 +49,12 @@
 
 (defn date "Validates dates" []
   {:html {:type "date"}
+   :hook #(from-string %) ; TODO: optimize to use specific parser
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
 (defn number "Validates integer numbers" []
   {:html {:type "number"}
+   ;hook not needed, typeize parses this
    :pred v/integer-string?})
 
 (defn nmin "Sets the minimum number to the given one" [n]
@@ -75,7 +78,7 @@
   becomes ([:name {:required 'required' :maxlength 10}])"
   [fields]
   `(let [v# (group-by first ~fields)]
-     (sorted-zipmap (keys v#) (map (fn [a#] (apply merge (map #(:html (second %)) a#))) (vals v#)))))
+     (sorted-zipmap (keys v#) (map (fn [a#] (apply merge (map #(:html (second %) {}) a#))) (vals v#)))))
 
 (defmacro validations-from-fields
   "Makes a list of validations from a list of fields, eg.
@@ -85,6 +88,19 @@
            [:name (my-check) 'too long']) ; the valip format"
   [fields]
   `(map #(assoc % 1 (:pred (second %))) ~fields))
+
+(defn hook-from-fields
+  "Makes a data hook from a list of fields. You usually don't need to use it manually.
+  It's used by ringfinger.resource automatically"
+  [fields]
+  (let [h (group-by first (map #(assoc % 1 (:hook (second %) identity)) fields))
+        hs (zipmap (keys h) (map #(map second %) (vals h)))]
+     (fn [data]
+       (zipmap (keys data)
+               (map (fn [k v]
+                      (if-let [f (get hs k)]
+                        (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f))
+                        v)) (keys data) (vals data))))))
 
 (defmacro form-fields
   "HTML templating helper for rendering forms. Allowed styles are :label and :placeholder"

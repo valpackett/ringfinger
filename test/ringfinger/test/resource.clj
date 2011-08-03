@@ -35,10 +35,10 @@
 (deftest t-create
   (let [res (testapp (body (request :post "/todos?format=json")
                            {:body  "test"
-                            :state false}))]
+                            :state "false"}))]
     (is (= (:status res 201)))
     (is (= (get (:headers res) "Location") "/todos/test?format=json")))
-  (is (= (testapp (body (request :post "/todos?format=json") {:state false}))
+  (is (= (testapp (body (request :post "/todos?format=json") {:state "false"}))
          {:status  400
           :headers {"Content-Type" "application/json; charset=utf-8"}
           :body    "{\"body\":[\"should be present\"]}"}))
@@ -52,7 +52,7 @@
 (deftest t-update
   (let [res (testapp (body (request :put "/todos/test?format=json")
                            {:body  "test"
-                            :state true}))]
+                            :state "true"}))]
     (is (= (:status res) 302))
     (is (= (get (:headers res) "Location") "/todos/test?format=json")))
   (is (= (:status (testapp (body (request :put "/hooked/test?format=json") {:name "test2"}))) 302))

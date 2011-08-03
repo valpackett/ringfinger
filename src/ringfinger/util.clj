@@ -1,5 +1,6 @@
 (ns ringfinger.util
-  (:use valip.predicates))
+  (:use valip.predicates, clj-time.coerce)
+  (:import org.joda.time.DateTime))
 
 (defn andf
   "And function, just like and macro. For use with apply"
@@ -10,11 +11,12 @@
 (defn typeify
   "Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles "
   [s]
-  (cond (= s "true")  true
+  (cond (= s "true") true
         (= s "false") false
         (integer-string? s) (Integer/parseInt s)
         (decimal-string? s) (Double/parseDouble s)
-        :else         s))
+        (instance? DateTime s) (to-date s)
+        :else s))
 
 (defmacro keywordize
   "Turns keys in map a into keywords" [a]

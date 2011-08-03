@@ -39,7 +39,8 @@
   ([q v] (if (substring? "_" q) (param-to-dboptions (flatten (list (split #"_" q) (typeify v)))) nil)))
 
 (defmacro call-flash
-  "If a flash message is a string, returns it. If it's a callable, calls it with inst and returns the result"
+  "If a flash message is a string, returns it. If it's a callable,
+  calls it with inst and returns the result"
   [flash inst]
   `(if (ifn? ~flash)
      (~flash ~inst)
@@ -56,8 +57,11 @@
    :default-dboptions -- default database options (:query, :sort) for index pages
    :whitelist -- allowed extra fields (not required, not validated, automatically created, etc.)
    :views -- map of HTML views :index, :get and :not-found
-   :flash -- map of flash messages :created, :updated, :deleted and :forbidden, can be either strings or callables expecting a single arg (the entry)
-   :hooks -- map of hooks :data (called on both create and update), :create and :update, must be callables expecting the entry and returning it (with modifications you want)
+   :flash -- map of flash messages :created, :updated, :deleted and :forbidden,
+             can be either strings or callables expecting a single arg (the entry)
+   :hooks -- map of hooks :data (on both create and update), :create and :update, must be callables expecting
+             the entry and returning it (with modifications you want) hooks receive data with correct
+             types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time
    :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events"
   [collname options & fields]
   ; biggest let EVAR?
@@ -69,6 +73,7 @@
         urlbase (str (:url-prefix options "/") collname)
         fieldhtml (html-from-fields fields)
         valds (validations-from-fields fields)
+        fields-data-hook (hook-from-fields fields)
         whitelist (concat (:whitelist options (list)) (keys fieldhtml)) ; cut off :csrftoken, don't allow users to store everything
         default-data {:collname collname :pk pk :fields fieldhtml}
         html-index (html-output (get-in options [:index :views] default-index) default-data)
@@ -83,13 +88,13 @@
                    (map #(let [c (get-in options [:channels %])]
                            (if c (fn [msg] (enqueue c msg)) (fn [msg]))) s-channels))
         ; --- functions ---
-        clear-form #(select-keys (typeize %) whitelist)
+        clear-form #(select-keys % whitelist)
         user-data-hook (get-in options [:hooks :data]    identity)
         user-post-hook (get-in options [:hooks :create]  identity)
         user-put-hook  (get-in options [:hooks :update]  identity)
-        data-hook #(-> % clear-form user-data-hook)
-        post-hook #(-> % data-hook  user-post-hook)
-        put-hook  #(-> % data-hook  user-put-hook)
+        data-hook #(-> % clear-form fields-data-hook user-data-hook)
+        post-hook #(-> % data-hook user-post-hook)
+        put-hook  #(-> % data-hook user-put-hook)
         i-validate (fn [req data yep nope]
                      (let [result (apply validate data valds)]
                        (if (= result nil) (yep) (nope result))))
@@ -117,6 +122,7 @@
                        #(%3))
         process-new  (if owner-field
                        ; [req form]
+                       ; adds creator's username if there's an owner-field
                        #(assoc (post-hook %2) owner-field (get-in %1 [:user :username]))
                        #(post-hook %2))]
      (list
@@ -129,11 +135,12 @@
                           {"html" html-index}
                           "html"))
           :post (fn [req matches]
-                  (let [form (keywordize (:form-params req))]
+                  (let [form  (keywordize (:form-params req))
+                        entry (process-new req form)]
                     (i-validate req form
                       (fn []
-                        ((:create channels) form)
-                        (create store coll (process-new req form))
+                        ((:create channels) entry)
+                        (create store coll (typeize entry))
                         (i-redirect req form flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
                         (respond req 400
@@ -160,17 +167,17 @@
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        entry (i-get-one matches)
-                       updated-entry (merge entry form)]
+                       final (put-hook (merge entry form))]
                    (if-allowed req entry
                      (fn []
-                       (i-validate req updated-entry
+                       (i-validate req (merge entry form)
                          (fn []
-                           ((:update channels) form)
-                           (update store coll entry (put-hook form))
+                           ((:update channels) final)
+                           (update store coll entry (typeize final))
                            (i-redirect req form flash-updated 302))
                          (fn [errors]
                            (respond req 400
-                                    {:data   updated-entry
+                                    {:data   final
                                      :flash  (:flash req)
                                      :csrf-token (:csrf-token req)
                                      :errors errors}
