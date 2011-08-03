@@ -28,7 +28,6 @@ You also can use lower-level database/validation/output/routing APIs if you can'
 
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk valuess)
 - pagination link helpers
-- a pre-made hook for making slugs ("My Title" -> "my-title") w/ [inflections-clj](https://github.com/r0man/inflections-clj)
 - enlive views quick builder
 - automatic "API docs" route for resources & insert fake data route in dev mode
 - live reloader (long poll, on disconnect: try to restart, when server is up, reload)

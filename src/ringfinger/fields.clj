@@ -99,7 +99,7 @@
        (zipmap (keys data)
                (map (fn [k v]
                       (if-let [f (get hs k)]
-                        (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f))
+                        (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
                         v)) (keys data) (vals data))))))
 
 (defmacro form-fields

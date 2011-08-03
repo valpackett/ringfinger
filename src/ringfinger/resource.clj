@@ -74,7 +74,8 @@
         fieldhtml (html-from-fields fields)
         valds (validations-from-fields fields)
         fields-data-hook (hook-from-fields fields)
-        whitelist (concat (:whitelist options (list)) (keys fieldhtml)) ; cut off :csrftoken, don't allow users to store everything
+        whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))] ; cut off :csrftoken, don't allow users to store everything
+                    (concat w (map #(keyword (as-str % "_slug")) w)))
         default-data {:collname collname :pk pk :fields fieldhtml}
         html-index (html-output (get-in options [:index :views] default-index) default-data)
         html-get   (html-output (get-in options [:get   :views] default-get) default-data)
