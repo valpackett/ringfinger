@@ -1,0 +1,33 @@
+html {
+  background: #cece9e;
+}
+body {
+  margin: 4%;
+  padding: 2%;
+  background: #fff;
+  color: #333;
+  font: 14px "Lucida Grande", sans-serif;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+input, button {
+  display: block;
+}
+.error, input:invalid {
+  background: #dd9090;
+  color: #f4f4f4;
+}
+.flash {
+  background: #aba210;
+  color: white;
+  padding: 4px;
+}
+td, th {
+  margin: -1px 0 0 0;
+  padding: 0.1em 0.5em;
+  border-right: 1px solid #ececec;
+}
+td:last-of-type, th:last-of-type {
+  border-right: none;
+}

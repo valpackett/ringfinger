@@ -1,5 +1,6 @@
 (ns ringfinger.util
   (:use valip.predicates, clj-time.coerce)
+  (:require [clojure.java.io :as io])
   (:import org.joda.time.DateTime))
 
 (defn andf
@@ -46,4 +47,10 @@
   ; TODO: better way? finer regexp?
   (boolean (re-matches #"(Mozilla|Opera).*" (get-in req [:headers "user-agent"] ""))))
 
-(def default-style "html{background:#cece9e}body{margin:4%;padding:2%;background:#fff;color:#333;font:14px \"Lucida Grande\", sans-serif}input,button{display: block}.error,input:invalid{background:#dd9090;color:#f4f4f4}.flash{background:#aba210;color:white;padding:4px}")
+(def default-style
+  (try
+    ; in a jar
+    (slurp (io/resource "css/default.css"))
+    (catch Exception ex
+      ; in a repl
+      (slurp "css/default.css"))))
