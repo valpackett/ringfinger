@@ -6,7 +6,8 @@
 
 (defn required "Validates presence" []
   {:html {:required "required"}
-   :pred v/present?})
+   :pred v/present?
+   :req  true})
 
 (defn pattern "Validates according to given regexp" [re]
   {:html {:pattern (str re)}
@@ -84,23 +85,23 @@
 
 ; ---
 
-(defmacro html-from-fields
+(defn html-from-fields
   "Makes a map of field names - html attributes from a list of fields, eg.
   ([:name {:pred (required) :html {:required 'required'}} 'y u no say ur name']
    [:name {:pred (my-check) :html {:maxlength 10}} 'too long'])
   becomes ([:name {:required 'required' :maxlength 10}])"
   [fields]
-  `(let [v# (group-by first ~fields)]
-     (sorted-zipmap (keys v#) (map (fn [a#] (apply merge (map #(:html (second %) {}) a#))) (vals v#)))))
+  (let [v (group-by first fields)]
+    (sorted-zipmap (keys v) (map (fn [a] (apply merge (map #(:html (second %) {}) a))) (vals v)))))
 
-(defmacro validations-from-fields
+(defn validations-from-fields
   "Makes a list of validations from a list of fields, eg.
   ([:name {:pred (required) :html {:required 'required'}} 'y u no say ur name']
    [:name {:pred (my-check) :html {:maxlength 10}} 'too long'])
   becomes ([:name (required) 'y u no say ur name']
            [:name (my-check) 'too long']) ; the valip format"
   [fields]
-  `(map #(assoc % 1 (:pred (second %))) ~fields))
+  (map #(assoc % 1 (:pred (second %) (fn [a] true))) fields))
 
 (defn get-hook-from-fields
   "Makes a get hook from a list of fields. You usually don't need to use it manually.
@@ -109,8 +110,8 @@
   (let [h (group-by first (map #(assoc % 1 (:view (second %) str)) fields))
         hs (zipmap (keys h) (map #(map second %) (vals h)))]
      (fn [data]
-       (let [ks (filter #(not (= "" (get data %))) (keys data))
-             vs (select-keys data ks)]
+       (let [vs (select-keys data (filter #(not (= "" (get data %))) (keys data)))
+             ks (keys vs)]
         (zipmap ks
                 (map (fn [k v]
                        (if-let [f (get hs k)]
@@ -131,6 +132,15 @@
                         (if-let [f (get hs k)]
                           (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
                           v)) ks (vals vs)))))))
+
+(defn required-fields-of
+  "Returns a list of required fields' names from a list of fields, eg.
+  ([:name (required) 'wtf'] [:date (date) 'lolwut'])
+  becomes
+  (:name)"
+  [fields]
+  (let [fs (group-by first fields)]
+    (filter #(:req (apply merge (map second (get fs %))) false) (keys fs))))
 
 (defmacro form-fields
   "HTML templating helper for rendering forms. Allowed styles are :label and :placeholder"

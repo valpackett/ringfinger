@@ -76,6 +76,7 @@
         valds (validations-from-fields fields)
         fields-data-hook (data-hook-from-fields fields)
         fields-get-hook (get-hook-from-fields fields)
+        req-fields (required-fields-of fields)
         whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))] ; cut off :csrftoken, don't allow users to store everything
                     (concat w (map #(keyword (as-str % "_slug")) w)))
         default-data {:collname collname :pk pk :fields fieldhtml}
@@ -101,9 +102,9 @@
         put-hook  #(-> % data-hook user-put-hook)
         get-hook  #(-> % user-get-hook fields-get-hook)
         i-validate (fn [req data yep nope]
-                     (let [ks (filter #(not (= "" (get data %))) (keys data))
-                           vs (filter #(boolean (some #{(first %)} ks)) valds) ; contains? doesn't work here
-                           result (apply validate (select-keys data ks) vs)]
+                     (let [ks (filter #(or (boolean (some #{%} req-fields)) (not (= (get data %) ""))) (keys data))
+                           result (apply validate (select-keys data ks)
+                                         (filter #(boolean (some #{(first %)} ks)) valds))]
                        (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one store coll {:query {pk (typeify (:pk %))}})
         i-redirect (fn [req form flash status]
