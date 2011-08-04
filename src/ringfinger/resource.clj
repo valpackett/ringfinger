@@ -59,8 +59,8 @@
    :views -- map of HTML views :index, :get and :not-found
    :flash -- map of flash messages :created, :updated, :deleted and :forbidden,
              can be either strings or callables expecting a single arg (the entry)
-   :hooks -- map of hooks :data (on both create and update), :create and :update, must be callables expecting
-             the entry and returning it (with modifications you want) hooks receive data with correct
+   :hooks -- map of hooks :data (on both create and update), :create, :update and :view, must be callables expecting
+             the entry and returning it (with modifications you want). Hooks receive data with correct
              types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time
              Tip: compose hooks with ->
    :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events"
@@ -99,7 +99,7 @@
         data-hook #(-> % clear-form fields-data-hook user-data-hook)
         post-hook #(-> % data-hook user-post-hook)
         put-hook  #(-> % data-hook user-put-hook)
-        get-hook  #(-> % fields-get-hook user-get-hook)
+        get-hook  #(-> % user-get-hook fields-get-hook)
         i-validate (fn [req data yep nope]
                      (let [result (apply validate data valds)]
                        (if (= result nil) (yep) (nope result))))
