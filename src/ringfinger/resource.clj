@@ -176,6 +176,7 @@
                  (let [form (keywordize (:form-params req))
                        entry (i-get-one matches)
                        pre (put-hook form)
+                       merged (merge entry pre)
                        final (typeize pre)]
                    (if-allowed req entry
                      (fn []
@@ -183,10 +184,10 @@
                          (fn []
                            ((:update channels) pre)
                            (update store coll entry final)
-                           (i-redirect req entry flash-updated 302))
+                           (i-redirect req merged flash-updated 302))
                          (fn [errors]
                            (respond req 400
-                                    {:data   (merge entry pre)
+                                    {:data merged
                                      :flash  (:flash req)
                                      :csrf-token (:csrf-token req)
                                      :errors errors}

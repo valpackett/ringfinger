@@ -6,14 +6,14 @@
   (fn [req]
     ; stop early if the req isn't coming from a browser
     (if (from-browser? req)
-      (if (and (= :post (:request-method req)) ; method override doesn't affect it here
+      (if (and (or (= :post (:request-method req)) (= :put (:request-method req)))
                (not (= (get-in req [:form-params "csrftoken"])
-                       (get-in req [:cookies "csrftoken" :value]))))
+                       (get-in req [:session :csrftoken]))))
         {:status  403
          :headers {"Content-Type" "text/plain"}
          :body    "CSRF attempt detected!"}
         (let [token (DigestUtils/md5Hex (str (rand)))]
-          (assoc-in (handler (assoc req :csrf-token token)) [:cookies "csrftoken"] token)))
+          (assoc-in (handler (assoc req :csrf-token token)) [:session :csrftoken] token)))
       (handler req))))
 
 (defn wrap-refcheck "Referer checking middleware for Ring" [handler]
