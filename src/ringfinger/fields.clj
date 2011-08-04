@@ -49,7 +49,9 @@
 
 (defn date "Validates/parses/outputs dates" []
   {:html {:type "date"}
-   :hook #(parse (:date formatters) %) ; returns Joda DateTime
+   :hook #(try (parse (:date formatters) %) ; returns Joda DateTime
+            (catch IllegalArgumentException ex
+              false))
    :view #(unparse (:date formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
@@ -57,7 +59,9 @@
 
 (defn time-field "Validates/parses/outputs times" []
   {:html {:type "time"}
-   :hook #(parse (:time-parser formatters) %) ; returns Joda DateTime
+   :hook #(try (parse (:time-parser formatters) %) ; returns Joda DateTime
+            (catch IllegalArgumentException ex
+              false))
    :view #(unparse time-hhmm-fmt (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{2}:[0-9]{2}" %))})
 
