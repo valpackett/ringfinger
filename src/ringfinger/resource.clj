@@ -101,14 +101,14 @@
         put-hook  #(-> % data-hook user-put-hook)
         get-hook  #(-> % user-get-hook fields-get-hook)
         i-validate (fn [req data yep nope]
-                     (let [result (apply validate data valds)]
+                     (let [result (apply validate data (filter #(contains? data (first %)) valds))]
                        (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one store coll {:query {pk (typeify (:pk %))}})
         i-redirect (fn [req form flash status]
                      {:status  status
                       :headers {"Location" (str urlbase "/" (get form pk) (qsformat req))}
                       :flash   (call-flash flash form)
-                      :body    nil})
+                      :body    ""})
         i-get-dboptions (if owner-field
                       #(assoc-in (or (params-to-dboptions (:query-params %)) default-dboptions) [:query owner-field] (get-in % [:user :username]))
                       #(or (params-to-dboptions (:query-params %)) default-dboptions))
@@ -120,7 +120,7 @@
                             {:status  302
                              :headers {"Location" urlbase}
                              :flash   (call-flash flash-forbidden %2)
-                             :body    nil}
+                             :body    ""}
                             {:status  403
                              :headers {"Content-Type" "text/plain"}
                              :body    "Forbidden"}))
@@ -171,14 +171,16 @@
                               "html"))))
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
+                       ks (keys form)
                        entry (i-get-one matches)
-                       final (put-hook (merge entry form))]
+                       pre (put-hook form)
+                       final (typeize pre)]
                    (if-allowed req entry
                      (fn []
-                       (i-validate req (merge entry form)
+                       (i-validate req form
                          (fn []
-                           ((:update channels) final)
-                           (update store coll entry (typeize final))
+                           ((:update channels) pre)
+                           (update store coll entry final)
                            (i-redirect req entry flash-updated 302))
                          (fn [errors]
                            (respond req 400
