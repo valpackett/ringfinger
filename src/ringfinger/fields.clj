@@ -1,6 +1,6 @@
 (ns ringfinger.fields
   (:use (ringfinger db util), ringfinger.db.inmem,
-        clj-time.format,
+        (clj-time format coerce),
         [clojure.contrib.string :only [as-str]])
   (:require [valip.predicates :as v]))
 
@@ -47,9 +47,10 @@
   {:html {:type "color"}
    :pred #(boolean (re-matches #"#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})" %))})
 
-(defn date "Validates dates" []
+(defn date "Validates/parses/outputs dates" []
   {:html {:type "date"}
-   :hook #(parse (:date formatters) %)
+   :hook #(parse (:date formatters) %) ; returns Joda DateTime
+   :view #(unparse (:date formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
 (defn number "Validates integer numbers" []
@@ -89,7 +90,20 @@
   [fields]
   `(map #(assoc % 1 (:pred (second %))) ~fields))
 
-(defn hook-from-fields
+(defn get-hook-from-fields
+  "Makes a get hook from a list of fields. You usually don't need to use it manually.
+  It's used by ringfinger.resource automatically"
+  [fields]
+  (let [h (group-by first (map #(assoc % 1 (:view (second %) str)) fields))
+        hs (zipmap (keys h) (map #(map second %) (vals h)))]
+     (fn [data]
+       (zipmap (keys data)
+               (map (fn [k v]
+                      (if-let [f (get hs k)]
+                        (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
+                        v)) (keys data) (vals data))))))
+
+(defn data-hook-from-fields
   "Makes a data hook from a list of fields. You usually don't need to use it manually.
   It's used by ringfinger.resource automatically"
   [fields]
@@ -107,6 +121,7 @@
   [fields-html data errors wrap-html err-html style]
   `(map (fn [f# fval#] (let [title# (as-str f#)] (conj ~wrap-html
     (if (= ~style :label) [:label {:for title#} title#] nil)
+    ; TODO: different tags (eg. textarea) via :_element in fval#
     [:input (merge {:name title# :id title# :value (as-str (get ~data f#))}
                     (if (= ~style :placeholder) {:placeholder title#} nil) fval#)]
     (if (get ~errors f#) (conj ~err-html (map as-str (get ~errors f#))) nil)

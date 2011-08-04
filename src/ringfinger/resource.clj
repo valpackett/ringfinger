@@ -74,7 +74,8 @@
         urlbase (str (:url-prefix options "/") collname)
         fieldhtml (html-from-fields fields)
         valds (validations-from-fields fields)
-        fields-data-hook (hook-from-fields fields)
+        fields-data-hook (data-hook-from-fields fields)
+        fields-get-hook (get-hook-from-fields fields)
         whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))] ; cut off :csrftoken, don't allow users to store everything
                     (concat w (map #(keyword (as-str % "_slug")) w)))
         default-data {:collname collname :pk pk :fields fieldhtml}
@@ -94,9 +95,11 @@
         user-data-hook (get-in options [:hooks :data]    identity)
         user-post-hook (get-in options [:hooks :create]  identity)
         user-put-hook  (get-in options [:hooks :update]  identity)
+        user-get-hook  (get-in options [:hooks :read]    identity)
         data-hook #(-> % clear-form fields-data-hook user-data-hook)
         post-hook #(-> % data-hook user-post-hook)
         put-hook  #(-> % data-hook user-put-hook)
+        get-hook  #(-> % fields-get-hook user-get-hook)
         i-validate (fn [req data yep nope]
                      (let [result (apply validate data valds)]
                        (if (= result nil) (yep) (nope result))))
@@ -133,7 +136,7 @@
                  (respond req 200
                           {:flash (:flash req)
                            :csrf-token (:csrf-token req)
-                           :data  (get-many store coll (i-get-dboptions req))}
+                           :data  (map get-hook (get-many store coll (i-get-dboptions req)))}
                           {"html" html-index}
                           "html"))
           :post (fn [req matches]
@@ -146,7 +149,7 @@
                         (i-redirect req entry flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
                         (respond req 400
-                                 {:data   (get-many store coll (i-get-dboptions req))
+                                 {:data (map get-hook (get-many store coll (i-get-dboptions req)))
                                   :csrf-token (:csrf-token req)
                                   :flash  (:flash req)
                                   :errors errors}
@@ -157,7 +160,7 @@
                  (let [entry (i-get-one matches)]
                    (if entry
                      (respond req 200
-                              {:data  entry
+                              {:data (get-hook entry)
                                :csrf-token (:csrf-token req)
                                :flash (:flash req)}
                               {"html" html-get}
@@ -179,7 +182,7 @@
                            (i-redirect req entry flash-updated 302))
                          (fn [errors]
                            (respond req 400
-                                    {:data   final
+                                    {:data   (get-hook final)
                                      :flash  (:flash req)
                                      :csrf-token (:csrf-token req)
                                      :errors errors}
