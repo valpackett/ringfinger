@@ -48,9 +48,4 @@
   (boolean (re-matches #"(Mozilla|Opera).*" (get-in req [:headers "user-agent"] ""))))
 
 (def default-style
-  (try
-    ; in a jar
-    (slurp (io/resource "css/default.css"))
-    (catch Exception ex
-      ; in a repl
-      (slurp "css/default.css"))))
+  (slurp (io/resource "default.css")))
