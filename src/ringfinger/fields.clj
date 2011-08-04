@@ -53,6 +53,14 @@
    :view #(unparse (:date formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
+(def #^{:private true} time-hhmm-fmt (formatter "HH:mm"))
+
+(defn time-field "Validates/parses/outputs times" []
+  {:html {:type "time"}
+   :hook #(parse (:time-parser formatters) %) ; returns Joda DateTime
+   :view #(unparse time-hhmm-fmt (from-date %)) ; gets java.util.Date
+   :pred #(boolean (re-matches #"[0-9]{2}:[0-9]{2}" %))})
+
 (defn number "Validates integer numbers" []
   {:html {:type "number"}
    ;hook not needed, typeize parses this
