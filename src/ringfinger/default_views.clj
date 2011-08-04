@@ -4,8 +4,7 @@
         (hiccup core page-helpers)))
 
 (defn default-index [stuff]
-  (let [data       (:data stuff)
-        collname   (:collname stuff)
+  (let [collname   (:collname stuff)
         pk         (:pk stuff)
         fields     (:fields stuff)
         fieldnames (keys fields)
@@ -17,7 +16,7 @@
         [:h1 collname]
         (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
         [:form {:method "post" :action ""}
-          (form-fields fields data (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
+          (form-fields fields (:newdata stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
           [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
           [:button {:type "submit"} "Add"]]
         [:table
@@ -26,7 +25,7 @@
              (map (fn [a] [:td (get e a)]) fieldnames)
              [:td [:a {:href (str urlbase (get e pk))} "edit"]]
              [:td [:a {:href (str urlbase (get e pk) "?_method=delete")} "delete"]]
-          ]) data)]
+          ]) (:data stuff))]
       ]])))
 
 (defn default-get [stuff]

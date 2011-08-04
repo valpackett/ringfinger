@@ -101,7 +101,9 @@
         put-hook  #(-> % data-hook user-put-hook)
         get-hook  #(-> % user-get-hook fields-get-hook)
         i-validate (fn [req data yep nope]
-                     (let [result (apply validate data (filter #(contains? data (first %)) valds))]
+                     (let [ks (filter #(not (= "" (get data %))) (keys data))
+                           vs (filter #(boolean (some #{(first %)} ks)) valds) ; contains? doesn't work here
+                           result (apply validate (select-keys data ks) vs)]
                        (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one store coll {:query {pk (typeify (:pk %))}})
         i-redirect (fn [req form flash status]
@@ -150,6 +152,7 @@
                       (fn [errors]
                         (respond req 400
                                  {:data (map get-hook (get-many store coll (i-get-dboptions req)))
+                                  :newdata form
                                   :csrf-token (:csrf-token req)
                                   :flash  (:flash req)
                                   :errors errors}
@@ -171,7 +174,6 @@
                               "html"))))
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
-                       ks (keys form)
                        entry (i-get-one matches)
                        pre (put-hook form)
                        final (typeize pre)]
@@ -184,7 +186,7 @@
                            (i-redirect req entry flash-updated 302))
                          (fn [errors]
                            (respond req 400
-                                    {:data   (get-hook final)
+                                    {:data   (merge entry pre)
                                      :flash  (:flash req)
                                      :csrf-token (:csrf-token req)
                                      :errors errors}

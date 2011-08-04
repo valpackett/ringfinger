@@ -109,11 +109,13 @@
   (let [h (group-by first (map #(assoc % 1 (:view (second %) str)) fields))
         hs (zipmap (keys h) (map #(map second %) (vals h)))]
      (fn [data]
-       (zipmap (keys data)
-               (map (fn [k v]
-                      (if-let [f (get hs k)]
-                        (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
-                        v)) (keys data) (vals data))))))
+       (let [ks (filter #(not (= "" (get data %))) (keys data))
+             vs (select-keys data ks)]
+        (zipmap ks
+                (map (fn [k v]
+                       (if-let [f (get hs k)]
+                         (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
+                         v)) ks (vals vs)))))))
 
 (defn data-hook-from-fields
   "Makes a data hook from a list of fields. You usually don't need to use it manually.
@@ -122,11 +124,13 @@
   (let [h (group-by first (map #(assoc % 1 (:hook (second %) identity)) fields))
         hs (zipmap (keys h) (map #(map second %) (vals h)))]
      (fn [data]
-       (zipmap (keys data)
-               (map (fn [k v]
-                      (if-let [f (get hs k)]
-                        (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
-                        v)) (keys data) (vals data))))))
+       (let [vs (select-keys data (filter #(not (= "" (get data %))) (keys data)))
+             ks (keys vs)]
+         (zipmap ks
+                 (map (fn [k v]
+                        (if-let [f (get hs k)]
+                          (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
+                          v)) ks (vals vs)))))))
 
 (defmacro form-fields
   "HTML templating helper for rendering forms. Allowed styles are :label and :placeholder"
