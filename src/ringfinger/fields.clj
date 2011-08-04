@@ -1,6 +1,6 @@
 (ns ringfinger.fields
   (:use (ringfinger db util), ringfinger.db.inmem,
-        clj-time.coerce
+        clj-time.format,
         [clojure.contrib.string :only [as-str]])
   (:require [valip.predicates :as v]))
 
@@ -49,7 +49,7 @@
 
 (defn date "Validates dates" []
   {:html {:type "date"}
-   :hook #(from-string %) ; TODO: optimize to use specific parser
+   :hook #(parse (:date formatters) %)
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
 (defn number "Validates integer numbers" []

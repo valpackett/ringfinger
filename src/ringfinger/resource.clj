@@ -143,7 +143,7 @@
                       (fn []
                         ((:create channels) entry)
                         (create store coll (typeize entry))
-                        (i-redirect req form flash-created (if (from-browser? req) 302 201)))
+                        (i-redirect req entry flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
                         (respond req 400
                                  {:data   (get-many store coll (i-get-dboptions req))
@@ -176,7 +176,7 @@
                          (fn []
                            ((:update channels) final)
                            (update store coll entry (typeize final))
-                           (i-redirect req form flash-updated 302))
+                           (i-redirect req entry flash-updated 302))
                          (fn [errors]
                            (respond req 400
                                     {:data   final

@@ -11,11 +11,12 @@
 (defn typeify
   "Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles "
   [s]
-  (cond (= s "true") true
+  (cond
+        (instance? DateTime s) (to-date s)
+        (= s "true") true
         (= s "false") false
         (integer-string? s) (Integer/parseInt s)
         (decimal-string? s) (Double/parseDouble s)
-        (instance? DateTime s) (to-date s)
         :else s))
 
 (defmacro keywordize

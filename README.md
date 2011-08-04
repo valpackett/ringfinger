@@ -26,7 +26,7 @@ You also can use lower-level database/validation/output/routing APIs if you can'
 
 ## Coming "soon" ##
 
-- queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk valuess)
+- queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
 - pagination link helpers
 - enlive views quick builder
 - automatic "API docs" route for resources & insert fake data route in dev mode
