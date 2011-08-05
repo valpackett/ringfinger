@@ -9,7 +9,7 @@ Not ready yet, but a lot of things work, including MongoDB support, ready-to-use
     (ns superapp.core
       (:use (ringfinger core resource fields auth-routes),
             ringfinger.db.mongodb, ringfinger.timesavers.hooks,
-            ring.adapter.netty))
+            ring.util.serve))
     
     (def mymongo (mongodb "mydb"))
     
@@ -23,17 +23,17 @@ Not ready yet, but a lot of things work, including MongoDB support, ready-to-use
     
     (defapp myapp
             {:static-dir "custom_static_name"
-             :session-db (mongodb "anotherdb")
+             :session-db mymongo
              :auth-db mymongo}
             contacts
             (auth-routes {:db mymongo}))
     
-    (run-netty myapp {:port 8080})
+   (serve myapp 3000)
 
 or something like that. You can do create/read/update/delete operations on the same resource with a browser (there are default HTML templates, like in Rails) or something that supports JSON or XML.
 
 You can customize the behavior via hooks (eg. if you need to automatically add URL-friendly "slugs" or post dates/times) and via providing [Lamina](https://github.com/ztellman/lamina) channels and subscribing to them (eg. if you need real-time push).
-You also can use lower-level database/validation/output/routing APIs if you can't fit something into these RESTful constraints.
+You also can use lower-level auth/database/validation/output/routing APIs if you can't fit something into these RESTful constraints.
 
 ## Coming "soon" ##
 
@@ -49,9 +49,11 @@ You also can use lower-level database/validation/output/routing APIs if you can'
 - file attachments w/ GridFS support
 - asset system that doesn't suck & supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, supporting attachment storages
 - pre-made Lamina subscribers for Pusher/pubsub.io/hook.io
+- FleetDB, CouchDB support
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
 - read-only mode
 - database and attachment migrations (eg. mongodb + gridfs to simpledb + s3)
+- field renaming
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus, yaml for ruby
 - easy full text search (elasticsearch, lucene): lamina subscriber + route for querying

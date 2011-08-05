@@ -47,7 +47,8 @@
   Accepted options:
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
    :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!
-   :session-db -- database for session middleware
+   :session-db -- database for session middleware OR
+   :session-store -- SessionStore for session middleware, eg. for using the Redis store
    :static-dir -- directory with static files for serving them in development
    :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default"
   [options & routes]
@@ -59,7 +60,7 @@
               (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth) :salt (:fixed-salt options "ringfingerFTW")})
               wrap-flash
               wrap-csrf
-              (wrap-session {:store (db-store (:session-db options inmem))})
+              (wrap-session {:store (:session-store options (db-store (:session-db options inmem)))})
               wrap-params
               wrap-refcheck
               )]
