@@ -4,8 +4,8 @@
         (hiccup core page-helpers)))
 
 (defn p-flash [stuff]
-  (let [f (get-in stuff [:req :flash])]
-    (if f [:div {:class "flash"} f])))
+  (if-let [f (get-in stuff [:req :flash])]
+    [:div {:class "flash"} f]))
 
 (defn p-csrftoken [stuff]
   [:input {:type "hidden" :name "csrftoken" :value (get-in stuff [:req :csrf-token])}])
