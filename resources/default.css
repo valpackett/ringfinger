@@ -29,9 +29,15 @@ input, .flash {
   border-radius: 5px;
   border: 1px solid #ada414;
 }
-.error, input:invalid {
+.error {
   background: #dd9090;
   color: #f4f4f4;
+}
+input:invalid {
+  border-color: #dd9090;
+  -webkit-box-shadow: #d08080 0 0 3px;
+  -moz-box-shadow: #d08080 0 0 3px;
+  box-shadow: #d08080 0 0 3px;
 }
 .flash {
   background: #aba210;
