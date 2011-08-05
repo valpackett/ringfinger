@@ -40,8 +40,9 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
 - pagination link helpers
 - enlive views quick builder
-- automatic "API docs" route for resources & insert fake data route in dev mode
-- live reloader (long poll, on disconnect: try to restart, when server is up, reload)
+- automatic "API docs" route for resources & insert fake data route in dev mode, both using faker
+- automatic javascript model definitions for client-side mvc per resource, using clojurescript
+- live reloader (long poll, on disconnect: try to reconnect, when server is up, reload)
 - middleware like django-paranoid-sessions
 - extracting ringfinger.security into a separate ring-security package
 - atom feeds for resources
@@ -54,6 +55,5 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - read-only mode
 - database and attachment migrations (eg. mongodb + gridfs to simpledb + s3)
 - field renaming
-- automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus, yaml for ruby
 - easy full text search (elasticsearch, lucene): lamina subscriber + route for querying
