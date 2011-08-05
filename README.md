@@ -7,16 +7,27 @@ Not ready yet, but a lot of things work, including MongoDB support, ready-to-use
 ## Get excited ##
 
     (ns superapp.core
-      (:use (ringfinger core resource fields) ringfinger.db.inmem ring.adapter.netty))
+      (:use (ringfinger core resource fields auth-routes),
+            ringfinger.db.mongodb, ringfinger.timesavers.hooks,
+            ring.adapter.netty))
+    
+    (def mymongo (mongodb "mydb"))
     
     (defresource contacts
-      {:db inmem
-       :pk :name}
+      {:db mymongo
+       :pk :name_slug
+       :hooks {:data (make-slug-for :name)}}
       [:name (required) "sorry, anonymous"]
-      [:name (alphanumeric) "no wrong stuff in your name plz"]
+      [:bday (date) "invalid date"]
       [:email (email) "invalid email"])
     
-    (defapp myapp {} contacts)
+    (defapp myapp
+            {:static-dir "custom_static_name"
+             :session-db (mongodb "anotherdb")
+             :auth-db mymongo}
+            contacts
+            (auth-routes {:db mymongo}))
+    
     (run-netty myapp {:port 8080})
 
 or something like that. You can do create/read/update/delete operations on the same resource with a browser (there are default HTML templates, like in Rails) or something that supports JSON or XML.

@@ -59,7 +59,7 @@
               (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth) :salt (:fixed-salt options "ringfingerFTW")})
               wrap-flash
               wrap-csrf
-              (wrap-session {:store (:session-db options (db-store inmem))})
+              (wrap-session {:store (db-store (:session-db options inmem))})
               wrap-params
               wrap-refcheck
               )]
