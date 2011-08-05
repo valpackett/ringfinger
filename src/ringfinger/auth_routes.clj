@@ -23,6 +23,7 @@
      (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
      [:form {:method "post" :action (:action stuff)}
       (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
+      [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
       [:button {:type "submit"} "Log in!"]]]])))
    :signup (fn [stuff] (hic/html5 [:html
     [:head [:title "Sign up"]
@@ -32,6 +33,7 @@
      (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
      [:form {:method "post" :action (:action stuff)}
       (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
+      [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
       [:button {:type "submit"} "Sign up!"]
       ]]]))
    :confirm (fn [stuff] (hic/html5 [:html
@@ -85,7 +87,7 @@
                          :headers {"Location" (getloc req)}
                          :body    nil}
                         cb))]
-    (list
+    (filter identity (list
       (route (str url-base "login")
         {:get (fn [req m]
                 (if-not-user req
@@ -95,6 +97,7 @@
                                              :data   {}
                                              :fields fieldhtml
                                              :flash  (:flash req)
+                                             :csrf-token (:csrf-token req)
                                              :action (get-action req redir-p)})}))
          :post (fn [req m]
                  (if-not-user req
@@ -109,6 +112,7 @@
                                                     :data   (merge form {:password nil})
                                                     :fields fieldhtml
                                                     :flash  (:login-invalid flash)
+                                                    :csrf-token (:csrf-token req)
                                                     :action (get-action req redir-p)})}
                          {:status  302
                           :headers {"Location" (getloc req)}
@@ -121,6 +125,7 @@
                                                   :data   form
                                                   :fields fieldhtml
                                                   :flash  (:flash req)
+                                                  :csrf-token (:csrf-token req)
                                                   :action (get-action req redir-p)})}))))})
       (route (str url-base "logout")
         {:get (fn [req m]
@@ -155,6 +160,7 @@
                    :body    ((:signup views) {:errors {}
                                               :data   {}
                                               :fields fieldhtml
+                                              :csrf-token (:csrf-token req)
                                               :flash  (:flash req)
                                               :action (get-action req redir-p)})}))
           :post (if confirm
@@ -182,6 +188,7 @@
                                                        :data   form
                                                        :fields fieldhtml
                                                        :flash  (:flash req)
+                                                       :csrf-token (:csrf-token req)
                                                        :action (get-action req redir-p)})}))))
                    (fn [req m]
                      (if-not-user req
@@ -200,4 +207,5 @@
                                                        :data   form
                                                        :fields fieldhtml
                                                        :flash  (:flash req)
-                                                       :action (get-action req redir-p)})})))))}))))
+                                                       :csrf-token (:csrf-token req)
+                                                       :action (get-action req redir-p)})})))))})))))
