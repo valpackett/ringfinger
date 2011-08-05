@@ -11,17 +11,12 @@
 (deftest right-method
   (is (= (testapp (request :get "/test/hello"))
          {:status  200
-          :headers {"Content-Type" "text/plain"}
+          :headers {"Content-Length" "9"
+                    "Content-Type" "text/plain"}
           :body    "Yo: hello"})))
 
 (deftest wrong-method
-  (is (= (testapp (request :post "/test/hello"))
-         {:status  405
-          :headers {"Content-Type" "text/plain"}
-          :body    "405 Method Not Allowed"})))
+  (is (= (:status (testapp (request :post "/test/hello"))) 405)))
 
 (deftest wrong-url
-  (is (= (testapp (request :get "/test"))
-         {:status  404
-          :headers {"Content-Type" "text/plain"}
-          :body    "404 Not Found"})))
+  (is (= (:status (testapp (request :get "/test"))) 404)))

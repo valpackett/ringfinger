@@ -128,7 +128,7 @@
        (let [ks (keys data)]
          (zipmap ks
                  (map (fn [k v]
-                        (if (= v "") v
+                        (if (or (= v "") (nil? v)) v
                           (if-let [f (get hs k)]
                             (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
                             v))) ks (vals data)))))))

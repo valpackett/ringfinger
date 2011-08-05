@@ -38,14 +38,11 @@
                             :state "false"}))]
     (is (= (:status res 201)))
     (is (= (get (:headers res) "Location") "/todos/test?format=json")))
-  (is (= (testapp (body (request :post "/todos?format=json") {:state "false"}))
-         {:status  400
-          :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body    "{\"body\":[\"should be present\"]}"}))
-  (is (= (testapp (header (request :post "/todos") "Accept" "application/xml"))
-         {:status  400
-          :headers {"Content-Type" "application/xml; charset=utf-8"}
-          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"}))
+  (let [res (testapp (body (request :post "/todos?format=json") {:state "false"}))]
+    (is (= (:status res) 400))
+    (is (= (:body res) "{\"body\":[\"should be present\"]}")))
+  (is (= (:body (testapp (header (request :post "/todos") "Accept" "application/xml")))
+          "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"))
   (is (= (:status (testapp (body (request :post "/hooked?format=json") {:name "test"}))) 201))
   (is (= (:status (testapp (body (authd (request :post "/owned?format=json")) {:name "sup"}))) 201)))
 
@@ -60,32 +57,22 @@
   (is (= (:status (testapp (body (authd (request :put "/owned/sup?format=json")) {:name "wassup"}))) 302)))
 
 (deftest t-show
-  (is (= (testapp (request :get "/todos/test?format=json"))
-         {:status  200
-          :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body    "{\"body\":\"test\",\"state\":true}"}))
-  (is (= (testapp (header (request :get "/todos/test") "Accept" "application/xml"))
-          {:status  200
-          :headers {"Content-Type" "application/xml; charset=utf-8"}
-          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body>test</body><state>true</state></response>"}))
+  (is (= (:body (testapp (request :get "/todos/test?format=json")))
+          "{\"body\":\"test\",\"state\":true}"))
+  (is (= (:body (testapp (header (request :get "/todos/test") "Accept" "application/xml")))
+          "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body>test</body><state>true</state></response>"))
   (is (= (:body (testapp (request :get "/hooked/test2?format=json")))
          "{\"onput\":\"put\",\"onpost\":\"posted\",\"ondata\":\"yo\",\"name\":\"test2\"}"))
   (is (= (:body (testapp (request :get "/owned/wassup?format=json")))
          "{\"owner\":\"test\",\"name\":\"wassup\"}")))
 
 (deftest t-index
-  (is (= (testapp (request :get "/todos?format=json"))
-         {:status  200
-          :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body    "[{\"body\":\"test\",\"state\":true}]"}))
-  (is (= (testapp (request :get "/todos?format=json&query_state_ne=true"))
-         {:status  200
-          :headers {"Content-Type" "application/json; charset=utf-8"}
-          :body    "[]"}))
-  (is (= (testapp (header (request :get "/todos") "Accept" "application/xml"))
-         {:status  200
-          :headers {"Content-Type" "application/xml; charset=utf-8"}
-          :body    "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><body>test</body><state>true</state></entry></response>"})))
+  (is (= (:body (testapp (request :get "/todos?format=json")))
+          "[{\"body\":\"test\",\"state\":true}]"))
+  (is (= (:body (testapp (request :get "/todos?format=json&query_state_ne=true")))
+          "[]"))
+  (is (= (:body (testapp (header (request :get "/todos") "Accept" "application/xml")))
+          "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><body>test</body><state>true</state></entry></response>")))
 
 (deftest t-delete
   (let [res (testapp (request :delete "/todos/test?format=json"))]

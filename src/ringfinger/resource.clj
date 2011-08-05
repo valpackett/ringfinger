@@ -77,6 +77,7 @@
         fields-data-hook (data-hook-from-fields fields)
         fields-get-hook (get-hook-from-fields fields)
         req-fields (required-fields-of fields)
+        blank-entry (zipmap req-fields (repeat ""))
         whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))] ; cut off :csrftoken, don't allow users to store everything
                     (concat w (map #(keyword (as-str % "_slug")) w)))
         default-data {:collname collname :pk pk :fields fieldhtml}
@@ -101,7 +102,7 @@
         put-hook  #(-> % clear-form fields-data-hook user-data-hook user-put-hook)
         get-hook  #(-> % user-get-hook fields-get-hook)
         i-validate (fn [req data yep nope]
-                     (let [ks (filter #(or (boolean (some #{%} req-fields)) (not (= (get data %) ""))) (keys data))
+                     (let [ks (filter #(or (boolean (some #{%} req-fields)) (not (or (= (get data %) "") (nil? (get data %))))) (keys data))
                            result (apply validate (select-keys data ks)
                                          (filter #(boolean (some #{(first %)} ks)) valds))]
                        (if (= result nil) (yep) (nope result))))
@@ -141,7 +142,7 @@
                           {"html" html-index}
                           "html"))
           :post (fn [req matches]
-                  (let [form  (keywordize (:form-params req))
+                  (let [form  (merge blank-entry (keywordize (:form-params req)))
                         entry (typeize (process-new req form))]
                     (i-validate req form
                       (fn []
