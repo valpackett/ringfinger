@@ -136,9 +136,8 @@
        (route urlbase
          {:get (fn [req matches]
                  (respond req 200
-                          {:flash (:flash req)
-                           :csrf-token (:csrf-token req)
-                           :data  (map get-hook (get-many store coll (i-get-dboptions req)))}
+                          {:req  req
+                           :data (map get-hook (get-many store coll (i-get-dboptions req)))}
                           {"html" html-index}
                           "html"))
           :post (fn [req matches]
@@ -153,8 +152,7 @@
                         (respond req 400
                                  {:data (map get-hook (get-many store coll (i-get-dboptions req)))
                                   :newdata form
-                                  :csrf-token (:csrf-token req)
-                                  :flash  (:flash req)
+                                  :req req
                                   :errors errors}
                                  {"html" html-index}
                                  "html")))))})
@@ -164,12 +162,11 @@
                    (if entry
                      (respond req 200
                               {:data (get-hook entry)
-                               :csrf-token (:csrf-token req)
-                               :flash (:flash req)}
+                               :req req}
                               {"html" html-get}
                               "html")
                      (respond req 404
-                              {:flash (:flash req)}
+                              {:req req}
                               {"html" html-not-found}
                               "html"))))
           :put (fn [req matches]
@@ -187,8 +184,7 @@
                          (fn [errors]
                            (respond req 400
                                     {:data (merge orig form) ; with form! so users can correct errors
-                                     :flash  (:flash req)
-                                     :csrf-token (:csrf-token req)
+                                     :req req
                                      :errors errors}
                                     {"html" html-get}
                                     "html")))))))

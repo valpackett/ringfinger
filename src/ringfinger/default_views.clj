@@ -4,10 +4,11 @@
         (hiccup core page-helpers)))
 
 (defn p-flash [stuff]
-  (if (:flash stuff) [:div {:class "flash"} (:flash stuff)]))
+  (let [f (get-in stuff [:req :flash])]
+    (if f [:div {:class "flash"} f])))
 
 (defn p-csrftoken [stuff]
-  [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}])
+  [:input {:type "hidden" :name "csrftoken" :value (get-in stuff [:req :csrf-token])}])
 
 (defn default-index [stuff]
   (let [collname   (:collname stuff)

@@ -97,8 +97,7 @@
                    :body    ((:login views) {:errors {}
                                              :data   {}
                                              :fields fieldhtml
-                                             :flash  (:flash req)
-                                             :csrf-token (:csrf-token req)
+                                             :req    req
                                              :action (get-action req redir-p)})}))
          :post (fn [req m]
                  (if-not-user req
@@ -112,8 +111,7 @@
                           :body    ((:login views) {:errors {}
                                                     :data   (merge form {:password nil})
                                                     :fields fieldhtml
-                                                    :flash  (:login-invalid flash)
-                                                    :csrf-token (:csrf-token req)
+                                                    :req    req
                                                     :action (get-action req redir-p)})}
                          {:status  302
                           :headers {"Location" (getloc req)}
@@ -125,8 +123,7 @@
                         :body    ((:login views) {:errors fval
                                                   :data   form
                                                   :fields fieldhtml
-                                                  :flash  (:flash req)
-                                                  :csrf-token (:csrf-token req)
+                                                  :req    req
                                                   :action (get-action req redir-p)})}))))})
       (route (str url-base "logout")
         {:get (fn [req m]
@@ -161,8 +158,7 @@
                    :body    ((:signup views) {:errors {}
                                               :data   {}
                                               :fields fieldhtml
-                                              :csrf-token (:csrf-token req)
-                                              :flash  (:flash req)
+                                              :req    req
                                               :action (get-action req redir-p)})}))
           :post (if confirm
                    (fn [req m]
@@ -182,14 +178,13 @@
                               {:status  200
                                :headers {"Content-Type" "text/html; encoding=utf-8"}
                                :body    ((:confirm views) {:data  form
-                                                           :flash (:flash req)})})
+                                                           :req    req})})
                             {:status  400
                              :headers {"Content-Type" "text/html; encoding=utf-8"}
                              :body    ((:signup views) {:errors fval
                                                         :data   form
                                                         :fields fieldhtml
-                                                        :flash  (:flash req)
-                                                        :csrf-token (:csrf-token req)
+                                                        :req    req
                                                         :action (get-action req redir-p)})}))))
                    (fn [req m]
                      (if-not-user req
@@ -207,6 +202,5 @@
                              :body    ((:signup views) {:errors fval
                                                         :data   form
                                                         :fields fieldhtml
-                                                        :flash  (:flash req)
-                                                        :csrf-token (:csrf-token req)
+                                                        :req    req
                                                         :action (get-action req redir-p)})})))))})))))
