@@ -1,5 +1,5 @@
 (ns ringfinger.auth-routes
-  (:use (ringfinger auth core util db email fields default-views),
+  (:use (ringfinger auth core util db fields default-views),
         ringfinger.db.inmem,
         valip.core)
   (:require [clojure.contrib.string :as cstr]
@@ -168,13 +168,13 @@
                           (if (nil? fval)
                             (let [akey (str (UUID/randomUUID))
                                   user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form) fixed-s)]
-                              (send-mail (:mailer confirm)
-                                         (:from confirm)
-                                         (get form (:email-field confirm :username))
-                                         (:subject confirm)
-                                         ((:mail-template confirm demo-mail-template)
-                                            {:data  form
-                                             :url   (str (cstr/as-str (:scheme req)) "://" (get (:headers req) "host") url-base "confirm/" akey "?" redir-p "=" (getloc req))}))
+                              ((:mailer confirm)
+                               (:from confirm)
+                               (get form (:email-field confirm :username))
+                               (:subject confirm)
+                               ((:mail-template confirm demo-mail-template)
+                                  {:data  form
+                                   :url   (str (cstr/as-str (:scheme req)) "://" (get (:headers req) "host") url-base "confirm/" akey "?" redir-p "=" (getloc req))}))
                               {:status  200
                                :headers {"Content-Type" "text/html; encoding=utf-8"}
                                :body    ((:confirm views) {:data  form
