@@ -88,7 +88,7 @@
                          :headers {"Location" (getloc req)}
                          :body    nil}
                         cb))]
-    (filter identity (list
+    (list
       (route (str url-base "login")
         {:get (fn [req m]
                 (if-not-user req
@@ -203,4 +203,4 @@
                                                         :data   form
                                                         :fields fieldhtml
                                                         :req    req
-                                                        :action (get-action req redir-p)})})))))})))))
+                                                        :action (get-action req redir-p)})})))))}))))

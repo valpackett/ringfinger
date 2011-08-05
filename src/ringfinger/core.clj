@@ -6,6 +6,21 @@
 (defmacro if-env "Checks if the current RING_ENV == env" [env yep nope]
   `(if (= (or (System/getenv "RING_ENV") "development") ~env) ~yep ~nope))
 
+(defn wrap-length
+  "Ring middleware for adding Content-Length"
+  [handler]
+  (fn [req]
+    (let [res (handler req)]
+      (assoc-in res [:headers "Content-Length"] (str (count (:body res)))))))
+
+(defn wrap-head
+  "Ring middleware for handling HEAD requests properly"
+  [handler]
+  (fn [req]
+    (if (= (:request-method req) :head)
+      (assoc (handler (assoc req :request-method :get)) :body "")
+      (handler req))))
+
 (defn method-na-handler [req matches]
   {:status  405
    :headers {"Content-Type" "text/plain"}
@@ -18,29 +33,20 @@
                :headers {"Content-Type" "text/plain"}
                :body    "404 Not Found"})})
 
-(defmacro head-handler
-  "Creates a handler for HEAD requests from a GET request handler"
-  [get-handler]
-  `(fn [req# matches#]
-    (let [result# (~get-handler req# matches#)]
-      {:status  (:status result#)
-       :headers (assoc (:headers result#) "Content-Length" (str (count (:body result#))))
-       :body    nil})))
-
 (def default-handlers
-  (zipmap [:get :options :put :post :delete] (repeat method-na-handler)))
+  (zipmap [:get :put :post :delete :options :trace :connect] (repeat method-na-handler)))
 
 (defn route
   "Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format and a map of handlers
   eg. {:get (fn [req matches] {:status 200 :body nil})}"
   [url handlers]
-  {:route   (route-compile url)
-   :handler (fn [req matches]
-              (let [rm       (or (get-in req [:headers "x-http-method-override"])
-                                 (get-in req [:query-params "_method"]))
-                    handlers (merge default-handlers handlers)
-                    method   (if rm (keyword rm) (:request-method req))]
-                      ((if (= method :head) (head-handler (:get handlers)) (get handlers method)) req matches)))})
+  (let [handlers (merge default-handlers handlers)]
+    {:route   (route-compile url)
+     :handler (fn [req matches]
+                (let [rm       (or (get-in req [:headers "x-http-method-override"])
+                                   (get-in req [:query-params "_method"]))
+                      method   (if rm (keyword rm) (:request-method req))]
+                    ((get handlers method) req matches)))}))
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
@@ -53,7 +59,7 @@
    :static-dir -- directory with static files for serving them in development
    :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default"
   [options & routes]
-  (let [allroutes (concat (flatten routes) (list not-found-route))
+  (let [allroutes (concat (filter identity (flatten routes)) (list not-found-route))
         rmf (if (= (:memoize-routing options true) true) (memoize route-matches) route-matches)
         h (-> (fn [req]
                 (let [route (first (filter #(rmf (:route %) req) allroutes))]
@@ -63,6 +69,8 @@
               wrap-csrf
               (wrap-session {:store (:session-store options (db-store (:session-db options inmem)))})
               wrap-params
+              wrap-length
+              wrap-head
               wrap-refcheck
               )]
     (if-env "development"
