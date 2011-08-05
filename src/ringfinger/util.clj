@@ -16,8 +16,8 @@
         (instance? DateTime s) (to-date s)
         (= s "true") true
         (= s "false") false
-        (integer-string? s) (Integer/parseInt s)
-        (decimal-string? s) (Double/parseDouble s)
+        (integer-string? (str s)) (Integer/parseInt s)
+        (decimal-string? (str s)) (Double/parseDouble s)
         :else s))
 
 (defmacro keywordize

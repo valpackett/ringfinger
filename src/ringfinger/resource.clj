@@ -97,9 +97,8 @@
         user-post-hook (get-in options [:hooks :create]  identity)
         user-put-hook  (get-in options [:hooks :update]  identity)
         user-get-hook  (get-in options [:hooks :read]    identity)
-        data-hook #(-> % clear-form fields-data-hook user-data-hook)
-        post-hook #(-> % data-hook user-post-hook)
-        put-hook  #(-> % data-hook user-put-hook)
+        post-hook #(-> % clear-form fields-data-hook user-data-hook user-post-hook)
+        put-hook  #(-> % clear-form fields-data-hook user-data-hook user-put-hook)
         get-hook  #(-> % user-get-hook fields-get-hook)
         i-validate (fn [req data yep nope]
                      (let [ks (filter #(or (boolean (some #{%} req-fields)) (not (= (get data %) ""))) (keys data))
@@ -144,11 +143,11 @@
                           "html"))
           :post (fn [req matches]
                   (let [form  (keywordize (:form-params req))
-                        entry (process-new req form)]
+                        entry (typeize (process-new req form))]
                     (i-validate req form
                       (fn []
                         ((:create channels) entry)
-                        (create store coll (typeize entry))
+                        (create store coll entry)
                         (i-redirect req entry flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
                         (respond req 400
@@ -175,16 +174,15 @@
                               "html"))))
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
-                       entry (i-get-one matches)
-                       pre (put-hook form)
-                       merged (merge entry pre)
-                       final (typeize pre)]
-                   (if-allowed req entry
+                       orig (i-get-one matches)
+                       diff (typeize (put-hook form))
+                       merged (merge orig diff)]
+                   (if-allowed req orig
                      (fn []
                        (i-validate req form
                          (fn []
-                           ((:update channels) pre)
-                           (update store coll entry final)
+                           ((:update channels) merged)
+                           (update store coll orig diff)
                            (i-redirect req merged flash-updated 302))
                          (fn [errors]
                            (respond req 400

@@ -110,13 +110,13 @@
   (let [h (group-by first (map #(assoc % 1 (:view (second %) str)) fields))
         hs (zipmap (keys h) (map #(map second %) (vals h)))]
      (fn [data]
-       (let [vs (select-keys data (filter #(not (= "" (get data %))) (keys data)))
-             ks (keys vs)]
+       (let [ks (keys data)]
         (zipmap ks
                 (map (fn [k v]
-                       (if-let [f (get hs k)]
-                         (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
-                         v)) ks (vals vs)))))))
+                       (if (or (nil? v) (= v "")) "" ; magic
+                         (if-let [f (get hs k)]
+                           (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
+                           v))) ks (vals data)))))))
 
 (defn data-hook-from-fields
   "Makes a data hook from a list of fields. You usually don't need to use it manually.
@@ -125,13 +125,13 @@
   (let [h (group-by first (map #(assoc % 1 (:hook (second %) identity)) fields))
         hs (zipmap (keys h) (map #(map second %) (vals h)))]
      (fn [data]
-       (let [vs (select-keys data (filter #(not (= "" (get data %))) (keys data)))
-             ks (keys vs)]
+       (let [ks (keys data)]
          (zipmap ks
                  (map (fn [k v]
-                        (if-let [f (get hs k)]
-                          (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
-                          v)) ks (vals vs)))))))
+                        (if (= v "") nil
+                          (if-let [f (get hs k)]
+                            (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
+                            v))) ks (vals data)))))))
 
 (defn required-fields-of
   "Returns a list of required fields' names from a list of fields, eg.
