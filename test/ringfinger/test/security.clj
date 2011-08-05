@@ -11,4 +11,4 @@
 (defapp testapp {:static-dir "src"} todos)
 
 (deftest t-refcheck
-  (is (= (:status (testapp (header (request :delete "/todos/test") "Referer" "http://hackersite.tld/wtf.php")) 403))))
+  (is (= (:status (testapp (header (request :delete "/todos/test") "Referer" "http://crackersite.tld/wtf.php")) 403))))
