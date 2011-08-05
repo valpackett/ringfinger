@@ -186,7 +186,7 @@
                            (i-redirect req merged flash-updated 302))
                          (fn [errors]
                            (respond req 400
-                                    {:data merged
+                                    {:data (merge orig form) ; with form! so users can correct errors
                                      :flash  (:flash req)
                                      :csrf-token (:csrf-token req)
                                      :errors errors}

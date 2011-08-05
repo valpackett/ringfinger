@@ -113,7 +113,7 @@
        (let [ks (keys data)]
         (zipmap ks
                 (map (fn [k v]
-                       (if (or (nil? v) (= v "")) "" ; magic
+                       (if (or (nil? v) (false? v) (= v "")) "" ; magic
                          (if-let [f (get hs k)]
                            (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
                            v))) ks (vals data)))))))
@@ -128,7 +128,7 @@
        (let [ks (keys data)]
          (zipmap ks
                  (map (fn [k v]
-                        (if (= v "") nil
+                        (if (= v "") v
                           (if-let [f (get hs k)]
                             (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
                             v))) ks (vals data)))))))
