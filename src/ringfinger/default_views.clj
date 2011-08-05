@@ -3,6 +3,12 @@
         ringfinger.util,
         (hiccup core page-helpers)))
 
+(defn p-flash [stuff]
+  (if (:flash stuff) [:div {:class "flash"} (:flash stuff)]))
+
+(defn p-csrftoken [stuff]
+  [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}])
+
 (defn default-index [stuff]
   (let [collname   (:collname stuff)
         pk         (:pk stuff)
@@ -14,10 +20,10 @@
              [:style default-style]]
       [:body
         [:h1 collname]
-        (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
+        (p-flash stuff)
         [:form {:method "post" :action ""}
           (form-fields fields (:newdata stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
-          [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
+          (p-csrftoken stuff)
           [:button {:type "submit"} "Add"]]
         [:table
           [:tr (map (fn [a] [:th a]) fieldnames)]
@@ -37,11 +43,11 @@
              [:style default-style]]
       [:body
         [:h1 [:a {:href (str "/" collname)} collname] (str " / " (get data pk))]
-        (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
+        (p-flash stuff)
         [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put")}
           (form-fields (:fields stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
-          [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
-       [:button {:type "submit"} "Save"]]]])))
+          (p-csrftoken stuff)
+          [:button {:type "submit"} "Save"]]]])))
 
 (defn default-not-found [stuff]
   (html5 [:html

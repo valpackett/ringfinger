@@ -1,5 +1,6 @@
 (ns ringfinger.auth-routes
-  (:use (ringfinger auth core util db email fields), ringfinger.db.inmem,
+  (:use (ringfinger auth core util db email fields default-views),
+        ringfinger.db.inmem,
         valip.core)
   (:require [clojure.contrib.string :as cstr]
             [hiccup.page-helpers    :as hic])
@@ -20,20 +21,20 @@
            [:style default-style]]
     [:body
      [:h1 "Log in"]
-     (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
+     (p-flash stuff)
      [:form {:method "post" :action (:action stuff)}
       (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
-      [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
+      (p-csrftoken stuff)
       [:button {:type "submit"} "Log in!"]]]])))
    :signup (fn [stuff] (hic/html5 [:html
     [:head [:title "Sign up"]
            [:style default-style]]
     [:body
      [:h1 "Sign up"]
-     (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
+     (p-flash stuff)
      [:form {:method "post" :action (:action stuff)}
       (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
-      [:input {:type "hidden" :name "csrftoken" :value (:csrf-token stuff)}]
+      (p-csrftoken stuff)
       [:button {:type "submit"} "Sign up!"]
       ]]]))
    :confirm (fn [stuff] (hic/html5 [:html
@@ -41,7 +42,7 @@
            [:style default-style]]
     [:body
      [:h1 "Confirm"]
-     (if (:flash stuff) [:div {:class "flash"} (:flash stuff)])
+     (p-flash stuff)
      "Check your email."
      ]]))
    })
@@ -184,12 +185,12 @@
                                                            :flash (:flash req)})})
                             {:status  400
                              :headers {"Content-Type" "text/html; encoding=utf-8"}
-                             :body    ((:login views) {:errors fval
-                                                       :data   form
-                                                       :fields fieldhtml
-                                                       :flash  (:flash req)
-                                                       :csrf-token (:csrf-token req)
-                                                       :action (get-action req redir-p)})}))))
+                             :body    ((:signup views) {:errors fval
+                                                        :data   form
+                                                        :fields fieldhtml
+                                                        :flash  (:flash req)
+                                                        :csrf-token (:csrf-token req)
+                                                        :action (get-action req redir-p)})}))))
                    (fn [req m]
                      (if-not-user req
                         (let [form (keywordize (:form-params req))
@@ -203,9 +204,9 @@
                                :body    nil})
                             {:status  400
                              :headers {"Content-Type" "text/html; encoding=utf-8"}
-                             :body    ((:login views) {:errors fval
-                                                       :data   form
-                                                       :fields fieldhtml
-                                                       :flash  (:flash req)
-                                                       :csrf-token (:csrf-token req)
-                                                       :action (get-action req redir-p)})})))))})))))
+                             :body    ((:signup views) {:errors fval
+                                                        :data   form
+                                                        :fields fieldhtml
+                                                        :flash  (:flash req)
+                                                        :csrf-token (:csrf-token req)
+                                                        :action (get-action req redir-p)})})))))})))))
