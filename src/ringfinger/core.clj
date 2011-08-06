@@ -1,6 +1,6 @@
 (ns ringfinger.core
   (:use clout.core,
-        [clojure.contrib.string :only [lower-case]],
+        [clojure.string :only [lower-case]],
         (ring.middleware params session stacktrace flash file),
         (ringfinger session security auth), ringfinger.db.inmem))
 
