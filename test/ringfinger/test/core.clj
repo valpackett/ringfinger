@@ -2,6 +2,11 @@
   (:use ringfinger.core, clojure.test, ring.mock.request))
 
 (defapp testapp {:static-dir "src"}
+  (route "/method"
+    {:get (fn [req matches]
+            {:status  200
+             :headers {"Content-Type" "text/plain"}
+             :body    ":get"})})
   (route "/test/:a"
     {:get (fn [req matches]
             {:status  200
@@ -17,6 +22,10 @@
 
 (deftest wrong-method
   (is (= (:status (testapp (request :post "/test/hello"))) 405)))
+
+(deftest method-override
+  (is (= (:body (testapp (header (request :delete "/method") "X-HTTP-Method-Override" "GET"))) ":get"))
+  (is (= (:body (testapp (request :post "/method?_method=get"))) ":get")))
 
 (deftest wrong-url
   (is (= (:status (testapp (request :get "/test"))) 404)))
