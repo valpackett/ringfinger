@@ -22,6 +22,16 @@
       (assoc (handler (assoc req :request-method :get)) :body "")
       (handler req))))
 
+(defn wrap-jsonp
+  "Ring middleware for handling JSONP requests"
+  [handler callback-param]
+  (fn [req]
+    (let [res (handler req)]
+      (if-let [cb (get-in req [:query-params callback-param])]
+        (assoc (assoc-in res [:headers "Content-Type"] "text/javascript; charset=utf-8")
+               :body (str cb "(" (:body res) ")"))
+        res))))
+
 (defn method-na-handler [req matches]
   {:status  405
    :headers {"Content-Type" "text/plain"}
@@ -58,6 +68,7 @@
    :session-db -- database for session middleware OR
    :session-store -- SessionStore for session middleware, eg. for using the Redis store
    :static-dir -- directory with static files for serving them in development
+   :callback-param -- parameter for JSONP callbacks, default is 'callback'
    :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default"
   [options & routes]
   (let [allroutes (concat (filter identity (flatten routes)) (list not-found-route))
@@ -69,6 +80,7 @@
               wrap-flash
               wrap-csrf
               (wrap-session {:store (:session-store options (db-store (:session-db options inmem)))})
+              (wrap-jsonp (:callback-param options "callback"))
               wrap-params
               wrap-length
               wrap-head

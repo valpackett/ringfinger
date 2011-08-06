@@ -27,5 +27,10 @@
   (is (= (:body (testapp (header (request :delete "/method") "X-HTTP-Method-Override" "GET"))) ":get"))
   (is (= (:body (testapp (request :post "/method?_method=get"))) ":get")))
 
+(deftest jsonp
+  (let [res (testapp (request :get "/method?format=json&callback=my_cb"))]
+    (is (= (get-in res [:headers "Content-Type"] "text/javascript; charset=utf-8")))
+    (is (= (:body res) "my_cb(:get)")))) ; bad example :-)
+
 (deftest wrong-url
   (is (= (:status (testapp (request :get "/test"))) 404)))
