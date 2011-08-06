@@ -1,5 +1,6 @@
 (ns ringfinger.core
   (:use clout.core,
+        [clojure.contrib.string :only [lower-case]],
         (ring.middleware params session stacktrace flash file),
         (ringfinger session security auth), ringfinger.db.inmem))
 
@@ -45,7 +46,7 @@
      :handler (fn [req matches]
                 (let [rm       (or (get-in req [:headers "x-http-method-override"])
                                    (get-in req [:query-params "_method"]))
-                      method   (if rm (keyword rm) (:request-method req))]
+                      method   (if rm (keyword (lower-case rm)) (:request-method req))]
                     ((get handlers method) req matches)))}))
 
 (defn app
