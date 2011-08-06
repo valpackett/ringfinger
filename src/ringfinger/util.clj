@@ -47,5 +47,10 @@
   ; TODO: better way? finer regexp?
   (boolean (re-matches #"(Mozilla|Opera).*" (get-in req [:headers "user-agent"] ""))))
 
+(defn is-xhr?
+  "Returns true if the request is made by an XMLHttpRequest"
+  [req]
+  (= (get-in req [:headers "x-requested-with"] "") "XMLHttpRequest"))
+
 (def default-style
   (slurp (io/resource "default.css")))
