@@ -3,15 +3,15 @@
         [clojure.contrib.string :only [substring?]]))
 
 (defprotocol Output
-  (render [self status data]))
+  (render [self status headers data]))
 
 (defmacro errors-or-data [data]
   `(let [errs# (:errors ~data)] (if errs# errs# (:data ~data))))
 
 (def json (reify Output
-  (render [self status data]
+  (render [self status headers data]
           {:status  status
-           :headers {"Content-Type" "application/json; charset=utf-8"}
+           :headers (merge {"Content-Type" "application/json; charset=utf-8"} headers)
            :body    (json-str (errors-or-data data))})))
 
 ; I HATE YOU, XML
@@ -22,16 +22,16 @@
           :else     (map (fn [e] [:entry (map vec e)]) dt))))
 
 (def xml  (reify Output
-  (render [self status data]
+  (render [self status headers data]
           {:status  status
-           :headers {"Content-Type" "application/xml; charset=utf-8"}
+           :headers (merge {"Content-Type" "application/xml; charset=utf-8"} headers)
            :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
                          (with-out-str (prxml [:response (to-xml data)])))})))
 
 (deftype HTMLOutput [view default-data] Output
-  (render [self status data]
+  (render [self status headers data]
           {:status  status
-           :headers {"Content-Type" "text/html; charset=utf-8"}
+           :headers (merge {"Content-Type" "text/html; charset=utf-8"} headers)
            :body    (view (merge default-data data))}))
 
 (defn html-output [view dd] (HTMLOutput. view dd))

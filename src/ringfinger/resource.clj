@@ -8,7 +8,7 @@
   (let [fmt (get-in req [:query-params "format"])]
     (if fmt (str "?format=" fmt) nil)))
 
-(defmacro respond [req status data outputs default]
+(defmacro respond [req status headers data outputs default]
   `(render
      (getoutput
        (first
@@ -19,7 +19,7 @@
              ~default
            )))
      ~outputs)
-   ~status ~data))
+   ~status ~headers ~data))
 
 (defmacro qs [a] `(keyword (str "$" ~a)))
 
@@ -136,7 +136,7 @@
      (list
        (route urlbase
          {:get (fn [req matches]
-                 (respond req 200
+                 (respond req 200 {"Link" (str "<" urlbase "/{" (as-str pk) "}>; rel=\"entry\"")}
                           {:req  req
                            :data (map get-hook (get-many store coll (i-get-dboptions req)))}
                           {"html" html-index}
@@ -150,7 +150,7 @@
                         (create store coll entry)
                         (i-redirect req entry flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
-                        (respond req 400
+                        (respond req 400 {}
                                  {:data (map get-hook (get-many store coll (i-get-dboptions req)))
                                   :newdata form
                                   :req req
@@ -161,12 +161,12 @@
          {:get (fn [req matches]
                  (let [entry (i-get-one matches)]
                    (if entry
-                     (respond req 200
+                     (respond req 200 {}
                               {:data (get-hook entry)
                                :req req}
                               {"html" html-get}
                               "html")
-                     (respond req 404
+                     (respond req 404 {}
                               {:req req}
                               {"html" html-not-found}
                               "html"))))
@@ -183,7 +183,7 @@
                            (update store coll orig diff)
                            (i-redirect req merged flash-updated 302))
                          (fn [errors]
-                           (respond req 400
+                           (respond req 400 {}
                                     {:data (merge orig form) ; with form! so users can correct errors
                                      :req req
                                      :errors errors}
