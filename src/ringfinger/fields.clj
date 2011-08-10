@@ -3,6 +3,16 @@
         (clj-time format coerce))
   (:require [valip.predicates :as v]))
 
+; FORMAT:
+; {:html {:_render -- custom renderer}
+;  :pred -- predicate
+;  :req  -- is required?
+;  :default -- default, for put requests
+;  :pre-hook -- hook that's executed BEFORE user hooks
+;  :post-hook -- AFTER user hooks
+;  :view -- get hook
+; }
+
 (defn required "Validates presence" []
   {:html {:required "required"}
    :pred v/present?
@@ -18,7 +28,7 @@
                                     (if (= value "true") {:checked "checked"} nil)
                                     attrs)])}
    :default ""
-   :hook #(if (= % "on") true false)})
+   :pre-hook #(if (= % "on") true false)})
 
 (defn alphanumeric "Validates alphanumeric strings" []
   (pattern #"[0-9a-zA-Z]+"))
@@ -63,25 +73,27 @@
 
 (defn date "Validates/parses/outputs dates" []
   {:html {:type "date"}
-   :hook #(try (parse (:date formatters) %) ; returns Joda DateTime
-            (catch IllegalArgumentException ex
-              nil))
-   :view #(unparse (:date formatters) %);(from-date %)) ; gets java.util.Date
+   :pre-hook #(try (parse (:date formatters) %) ; returns Joda DateTime
+                (catch IllegalArgumentException ex
+                  nil))
+   :post-hook to-date
+   :view #(unparse (:date formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
 (def #^{:private true} time-hhmm-fmt (formatter "HH:mm"))
 
 (defn time-field "Validates/parses/outputs times" []
   {:html {:type "time"}
-   :hook #(try (parse (:time-parser formatters) %) ; returns Joda DateTime
-            (catch IllegalArgumentException ex
-              nil))
-   :view #(unparse time-hhmm-fmt %);(from-date %)) ; gets java.util.Date
+   :pre-hook #(try (parse (:time-parser formatters) %) ; returns Joda DateTime
+                (catch IllegalArgumentException ex
+                  nil))
+   :post-hook to-date
+   :view #(unparse time-hhmm-fmt (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{2}:[0-9]{2}" %))})
 
 (defn number "Validates integer numbers" []
   {:html {:type "number"}
-   :hook #(Integer/parseInt %)
+   :pre-hook #(Integer/parseInt %)
    :pred v/integer-string?})
 
 (defn nmin "Sets the minimum number to the given one" [n]
