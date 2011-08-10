@@ -22,7 +22,7 @@
         [:h1 collname]
         (p-flash stuff)
         [:form {:method "post" :action ""}
-          (form-fields fields (:newdata stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
+          (form-fields fields (:newdata stuff) (:errors stuff) [:div] [:div {:class "error"}] :label)
           (p-csrftoken stuff)
           [:button {:type "submit"} "Add"]]
         [:table

@@ -12,6 +12,15 @@
   {:html {:pattern (str re)}
    :pred #(boolean (re-matches re %))})
 
+(defn checkbox "A boolean field" []
+  {:html {:_render (fn [title value attrs]
+                      (list ; FIXME: we can do better
+                        [:input {:name title :type "hidden" :value ""}]
+                        [:input (merge {:id title :name title :type "checkbox"}
+                                       (if (= value "true") {:checked "checked"} nil)
+                                       attrs)]))}
+   :hook #(if (= % ["" "on"]) true false)})
+
 (defn alphanumeric "Validates alphanumeric strings" []
   (pattern #"[0-9a-zA-Z]+"))
 
