@@ -22,8 +22,9 @@
 
 (defn defaults-from-fields
   [fields]
-  (let [v (group-by first fields)]
-    (sorted-zipmap (keys v) (map (fn [a] (first (map #(:default (second %)) a))) (vals v)))))
+  (let [v (group-by first fields)
+        r (sorted-zipmap (keys v) (map (fn [a] (first (map #(:default (second %)) a))) (vals v)))]
+    (select-keys r (filter identity (map #(if (nil? (get r %)) nil %) (keys r))))))
 
 (defn- make-reducer [fields thing default]
   (let [h (group-by first (map #(assoc % 1 (thing (second %) default)) fields))

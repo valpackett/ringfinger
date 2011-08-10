@@ -144,9 +144,9 @@
                           {"html" html-index}
                           "html"))
           :post (fn [req matches]
-                  (let [form  (merge blank-entry (keywordize (:form-params req)))
+                  (let [form  (keywordize (:form-params req))
                         entry (process-new req form)]
-                    (i-validate req form
+                    (i-validate req (merge blank-entry form)
                       (fn []
                         ((:create channels) entry)
                         (create store coll entry)
