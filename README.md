@@ -1,7 +1,7 @@
 # ringfinger #
 Fun, fast, secure web development on top of [Clojure](http://clojure.org)/[Ring](https://github.com/mmcgrana/ring).
-A framework for the age of non-relational databases, content delivery networks, cloud hosting, HTML5 and coffee,
-Named after a great Nine Inch Nails song.
+A framework for the age of non-relational databases, content delivery networks, cloud hosting, HTML5 and coffee.
+InstaRESTful, if you like the hipster-speak. Named after a great Nine Inch Nails song.
 Not ready yet, but a lot of things work, including MongoDB support, ready-to-use customizable login/signup system and more.
 
 ## Get excited ##
@@ -41,6 +41,7 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
 - pagination link (including HTTP Link header) helpers
 - enlive views quick builder
+- cyrillic transliteration for slugs
 - automatic "API docs" route for resources w/ examples & insert fake data route in dev mode, both using faker
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - live reloader (long poll, on disconnect: try to reconnect, when server is up, reload)
