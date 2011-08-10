@@ -20,7 +20,8 @@
   {:html {:type "text"}})
 
 (defn textarea "textarea" []
-  {:html {:_element "textarea"}})
+  {:html {:_element "textarea"
+          :_value_inside true}})
 
 (defn maxlength "Sets the maximum length to the given number" [n]
   {:html {:maxlength n}
@@ -153,9 +154,11 @@
   [fields-html data errors wrap-html err-html style]
   `(map (fn [f# fval#] (let [title# (as-str f#)] (conj ~wrap-html
     (if (= ~style :label) [:label {:for title#} title#] nil)
-    [(:_element fval# :input)
-     (merge {:name title# :id title# :value (as-str (get ~data f#))}
-            (if (= ~style :placeholder) {:placeholder title#} nil)
-            (dissoc fval# :_element))]
+    (let [value# (as-str (get ~data f#))]
+      [(:_element fval# :input)
+       (merge {:name title# :id title# :value (if (:_value_inside fval#) nil value#)}
+              (if (= ~style :placeholder) {:placeholder title#} nil)
+              (dissoc fval# :_element :_value_inside))
+       (if (:_value_inside fval#) value#)])
     (if (get ~errors f#) (conj ~err-html (map as-str (get ~errors f#))) nil)
   ))) (keys ~fields-html) (vals ~fields-html)))
