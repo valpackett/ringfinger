@@ -16,6 +16,12 @@
 (defn alphanumeric "Validates alphanumeric strings" []
   (pattern #"[0-9a-zA-Z]+"))
 
+(defn text "input type=text" []
+  {:html {:type "text"}})
+
+(defn textarea "textarea" []
+  {:html {:_element "textarea"}})
+
 (defn maxlength "Sets the maximum length to the given number" [n]
   {:html {:maxlength n}
    :pred #(<= (count %) n)})
@@ -147,8 +153,9 @@
   [fields-html data errors wrap-html err-html style]
   `(map (fn [f# fval#] (let [title# (as-str f#)] (conj ~wrap-html
     (if (= ~style :label) [:label {:for title#} title#] nil)
-    ; TODO: different tags (eg. textarea) via :_element in fval#
-    [:input (merge {:name title# :id title# :value (as-str (get ~data f#))}
-                    (if (= ~style :placeholder) {:placeholder title#} nil) fval#)]
+    [(:_element fval# :input)
+     (merge {:name title# :id title# :value (as-str (get ~data f#))}
+            (if (= ~style :placeholder) {:placeholder title#} nil)
+            (dissoc fval# :_element))]
     (if (get ~errors f#) (conj ~err-html (map as-str (get ~errors f#))) nil)
   ))) (keys ~fields-html) (vals ~fields-html)))
