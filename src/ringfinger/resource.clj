@@ -1,5 +1,5 @@
 (ns ringfinger.resource
-  (:use (ringfinger core db output util fields default-views)
+  (:use (ringfinger core db output util field-helpers default-views)
         valip.core,
         lamina.core,
         [clojure.contrib.string :only [as-str, split, substring?]]))

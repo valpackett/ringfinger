@@ -1,6 +1,5 @@
 (ns #^{:skip-wiki true} ringfinger.default-views
-  (:use [ringfinger.fields :only [form-fields]],
-        ringfinger.util,
+  (:use (ringfinger field-helpers util)
         (hiccup core page-helpers)))
 
 (defn p-flash [stuff]

@@ -1,5 +1,5 @@
 (ns ringfinger.auth-routes
-  (:use (ringfinger auth core util db fields default-views),
+  (:use (ringfinger auth core util db fields field-helpers default-views),
         ringfinger.db.inmem,
         valip.core)
   (:require [clojure.contrib.string :as cstr]
