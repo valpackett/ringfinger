@@ -14,12 +14,11 @@
 
 (defn checkbox "A boolean field" []
   {:html {:_render (fn [title value attrs]
-                      (list ; FIXME: we can do better
-                        [:input {:name title :type "hidden" :value ""}]
-                        [:input (merge {:id title :name title :type "checkbox"}
-                                       (if (= value "true") {:checked "checked"} nil)
-                                       attrs)]))}
-   :hook #(if (= % ["" "on"]) true false)})
+                     [:input (merge {:id title :name title :type "checkbox"}
+                                    (if (= value "true") {:checked "checked"} nil)
+                                    attrs)])}
+   :default ""
+   :hook #(if (= % "on") true false)})
 
 (defn alphanumeric "Validates alphanumeric strings" []
   (pattern #"[0-9a-zA-Z]+"))
@@ -66,8 +65,8 @@
   {:html {:type "date"}
    :hook #(try (parse (:date formatters) %) ; returns Joda DateTime
             (catch IllegalArgumentException ex
-              false))
-   :view #(unparse (:date formatters) (from-date %)) ; gets java.util.Date
+              nil))
+   :view #(unparse (:date formatters) %);(from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
 (def #^{:private true} time-hhmm-fmt (formatter "HH:mm"))
@@ -76,13 +75,13 @@
   {:html {:type "time"}
    :hook #(try (parse (:time-parser formatters) %) ; returns Joda DateTime
             (catch IllegalArgumentException ex
-              false))
-   :view #(unparse time-hhmm-fmt (from-date %)) ; gets java.util.Date
+              nil))
+   :view #(unparse time-hhmm-fmt %);(from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{2}:[0-9]{2}" %))})
 
 (defn number "Validates integer numbers" []
   {:html {:type "number"}
-   ;hook not needed, typeize parses this
+   :hook #(Integer/parseInt %)
    :pred v/integer-string?})
 
 (defn nmin "Sets the minimum number to the given one" [n]

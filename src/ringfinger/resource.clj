@@ -78,6 +78,7 @@
         fields-get-hook (get-hook-from-fields fields)
         req-fields (required-fields-of fields)
         blank-entry (zipmap req-fields (repeat ""))
+        default-entry (defaults-from-fields fields)
         whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))] ; cut off :csrftoken, don't allow users to store everything
                     (concat w (map #(keyword (as-str % "_slug")) w)))
         default-data {:collname collname :pk pk :fields fieldhtml}
@@ -143,7 +144,7 @@
                           "html"))
           :post (fn [req matches]
                   (let [form  (merge blank-entry (keywordize (:form-params req)))
-                        entry (typeize (process-new req form))]
+                        entry (process-new req form)]
                     (i-validate req form
                       (fn []
                         ((:create channels) entry)
@@ -173,7 +174,7 @@
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        orig (i-get-one matches)
-                       diff (typeize (put-hook form))
+                       diff (put-hook (merge default-entry form))
                        merged (merge orig diff)]
                    (if-allowed req orig
                      (fn []

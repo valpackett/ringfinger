@@ -20,6 +20,11 @@
   [fields]
   (map #(assoc % 1 (:pred (second %) (fn [a] true))) fields))
 
+(defn defaults-from-fields
+  [fields]
+  (let [v (group-by first fields)]
+    (sorted-zipmap (keys v) (map (fn [a] (first (map #(:default (second %)) a))) (vals v)))))
+
 (defn get-hook-from-fields
   "Makes a get hook from a list of fields. You usually don't need to use it manually.
   It's used by ringfinger.resource automatically"
@@ -30,7 +35,7 @@
        (let [ks (keys data)]
         (zipmap ks
                 (map (fn [k v]
-                       (if (or (nil? v) (false? v) (= v "")) "" ; magic
+                       (if (or (nil? v) (= v "")) "" ; magic
                          (if-let [f (get hs k)]
                            (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
                            v))) ks (vals data)))))))
