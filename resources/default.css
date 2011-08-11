@@ -40,7 +40,7 @@ input, textarea, .flash {
   border-radius: 5px;
   border: 1px solid #ada414;
 }
-form > div, button {
+form, form > div, button, table, .flash {
   clear: both;
 }
 .error, label {
@@ -93,7 +93,16 @@ tr:nth-child(even) {
 form, table, p, h1 {
   margin-bottom: 0.8em;
 }
+form {
+  overflow: hidden;
+}
+h1, button, .altact {
+  float: left;
+}
 h1:first-letter {
   font-size: 1.15em;
   line-height: -0.75em;
+}
+.user {
+  float: right;
 }

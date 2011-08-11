@@ -11,7 +11,7 @@
        (let [hdrs (:headers req)
              dmn  (str (cstr/as-str (:scheme req)) "://" (get hdrs "host"))
              rf   (get hdrs "referer" "")]
-         (if (cstr/substring? dmn rf)
+         (if (and (cstr/substring? dmn rf) (not (cstr/substring? "/login" rf)))
            (str "?" nm "=" (cstr/drop (count dmn) rf))
            ""))))
 
@@ -63,6 +63,7 @@
                                              :data   {}
                                              :fields fieldhtml
                                              :req    req
+                                             :urlb   url-base
                                              :action (get-action req redir-p)})}))
          :post (fn [req m]
                  (if-not-user req
@@ -76,7 +77,8 @@
                           :body    ((:login views) {:errors {}
                                                     :data   (merge form {:password nil})
                                                     :fields fieldhtml
-                                                    :req    req
+                                                    :req    (assoc req :flash (:login-invalid flash)) ; same page
+                                                    :urlb   url-base
                                                     :action (get-action req redir-p)})}
                          {:status  302
                           :headers {"Location" (getloc req)}
@@ -89,6 +91,7 @@
                                                   :data   form
                                                   :fields fieldhtml
                                                   :req    req
+                                                  :urlb   url-base
                                                   :action (get-action req redir-p)})}))))})
       (route (str url-base "logout")
         {:get (fn [req m]
@@ -124,6 +127,7 @@
                                               :data   {}
                                               :fields fieldhtml
                                               :req    req
+                                              :urlb   url-base
                                               :action (get-action req redir-p)})}))
           :post (if confirm
                    (fn [req m]
@@ -150,6 +154,7 @@
                                                         :data   form
                                                         :fields fieldhtml
                                                         :req    req
+                                                        :urlb   url-base
                                                         :action (get-action req redir-p)})}))))
                    (fn [req m]
                      (if-not-user req
@@ -168,4 +173,5 @@
                                                         :data   form
                                                         :fields fieldhtml
                                                         :req    req
+                                                        :urlb   url-base
                                                         :action (get-action req redir-p)})})))))}))))
