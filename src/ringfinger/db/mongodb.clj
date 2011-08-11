@@ -4,6 +4,8 @@
 (deftype MongoDB [conn] Database
   (create [self coll data]
     (with-mongo conn (insert! coll data)))
+  (create-many [self coll data]
+    (with-mongo conn (mass-insert! coll data)))
   (get-many [self coll options]
     (with-mongo conn (fetch coll :where (:query options)
                                  :one?  (:one?  options)

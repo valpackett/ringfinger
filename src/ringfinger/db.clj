@@ -2,11 +2,12 @@
   (:use ringfinger.util))
 
 (defprotocol Database
-  (create   [self coll data])
-  (get-many [self coll options])
-  (get-one  [self coll options])
-  (update   [self coll entry data])
-  (delete   [self coll entry]))
+  (create      [self coll data])
+  (create-many [self coll data])
+  (get-many    [self coll options])
+  (get-one     [self coll options])
+  (update      [self coll entry data])
+  (delete      [self coll entry]))
 
 ; For databases w/o built-in filters, eg. inmem
 ; TODO: implement more of

@@ -11,7 +11,13 @@
         (assoc @base coll (if (false? (coll base))
                               [data]
                               (conj (get @base coll) data))))))
-  (get-many [self coll options]
+  (create-many [self coll data]
+    (dosync
+      (ref-set base
+        (assoc @base coll (if (false? (coll base))
+                              data
+                              (concat (get @base coll) data))))))
+ (get-many [self coll options]
     (sort-maps (filter (make-filter (:query options))
                        (let [a (get @base coll)
                              s (:skip options)
