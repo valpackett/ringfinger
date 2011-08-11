@@ -30,9 +30,11 @@ Not ready yet, but a lot of things work, including MongoDB support, ready-to-use
     
    (serve myapp 3000)
 
-or something like that. You can do create/read/update/delete operations on the same resource with a browser (there are default HTML templates, like in Rails) or something that supports JSON or XML.
+or something like that. You can do create/read/update/delete operations on the same resource with a browser
+(there are default HTML templates, like in Rails) or something that supports JSON or XML.
 
-You can customize the behavior via hooks (eg. if you need to automatically add URL-friendly "slugs" or post dates/times) and via providing [Lamina](https://github.com/ztellman/lamina) channels and subscribing to them (eg. if you need real-time push).
+You can customize the behavior via hooks (eg. if you need to automatically add URL-friendly "slugs", as in the example, or automatic timestamps)
+and via providing [Lamina](https://github.com/ztellman/lamina) channels and subscribing to them (eg. if you need real-time push).
 You also can use lower-level auth/database/validation/output/routing APIs if you can't fit something into these RESTful constraints.
 
 ## Coming "soon" ##
@@ -42,7 +44,8 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - pagination link (including HTTP Link header) helpers
 - enlive views quick builder
 - cyrillic transliteration for slugs
-- automatic "API docs" route for resources w/ examples & insert fake data route in dev mode, both using faker
+- automatic API docs route for resources w/ examples & insert fake data route in dev mode, both using faker
+- [Swagger](http://swagger.wordnik.com) implementation
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - live reloader (long poll, on disconnect: try to reconnect, when server is up, reload)
 - middleware like django-paranoid-sessions
