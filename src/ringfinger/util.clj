@@ -9,6 +9,12 @@
   ([x & next]
     (if x (apply andf next) x)))
 
+(defmacro zeroify
+  "Converts an integer to a string, adding a leading zero if it's < 10,
+  e.g. 1 -> '01', but 10 -> '10'
+  Used for dates and times"
+  [n] `(str (if (< ~n 10) "0") ~n))
+
 (defn typeify
   "Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles "
   [s]

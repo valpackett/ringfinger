@@ -48,7 +48,9 @@
 
 (defn resource
   "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for
-  RESTful Create/Read/Update/Delete of entries in collname
+  RESTful Create/Read/Update/Delete of entries in collname.
+  Also, while in development environment, you can create example data
+  using faker, like this: /url-prefix+collname/_insert_fakes?count=100
   Accepted options:
    :db -- database (required!)
    :pk -- primary key (required!)
@@ -74,6 +76,7 @@
         urlbase (str (:url-prefix options "/") collname)
         fieldhtml (html-from-fields fields)
         valds (validations-from-fields fields)
+        fakers (fakers-from-fields fields)
         fields-data-pre-hook  (data-pre-hook-from-fields  fields)
         fields-data-post-hook (data-post-hook-from-fields fields)
         fields-get-hook (get-hook-from-fields fields)
@@ -164,6 +167,16 @@
                                   :errors errors}
                                  {"html" html-index}
                                  "html")))))})
+       (if-env "development"
+         (route (str urlbase "/_create_fakes")
+           {:get (fn [req matches]
+                   (create-many store coll
+                     (take (Integer/parseInt (get-in req [:query-params "count"] "5"))
+                           (repeatedly (fn [] (process-new req (zipmap (keys fakers) (map #(last (take (rand-int 1000) %)) (vals fakers))))))))
+                   {:status  302
+                    :headers {"Location" urlbase}
+                    :body    nil})})
+         nil)
        (route (str urlbase "/:pk")
          {:get (fn [req matches]
                  (if-let [entry (i-get-one matches)]

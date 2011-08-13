@@ -1,6 +1,14 @@
 (ns ringfinger.field-helpers
   (:use ringfinger.util,
+        faker.lorem,
         [clojure.contrib.string :only [as-str]]))
+
+; oh
+
+(defn- make-getter [thing default]
+  (fn [fields]
+    (let [v (group-by first fields)]
+      (sorted-zipmap (keys v) (map (fn [a] (first (map #(thing (second %) default) a))) (vals v))))))
 
 (defn html-from-fields
   "Makes a map of field names - html attributes from a list of fields, eg.
@@ -10,6 +18,7 @@
   [fields]
   (let [v (group-by first fields)]
     (sorted-zipmap (keys v) (map (fn [a] (apply merge (map #(:html (second %) {}) a))) (vals v)))))
+; notice the merge
 
 (defn validations-from-fields
   "Makes a list of validations from a list of fields, eg.
@@ -20,11 +29,14 @@
   [fields]
   (map #(assoc % 1 (:pred (second %) (fn [a] true))) fields))
 
+(def #^{:private true} defaults-getter (make-getter :default nil))
+
 (defn defaults-from-fields
   [fields]
-  (let [v (group-by first fields)
-        r (sorted-zipmap (keys v) (map (fn [a] (first (map #(:default (second %)) a))) (vals v)))]
-    (select-keys r (filter identity (map #(if (nil? (get r %)) nil %) (keys r))))))
+  (let [r (defaults-getter fields)]
+    (select-keys r (filter identity (map #(if-let [g (get r %)] % nil) (keys r))))))
+
+(def #^{:doc ""} fakers-from-fields (make-getter :fake (words)))
 
 (defn- make-reducer [thing default]
   (fn [fields]
