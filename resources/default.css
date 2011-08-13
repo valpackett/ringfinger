@@ -40,7 +40,7 @@ input, textarea, .flash {
   border-radius: 5px;
   border: 1px solid #ada414;
 }
-form, form > div, button, table, .flash {
+form, form > div, button, table, .flash, .cb {
   clear: both;
 }
 .error, label {
@@ -64,8 +64,9 @@ input:invalid, textarea:invalid {
 }
 label {
   font-family: "Monaco", monospace;
+  margin-right: 0.7em;
 }
-label, button {
+label, button, input[type=checkbox], input[type=radio] {
   cursor: pointer;
 }
 .flash {
@@ -92,6 +93,9 @@ td:last-of-type, th:last-of-type {
 }
 tr:nth-child(even) {
   background: rgba(180,180,180,0.1);
+}
+tr:hover {
+  background: #ffffff;
 }
 form, table, p, h1 {
   margin-bottom: 0.8em;

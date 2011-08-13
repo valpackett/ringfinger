@@ -63,6 +63,7 @@
            [:style default-style]]
     [:body [:h1 "Not found :-("]
            (p-user stuff)
+           [:div {:class "cb"}]
     ]]))
 
 (def auth-demo-views
