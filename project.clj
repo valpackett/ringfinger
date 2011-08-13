@@ -17,6 +17,7 @@
                  [lamina "0.4.0-alpha3-SNAPSHOT"]
                  [clj-time "0.3.0"]
                  [inflections "0.5.2"]
+                 [faker "0.2.1"]
                  [enlive "1.0.0"]
                  [congomongo "0.1.6-SNAPSHOT"]
                  [commons-codec "1.5"]
