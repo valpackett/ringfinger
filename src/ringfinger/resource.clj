@@ -117,6 +117,11 @@
         i-get-dboptions (if owner-field
                       #(assoc-in (or (params-to-dboptions (:query-params %)) default-dboptions) [:query owner-field] (get-in % [:user :username]))
                       #(or (params-to-dboptions (:query-params %)) default-dboptions))
+        i-respond-404 (fn [req]
+                        (respond req 404 {}
+                                 {:req req}
+                                 {"html" html-not-found}
+                                 "html"))
         if-allowed  (if owner-field
                       ; [req entry yep]
                        #(if (= (get-in %1 [:user :username]) (get %2 owner-field))
@@ -167,10 +172,7 @@
                              :req req}
                             {"html" html-get}
                             "html")
-                   (respond req 404 {}
-                            {:req req}
-                            {"html" html-not-found}
-                            "html")))
+                   (i-respond-404 req)))
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        orig (i-get-one matches)
@@ -191,7 +193,7 @@
                                     {"html" html-get}
                                     "html")))))))
           :delete (fn [req matches]
-                    (let [entry (i-get-one matches)]
+                    (if-let [entry (i-get-one matches)]
                       (if-allowed req entry
                         (fn []
                           ((:delete channels) entry)
@@ -199,7 +201,8 @@
                           {:status  302
                            :headers {"Location" urlbase}
                            :flash   (call-flash flash-deleted entry)
-                           :body    nil}))))}))))
+                           :body    nil}))
+                      (i-respond-404 req)))}))))
 
 (defmacro defresource [nname options & fields]
   ; dirty magic
