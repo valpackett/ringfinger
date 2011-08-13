@@ -19,7 +19,6 @@
                  [inflections "0.5.2"]
                  [faker "0.2.1"]
                  [enlive "1.0.0"]
-                 [congomongo "0.1.6-SNAPSHOT"]
                  [commons-codec "1.5"]
                  [commons-email "1.1"]
                  [ring "0.3.11"]
