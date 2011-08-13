@@ -62,6 +62,9 @@ input:invalid, textarea:invalid {
   -moz-box-shadow: #d08080 0 0 3px;
   box-shadow: #d08080 0 0 3px;
 }
+label {
+  font-family: "Monaco", monospace;
+}
 label, button {
   cursor: pointer;
 }

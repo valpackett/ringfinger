@@ -161,17 +161,16 @@
                                  "html")))))})
        (route (str urlbase "/:pk")
          {:get (fn [req matches]
-                 (let [entry (i-get-one matches)]
-                   (if entry
-                     (respond req 200 {}
-                              {:data (get-hook entry)
-                               :req req}
-                              {"html" html-get}
-                              "html")
-                     (respond req 404 {}
-                              {:req req}
-                              {"html" html-not-found}
-                              "html"))))
+                 (if-let [entry (i-get-one matches)]
+                   (respond req 200 {}
+                            {:data (get-hook entry)
+                             :req req}
+                            {"html" html-get}
+                            "html")
+                   (respond req 404 {}
+                            {:req req}
+                            {"html" html-not-found}
+                            "html")))
           :put (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        orig (i-get-one matches)

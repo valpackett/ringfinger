@@ -2,8 +2,7 @@
   (:use (ringfinger auth core util db fields field-helpers default-views),
         ringfinger.db.inmem,
         valip.core)
-  (:require [clojure.contrib.string :as cstr]
-            [hiccup.page-helpers    :as hic])
+  (:require [clojure.contrib.string :as cstr])
   (:import java.util.UUID))
 
 (defn get-action [req nm]
@@ -104,20 +103,20 @@
         (route (str url-base "confirm/:akey")
           {:get (fn [req m]
                   (if-not-user req
-                    (let [user (get-one db coll {:query {:_confirm_key (:akey m)}})]
-                      (if (nil? user)
+                    (if-let [user (get-one db coll {:query {:_confirm_key (:akey m)}})]
+                      (let []
+                        (delete db coll user)
+                        (create db coll (dissoc user :_confirm_key))
                         {:status  302
                          :headers {"Location" (getloc req)}
-                         :flash   (:confirm-fail flash)
-                         :body    nil}
-                        (let []
-                          (delete db coll user)
-                          (create db coll (dissoc user :_confirm_key))
-                          {:status  302
-                           :headers {"Location" (getloc req)}
-                           :flash   (:confirm-success flash)
-                           :session {:username (:username user)}
-                           :body    nil})))))}))
+                         :flash   (:confirm-success flash)
+                         :session {:username (:username user)}
+                         :body    nil})
+                      {:status  302
+                       :headers {"Location" (getloc req)}
+                       :flash   (:confirm-fail flash)
+                       :body    nil}
+                        )))}))
       (route (str url-base "signup")
         {:get (fn [req m]
                 (if-not-user req
