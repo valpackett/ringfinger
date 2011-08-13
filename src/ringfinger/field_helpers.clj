@@ -26,32 +26,36 @@
         r (sorted-zipmap (keys v) (map (fn [a] (first (map #(:default (second %)) a))) (vals v)))]
     (select-keys r (filter identity (map #(if (nil? (get r %)) nil %) (keys r))))))
 
-(defn- make-reducer [fields thing default]
-  (let [h (group-by first (map #(assoc % 1 (thing (second %) default)) fields))
-        hs (zipmap (keys h) (map #(map second %) (vals h)))]
-     (fn [data]
-       (let [ks (keys data)]
-        (zipmap ks
-                (map (fn [k v]
-                       (if (or (nil? v) (= v "")) "" ; magic
-                         (if-let [f (get hs k)]
-                           (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
-                           v))) ks (vals data)))))))
+(defn- make-reducer [thing default]
+  (fn [fields]
+    (let [h (group-by first (map #(assoc % 1 (thing (second %) default)) fields))
+          hs (zipmap (keys h) (map #(map second %) (vals h)))]
+       (fn [data]
+         (let [ks (keys data)]
+          (zipmap ks
+                  (map (fn [k v]
+                         (if (or (nil? v) (= v "")) "" ; magic
+                           (if-let [f (get hs k)]
+                             (reduce #(if (ifn? %2) (%2 %1) %1) v (cons identity f)) ; like -> for fns in a coll
+                             v))) ks (vals data))))))))
 
-(defn get-hook-from-fields
-  "Makes a get hook from a list of fields. You usually don't need to use it manually.
-  It's used by ringfinger.resource automatically"
-  [fields] (make-reducer fields :view str))
+(def
+  #^{:doc "Makes a get hook from a list of fields. You usually don't need to use it manually.
+  It's used by ringfinger.resource automatically"}
+  get-hook-from-fields
+  (make-reducer :view str))
 
-(defn data-pre-hook-from-fields
-  "Makes a data pre-hook from a list of fields. You usually don't need to use it manually.
-  It's used by ringfinger.resource automatically"
-  [fields] (make-reducer fields :pre-hook identity))
+(def
+  #^{:doc "Makes a data pre-hook from a list of fields. You usually don't need to use it manually.
+  It's used by ringfinger.resource automatically"}
+  data-pre-hook-from-fields
+  (make-reducer :pre-hook identity))
 
-(defn data-post-hook-from-fields
-  "Makes a data post-hook from a list of fields. You usually don't need to use it manually.
-  It's used by ringfinger.resource automatically"
-  [fields] (make-reducer fields :post-hook identity))
+(def
+  #^{:doc "Makes a data post-hook from a list of fields. You usually don't need to use it manually.
+  It's used by ringfinger.resource automatically"}
+  data-post-hook-from-fields
+  (make-reducer :post-hook identity))
 
 (defn required-fields-of
   "Returns a list of required fields' names from a list of fields, eg.
