@@ -49,7 +49,7 @@
 (deftest t-update
   (let [res (testapp (body (request :put "/todos/test?format=json")
                            {:body  "test"
-                            :state "true"}))]
+                            :state "on"}))]
     (is (= (:status res) 302))
     (is (= (get (:headers res) "Location") "/todos/test?format=json")))
   (is (= (:status (testapp (body (request :put "/hooked/test?format=json") {:name "test2"}))) 302))
@@ -58,21 +58,21 @@
 
 (deftest t-show
   (is (= (:body (testapp (request :get "/todos/test?format=json")))
-          "{\"body\":\"test\",\"state\":true}"))
+          "{\"state\":\"on\",\"body\":\"test\"}"))
   (is (= (:body (testapp (header (request :get "/todos/test") "Accept" "application/xml")))
-          "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body>test</body><state>true</state></response>"))
+          "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><state>on</state><body>test</body></response>"))
   (is (= (:body (testapp (request :get "/hooked/test2?format=json")))
-         "{\"onput\":\"put\",\"onpost\":\"posted\",\"ondata\":\"yo\",\"name\":\"test2\"}"))
+         "{\"onpost\":\"posted\",\"ondata\":\"yo\",\"name\":\"test2\",\"onput\":\"put\"}"))
   (is (= (:body (testapp (request :get "/owned/wassup?format=json")))
-         "{\"owner\":\"test\",\"name\":\"wassup\"}")))
+         "{\"name\":\"wassup\",\"owner\":\"test\"}")))
 
 (deftest t-index
   (is (= (:body (testapp (request :get "/todos?format=json")))
-          "[{\"body\":\"test\",\"state\":true}]"))
-  (is (= (:body (testapp (request :get "/todos?format=json&query_state_ne=true")))
+          "[{\"state\":\"on\",\"body\":\"test\"}]"))
+  (is (= (:body (testapp (request :get "/todos?format=json&query_state_ne=on")))
           "[]"))
   (is (= (:body (testapp (header (request :get "/todos") "Accept" "application/xml")))
-          "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><body>test</body><state>true</state></entry></response>")))
+          "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><state>on</state><body>test</body></entry></response>")))
 
 (deftest t-delete
   (let [res (testapp (request :delete "/todos/test?format=json"))]
