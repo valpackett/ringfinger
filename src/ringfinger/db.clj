@@ -1,4 +1,5 @@
 (ns ringfinger.db
+  "Document-oriented database abstraction used by ringfinger.resource."
   (:use ringfinger.util))
 
 (defprotocol Database

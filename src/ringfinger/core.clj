@@ -1,5 +1,6 @@
 (ns ringfinger.core
-  "Ringfinger's core: All You Need Is defapp! And if-env."
+  "Ringfinger's core: All You Need Is defapp! And if-env.
+  Magic starts here."
   (:use clout.core,
         [clojure.string :only [lower-case]],
         (ring.middleware params session stacktrace flash file),
@@ -93,5 +94,5 @@
           wrap-stacktrace)
       h)))
 
-(defmacro defapp "Short for (def nname (app options routes*))" [nname options & routes]
+(defmacro defapp "Short for (def nname (app options & routes))" [nname options & routes]
   (intern *ns* nname (eval `(app ~options ~@routes))))

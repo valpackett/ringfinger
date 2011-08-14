@@ -1,11 +1,13 @@
 (ns ringfinger.auth-routes
+  "Authorization routes -- magical registration (if you really want, even with
+  e-mail confirmation) and logging in/out."
   (:use (ringfinger auth core util db fields field-helpers default-views),
         ringfinger.db.inmem,
         valip.core)
   (:require [clojure.contrib.string :as cstr])
   (:import java.util.UUID))
 
-(defn get-action [req nm]
+(defn- get-action [req nm]
   (str (:uri req)
        (let [hdrs (:headers req)
              dmn  (str (cstr/as-str (:scheme req)) "://" (get hdrs "host"))
@@ -24,7 +26,7 @@
    :redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /
    :redir-param -- query string parameter for keeping the redirect url, the default is redirect, you generally don't need to care about this
    :confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template
-   :fields -- list of validations, defaults is requiring username and at least 6 characters password"
+   :fields -- list of validations, defaults are: requiring username and at least 6 characters password"
   [options]
   (let [views    (:views       options auth-demo-views)
         flash    (:flash       options {:login-success   "Welcome back!"

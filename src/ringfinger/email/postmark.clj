@@ -1,4 +1,5 @@
 (ns ringfinger.email.postmark
+  "Postmark (postmarkapp.com) mailer function."
   (:use clojure.contrib.json)
   (:require [clojure.contrib.http.agent :as ha]))
 

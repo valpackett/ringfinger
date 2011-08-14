@@ -1,4 +1,5 @@
 (ns ringfinger.timesavers.hooks
+  "Ready-to-use hooks for use with ringfinger.resource. Save even more time!"
   (:use inflections.core,
         faker.lorem,
         [clojure.contrib.string :only [as-str]]))

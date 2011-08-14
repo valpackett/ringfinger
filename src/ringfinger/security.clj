@@ -1,4 +1,5 @@
 (ns ringfinger.security
+  "Some security-related Ring middleware used by ringfinger.core."
   (:use ringfinger.util)
   (:import org.apache.commons.codec.digest.DigestUtils))
 

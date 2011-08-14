@@ -1,4 +1,5 @@
 (ns ringfinger.email.smtp
+  "SMTP mailer function."
   (:import (org.apache.commons.mail SimpleEmail DefaultAuthenticator)))
 
 (defn smtp
@@ -21,6 +22,6 @@
 
 (defn gmail
   "Creates a new SMTP mailer function with given Gmail username and password.
-  Shortcut for (smtp 'smtp.gmail.com' 587 username password true)"
+  Short for (smtp 'smtp.gmail.com' 587 username password true)"
   [username password]
   (smtp "smtp.gmail.com" 587 username password true))
