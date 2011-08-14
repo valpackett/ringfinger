@@ -9,6 +9,11 @@
   ([x & next]
     (if x (apply andf next) x)))
 
+(defmacro haz?
+  "Checks if a collection has an element,
+  eg. [:a :b] :a -> true, [:a :b] :c -> false"
+  [coll elem] `(boolean (some #{~elem} ~coll)))
+
 (defmacro zeroify
   "Converts an integer to a string, adding a leading zero if it's < 10,
   e.g. 1 -> '01', but 10 -> '10'

@@ -109,9 +109,9 @@
         put-hook  #(-> % clear-form fields-data-pre-hook user-data-hook user-put-hook  fields-data-post-hook)
         get-hook  #(-> % user-get-hook fields-get-hook)
         i-validate (fn [req data yep nope]
-                     (let [ks (filter #(or (boolean (some #{%} req-fields)) (not (or (= (get data %) "") (nil? (get data %))))) (keys data))
+                     (let [ks (filter #(or (haz? req-fields %) (not (or (= (get data %) "") (nil? (get data %))))) (keys data))
                            result (apply validate (select-keys data ks)
-                                         (filter #(boolean (some #{(first %)} ks)) valds))]
+                                         (filter #(haz? ks (first %)) valds))]
                        (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one store coll {:query {pk (typeify (:pk %))}})
         i-redirect (fn [req form flash status]
@@ -145,7 +145,7 @@
                        ; adds creator's username if there's an owner-field
                        #(assoc (post-hook %2) owner-field (get-in %1 [:user :username]))
                        #(post-hook %2))
-        if-not-forbidden #(if (not (boolean (some #{%1} forbidden))) %2 method-na-handler)]
+        if-not-forbidden #(if (not (haz? forbidden %1)) %2 method-na-handler)]
      (list
        (route urlbase
          {:get (if-not-forbidden :index (fn [req matches]
