@@ -1,6 +1,8 @@
 (ns ringfinger.util
   "Various functions and macros used by Ringfinger."
-  (:use valip.predicates, clj-time.coerce)
+  (:use valip.predicates,
+        clj-time.coerce,
+        inflections.core)
   (:require [clojure.java.io :as io])
   (:import org.joda.time.DateTime))
 
@@ -26,6 +28,16 @@
   e.g. 1 -> '01', but 10 -> '10'
   Used for dates and times"
   [n] `(str (if (< ~n 10) "0") ~n))
+
+(defmacro nice-count
+  "Displays a count of items nicely, eg.
+  0 'entry' -> 'no entries', 1 'entry' -> 'one entry'
+  7 'post' -> 'seven posts', 100500 'article' -> '100500 articles'"
+  [number noun]
+  `(str (case ~number 0 "no" 1 "one" 2 "two" 3 "three" 4 "four" 5 "five" 6 "six"
+                      7 "seven" 8 "eight" 9 "nine" 10 "ten" 11 "eleven" 12 "twelve" ~number)
+        " "
+        (if (= ~number 1) ~noun (plural ~noun))))
 
 (defn typeify
   "Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles "

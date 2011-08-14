@@ -1,5 +1,6 @@
 (ns #^{:skip-wiki true} ringfinger.default-views
-  (:use (ringfinger field-helpers util core)
+  (:use (ringfinger field-helpers util core),
+        inflections.core,
         (hiccup core page-helpers)))
 
 (defn p-flash [stuff]
@@ -39,6 +40,7 @@
              [:td [:a {:href (str urlbase (get e pk))} "edit"]]
              [:td [:a {:href (str urlbase (get e pk) "?_method=delete")} "delete"]]
           ]) (:data stuff))]
+       (capitalize (nice-count (count (:data stuff)) "entry")) ". "
        (if-env "development"
                [:a {:href (str urlbase "_create_fakes")} "Add some example data"] nil)
       ]])))
