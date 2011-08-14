@@ -1,5 +1,5 @@
 (ns #^{:skip-wiki true} ringfinger.default-views
-  (:use (ringfinger field-helpers util)
+  (:use (ringfinger field-helpers util core)
         (hiccup core page-helpers)))
 
 (defn p-flash [stuff]
@@ -39,6 +39,8 @@
              [:td [:a {:href (str urlbase (get e pk))} "edit"]]
              [:td [:a {:href (str urlbase (get e pk) "?_method=delete")} "delete"]]
           ]) (:data stuff))]
+       (if-env "development"
+               [:a {:href (str urlbase "_create_fakes")} "Add some example data"] nil)
       ]])))
 
 (defn default-get [stuff]

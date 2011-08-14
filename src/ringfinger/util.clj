@@ -4,7 +4,7 @@
   (:import org.joda.time.DateTime))
 
 (defn andf
-  "And function, just like and macro. For use with apply"
+  "And function, just like the and macro. For use with apply"
   ([] true) ([x] x)
   ([x & next]
     (if x (apply andf next) x)))
@@ -38,7 +38,8 @@
 
 (defn sort-maps
   ; FIXME: wrong order w/ desc
-  "Sorts a sequence of maps using a map of sort args that maps keys to -1 for desc and 1 for asc order" [m sargs]
+  "Sorts a sequence of maps using a map of sort args that maps keys to -1 for desc and 1 for asc order"
+  [m sargs]
   (if (or (= sargs nil) (= sargs {})) m
     (if (= (count sargs) 1)
       ((if (= (first (vals sargs)) -1) reverse identity)
@@ -50,7 +51,6 @@
 (defn from-browser?
   "Returns true if the request comes from a web browser. Or something pretending to be a web browser, really"
   [req]
-  ; TODO: better way? finer regexp?
   (boolean (re-matches #"(Mozilla|Opera).*" (get-in req [:headers "user-agent"] ""))))
 
 (defn is-xhr?

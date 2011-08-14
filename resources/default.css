@@ -64,7 +64,12 @@ input:invalid, textarea:invalid {
 }
 label {
   font-family: "Monaco", monospace;
-  margin-right: 0.7em;
+  margin-right: 5px;
+  min-width: 50px;
+  text-align: right;
+}
+button {
+  margin-left: 57px;
 }
 label, button, input[type=checkbox], input[type=radio] {
   cursor: pointer;

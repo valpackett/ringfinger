@@ -6,7 +6,7 @@
   (render [self status headers data]))
 
 (defmacro errors-or-data [data]
-  `(let [errs# (:errors ~data)] (if errs# errs# (:data ~data))))
+  `(if-let [errs# (:errors ~data)] errs# (:data ~data)))
 
 (def json (reify Output
   (render [self status headers data]
@@ -36,11 +36,11 @@
 
 (defn html-output [view dd] (HTMLOutput. view dd))
 
-(defn getoutput [ctype custom]
-  ; FIXME: better solution is possible... or not?!
+(defn- getoutput- [ctype custom]
   (let [outputs (merge {"json" json "xml" xml} custom)] ; html before xml
     (first
       (filter identity
               (map #(if (substring? %1 ctype) %2)
-                   (keys outputs)
-                   (vals outputs))))))
+                   (keys outputs) (vals outputs))))))
+
+(def getoutput (memoize getoutput-))
