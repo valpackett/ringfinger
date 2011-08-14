@@ -42,7 +42,7 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 
 ## Coming "soon" ##
 
-- custom actions for resources, permission restricions (so eg. a polls app would be easy to make)
+- custom actions for resources (so eg. a polls app would be easy to make)
 - optionally separating create/index and view/edit pages in html
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)

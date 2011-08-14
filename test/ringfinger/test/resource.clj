@@ -24,10 +24,16 @@
    :owner-field :owner}
   [:name (required) "hey where's the name?"])
 
+(defresource forbidden
+  {:db inmem
+   :pk :name
+   :forbidden-methods [:delete]}
+  [:name (required) ""])
+
 (defapp testapp
   {:static-dir "src"
    :fixed-salt "salt"}
-  todos, hooked, owned)
+  todos, hooked, owned, forbidden)
 
 (defn authd [req]
   (header req "Authorization" (str "Basic " (Base64/encodeBase64String (. "test:demo" getBytes)))))
@@ -78,6 +84,8 @@
   (let [res (testapp (request :delete "/todos/test?format=json"))]
     (is (= (:status res) 302))
     (is (= (get (:headers res) "Location") "/todos")))
+  (testapp (body (request :post "/forbidden?format=json") {:name "test"}))
+  (is (= (:status (testapp (request :delete "/forbidden/test?format=json"))) 405))
 
   (is (= (get-one inmem :todos {:body "test"}) nil)))
 

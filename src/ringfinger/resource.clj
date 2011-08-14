@@ -49,8 +49,8 @@
 (defn resource
   "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for
   RESTful Create/Read/Update/Delete of entries in collname.
-  Also, while in development environment, you can create example data
-  using faker, like this: /url-prefix+collname/_insert_fakes?count=100
+  Also, while in development environment, you can create example data using faker,
+  like this: /url-prefix+collname/_insert_fakes?count=100 (the default count is 5).
   Accepted options:
    :db -- database (required!)
    :pk -- primary key (required!)
@@ -58,6 +58,7 @@
    :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames
    :default-dboptions -- default database options (:query, :sort) for index pages
    :whitelist -- allowed extra fields (not required, not validated, automatically created, etc.)
+   :forbidden-methods -- methods to disallow: [:index :create :read :update :delete]
    :views -- map of HTML views :index, :get and :not-found
    :flash -- map of flash messages :created, :updated, :deleted and :forbidden,
              can be either strings or callables expecting a single arg (the entry)
@@ -93,6 +94,7 @@
         flash-updated (:updated (:flash options) #(str "Saved: "   (get % pk)))
         flash-deleted (:deleted (:flash options) #(str "Deleted: " (get % pk)))
         flash-forbidden (:forbidden (:flash options) "Forbidden.")
+        forbidden (:forbidden-methods options [])
         s-channels [:create :update :delete]
         channels (zipmap s-channels
                    (map #(let [c (get-in options [:channels %])]
@@ -142,16 +144,17 @@
                        ; [req form]
                        ; adds creator's username if there's an owner-field
                        #(assoc (post-hook %2) owner-field (get-in %1 [:user :username]))
-                       #(post-hook %2))]
+                       #(post-hook %2))
+        if-not-forbidden #(if (not (boolean (some #{%1} forbidden))) %2 method-na-handler)]
      (list
        (route urlbase
-         {:get (fn [req matches]
+         {:get (if-not-forbidden :index (fn [req matches]
                  (respond req 200 {"Link" (str "<" urlbase "/{" (as-str pk) "}>; rel=\"entry\"")}
                           {:req  req
                            :data (map get-hook (get-many store coll (i-get-dboptions req)))}
                           {"html" html-index}
-                          "html"))
-          :post (fn [req matches]
+                          "html")))
+          :post (if-not-forbidden :create (fn [req matches]
                   (let [form  (keywordize (:form-params req))
                         entry (process-new req form)]
                     (i-validate req (merge blank-entry form)
@@ -166,7 +169,7 @@
                                   :req req
                                   :errors errors}
                                  {"html" html-index}
-                                 "html")))))})
+                                 "html"))))))})
        (if-env "development"
          (route (str urlbase "/_create_fakes")
            {:get (fn [req matches]
@@ -178,15 +181,15 @@
                     :body    nil})})
          nil)
        (route (str urlbase "/:pk")
-         {:get (fn [req matches]
+         {:get (if-not-forbidden :read (fn [req matches]
                  (if-let [entry (i-get-one matches)]
                    (respond req 200 {}
                             {:data (get-hook entry)
                              :req req}
                             {"html" html-get}
                             "html")
-                   (i-respond-404 req)))
-          :put (fn [req matches]
+                   (i-respond-404 req))))
+          :put (if-not-forbidden :update (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        orig (i-get-one matches)
                        diff (put-hook (merge default-entry form))
@@ -204,8 +207,8 @@
                                      :req req
                                      :errors errors}
                                     {"html" html-get}
-                                    "html")))))))
-          :delete (fn [req matches]
+                                    "html"))))))))
+          :delete (if-not-forbidden :delete (fn [req matches]
                     (if-let [entry (i-get-one matches)]
                       (if-allowed req entry
                         (fn []
@@ -215,7 +218,7 @@
                            :headers {"Location" urlbase}
                            :flash   (call-flash flash-deleted entry)
                            :body    nil}))
-                      (i-respond-404 req)))}))))
+                      (i-respond-404 req))))}))))
 
 (defmacro defresource [nname options & fields]
   ; dirty magic
