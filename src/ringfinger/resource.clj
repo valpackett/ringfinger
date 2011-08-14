@@ -5,11 +5,11 @@
   (:use (ringfinger core db output util field-helpers default-views)
         valip.core,
         lamina.core,
-        [clojure.contrib.string :only [as-str, split, substring?]]))
+        [clojure.contrib.string :only [as-str]]))
 
 (defn- qsformat [req]
-  (let [fmt (get-in req [:query-params "format"])]
-    (if fmt (str "?format=" fmt) nil)))
+  (if-let [fmt (get-in req [:query-params "format"])]
+    (str "?format=" fmt)))
 
 (defmacro respond [req status headers data outputs default]
   `(render
@@ -23,31 +23,6 @@
            )))
      ~outputs)
    ~status ~headers ~data))
-
-(defmacro qs [a] `(keyword (str "$" ~a)))
-
-(defn- param-to-dboptions
-  ([q] {(keyword (first q)) (apply param-to-dboptions (rest q))})
-  ([k v] {(keyword k) v})
-  ([k kk v] {(keyword k) {(qs kk) v}})
-  ([k kk kkk v] {(keyword k) {(qs kk) {(qs kkk) v}}})
-  ([k kk kkk kkkk v] {(keyword k) {(qs kk) {(qs kkk) {(qs kkkk) v}}}}))
-; yeah, that's a mess, but a really fast mess!
-
-(defn params-to-dboptions
-  "Turns ring query-params into db options
-  eg. {'query_field_ne' 3, 'sort_field' -1}
-  becomes {:query {:field {:$ne 3}}, :sort {:field -1}}"
-  ([qp] (if (empty? qp) nil (apply merge (map params-to-dboptions (keys qp) (vals qp)))))
-  ([q v] (if (substring? "_" q) (param-to-dboptions (flatten (list (split #"_" q) (typeify v)))) nil)))
-
-(defmacro call-flash
-  "If a flash message is a string, returns it. If it's a callable,
-  calls it with inst and returns the result"
-  [flash inst]
-  `(if (ifn? ~flash)
-     (~flash ~inst)
-     ~flash))
 
 (defn resource
   "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for
@@ -120,7 +95,7 @@
         i-redirect (fn [req form flash status]
                      {:status  status
                       :headers {"Location" (str urlbase "/" (get form pk) (qsformat req))}
-                      :flash   (call-flash flash form)
+                      :flash   (call-or-ret flash form)
                       :body    ""})
         i-get-dboptions (if owner-field
                       #(assoc-in (or (params-to-dboptions (:query-params %)) default-dboptions) [:query owner-field] (get-in % [:user :username]))
@@ -137,7 +112,7 @@
                           (if (from-browser? %1)
                             {:status  302
                              :headers {"Location" urlbase}
-                             :flash   (call-flash flash-forbidden %2)
+                             :flash   (call-or-ret flash-forbidden %2)
                              :body    ""}
                             {:status  403
                              :headers {"Content-Type" "text/plain"}
@@ -219,7 +194,7 @@
                           (delete store coll entry)
                           {:status  302
                            :headers {"Location" urlbase}
-                           :flash   (call-flash flash-deleted entry)
+                           :flash   (call-or-ret flash-deleted entry)
                            :body    nil}))
                       (i-respond-404 req))))}))))
 

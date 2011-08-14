@@ -7,7 +7,7 @@
   (:require [clojure.contrib.string :as cstr])
   (:import java.util.UUID))
 
-(defn- get-action [req nm]
+(defn get-action [req nm]
   (str (:uri req)
        (let [hdrs (:headers req)
              dmn  (str (cstr/as-str (:scheme req)) "://" (get hdrs "host"))

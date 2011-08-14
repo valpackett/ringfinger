@@ -10,6 +10,12 @@
   ([x & next]
     (if x (apply andf next) x)))
 
+(defmacro call-or-ret
+  "If value is a callable, calls it with args and returns the result.
+  Otherwise, just returns it."
+  [value & args]
+  `(if (ifn? ~value) (~value ~@args) ~value))
+
 (defmacro haz?
   "Checks if a collection has an element,
   eg. [:a :b] :a -> true, [:a :b] :c -> false"
