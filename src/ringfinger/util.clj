@@ -1,4 +1,5 @@
 (ns ringfinger.util
+  "Various functions and macros used by Ringfinger."
   (:use valip.predicates, clj-time.coerce)
   (:require [clojure.java.io :as io])
   (:import org.joda.time.DateTime))

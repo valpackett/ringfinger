@@ -1,4 +1,5 @@
 (ns ringfinger.output
+  "The output system used by ringfinger.resource."
   (:use (clojure.contrib json prxml),
         clojure-csv.core,
         [clojure.contrib.string :only [substring?]]))

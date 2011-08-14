@@ -1,4 +1,7 @@
 (ns ringfinger.field-helpers
+  "The only useful thing for users here is form-fields.
+  Everything else is kinda internal, but feel free to use this if you
+  don't use ringfinger.resource and write all the boilerplate by hand."
   (:use ringfinger.util,
         faker.lorem,
         [clojure.contrib.string :only [as-str]]))
@@ -32,11 +35,15 @@
 (def #^{:private true} defaults-getter (make-getter :default nil))
 
 (defn defaults-from-fields
+  "Makes a list of defaults from a list of fields. You usually don't need to use it manually.
+  It's used by ringfinger.resource automatically"
   [fields]
   (let [r (defaults-getter fields)]
     (select-keys r (filter identity (map #(if-let [g (get r %)] % nil) (keys r))))))
 
-(def #^{:doc ""} fakers-from-fields (make-getter :fake (words)))
+(def #^{:doc "Makes a list of fakers from a list of fields. You usually don't need to use it manually.
+  It's used by ringfinger.resource automatically"}
+  fakers-from-fields (make-getter :fake (words)))
 
 (defn- make-reducer [thing default]
   (fn [fields]

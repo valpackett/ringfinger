@@ -1,4 +1,5 @@
 (ns ringfinger.core
+  "Ringfinger's core: All You Need Is defapp! And if-env."
   (:use clout.core,
         [clojure.string :only [lower-case]],
         (ring.middleware params session stacktrace flash file),

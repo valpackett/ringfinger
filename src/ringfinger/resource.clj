@@ -1,4 +1,7 @@
 (ns ringfinger.resource
+  "This module saves your time by writing all the Create/Read/Update/Delete
+  boilerplate for you. Flash messages, validation, inserting example data,
+  customization via hooks and channels -- you name it, this module does it."
   (:use (ringfinger core db output util field-helpers default-views)
         valip.core,
         lamina.core,

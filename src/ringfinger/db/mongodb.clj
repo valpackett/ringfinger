@@ -1,4 +1,5 @@
 (ns ringfinger.db.mongodb
+  "MongoDB support. Don't forget to add Congomongo to your deps!"
   (:use ringfinger.db, somnium.congomongo))
 
 (deftype MongoDB [conn] Database

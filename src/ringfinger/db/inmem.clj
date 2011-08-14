@@ -1,5 +1,6 @@
 (ns ringfinger.db.inmem
-  "In-memory data storage FOR TESTING USE ONLY"
+  "In-memory data storage FOR TESTING USE ONLY.
+  Or for storing temporary data like sessions."
   (:use (ringfinger db util)))
 
 (def base (ref {}))

@@ -1,4 +1,8 @@
 (ns ringfinger.fields
+  "All functions in this module make fields for you to use
+  with ringfinger.resource.
+  They're defined as functions even when they need no
+  customization just for consistency."
   (:use (ringfinger db util), ringfinger.db.inmem,
         (clj-time format coerce),
         faker.lorem)
