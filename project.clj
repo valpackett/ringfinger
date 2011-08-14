@@ -18,6 +18,7 @@
                  [clj-time "0.3.0"]
                  [inflections "0.5.2"]
                  [faker "0.2.1"]
+                 [clojure-csv "0.3.0-SNAPSHOT"]
                  [enlive "1.0.0"]
                  [commons-codec "1.5"]
                  [commons-email "1.1"]

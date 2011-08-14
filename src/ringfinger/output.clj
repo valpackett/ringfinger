@@ -1,5 +1,6 @@
 (ns ringfinger.output
   (:use (clojure.contrib json prxml),
+        clojure-csv.core,
         [clojure.contrib.string :only [substring?]]))
 
 (defprotocol Output
@@ -28,6 +29,13 @@
            :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
                          (with-out-str (prxml [:response (to-xml data)])))})))
 
+(def csv  (reify Output
+  (render [self status headers data]
+          {:status  status
+           :headers (merge {"Content-Type" "text/csv; charset=utf-8"} headers)
+           :body    (let [data (:data data [])]
+                      (write-csv (map (fn [a] (map #(str (second %)) a)) (if (map? data) [data] data))))})))
+
 (deftype HTMLOutput [view default-data] Output
   (render [self status headers data]
           {:status  status
@@ -36,11 +44,9 @@
 
 (defn html-output [view dd] (HTMLOutput. view dd))
 
-(defn- getoutput- [ctype custom]
-  (let [outputs (merge {"json" json "xml" xml} custom)] ; html before xml
+(def getoutput (memoize (fn [ctype custom]
+  (let [outputs (merge {"json" json "xml" xml "csv" csv} custom)] ; html before xml
     (first
       (filter identity
               (map #(if (substring? %1 ctype) %2)
-                   (keys outputs) (vals outputs))))))
-
-(def getoutput (memoize getoutput-))
+                   (keys outputs) (vals outputs))))))))
