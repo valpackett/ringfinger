@@ -34,17 +34,19 @@
    :pk -- primary key (required!)
    :url-prefix -- a part of the URL before the collname, default is /
    :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames
-   :default-dboptions -- default database options (:query, :sort) for index pages
-   :whitelist -- allowed extra fields (not required, not validated, automatically created, etc.)
-   :forbidden-methods -- methods to disallow: [:index :create :read :update :delete]
-   :views -- map of HTML views :index, :get and :not-found
-   :flash -- map of flash messages :created, :updated, :deleted and :forbidden,
+   :default-dboptions -- default database options (:query, :sort) for the index page
+   :whitelist -- allowed extra fields (not required)
+   :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)
+   :views -- map of HTML views (:index, :get, :not-found)
+   :flash -- map of flash messages (:created, :updated, :deleted, :forbidden),
              can be either strings or callables expecting a single arg (the entry)
-   :hooks -- map of hooks :data (on both create and update), :create, :update and :view, must be callables expecting
+   :hooks -- map of hooks (:data (on both create and update), :create, :update, :view), must be callables expecting
              the entry and returning it (with modifications you want). Hooks receive data with correct
              types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time
              Tip: compose hooks with ->
-   :channels -- map of Lamina channels :create, :update and :delete for subscribing to these events"
+   :channels -- map of Lamina channels (:create, :update, :delete). Ringfinger will publish events
+                to these channels so you could, for example, push updates to clients in real time,
+                enqueue long-running jobs, index changes with a search engine, etc."
   [collname options & fields]
   ; biggest let EVAR?
   (let [store (:db options)
@@ -127,7 +129,7 @@
      (list
        (route urlbase
          {:get (if-not-forbidden :index (fn [req matches]
-                 (respond req 200 {"Link" (str "<" urlbase "/{" (as-str pk) "}>; rel=\"entry\"")}
+                 (respond req 200 {"Link" (as-str "<" urlbase "/{" pk "}>; rel=\"entry\"")}
                           {:req  req
                            :data (map get-hook (get-many store coll (i-get-dboptions req)))}
                           {"html" html-index}

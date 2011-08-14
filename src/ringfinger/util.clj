@@ -61,12 +61,12 @@
                (conj {} (rest a)))))))
 
 (defn from-browser?
-  "Returns true if the request comes from a web browser. Or something pretending to be a web browser, really"
+  "Checks if the request comes from a web browser. Or something pretending to be a web browser, really"
   [req]
   (boolean (re-matches #"(Mozilla|Opera).*" (get-in req [:headers "user-agent"] ""))))
 
 (defn is-xhr?
-  "Returns true if the request is made by an XMLHttpRequest"
+  "Checks if the request is made by an XMLHttpRequest"
   [req]
   (= (get-in req [:headers "x-requested-with"] "") "XMLHttpRequest"))
 

@@ -1,11 +1,10 @@
 (ns ringfinger.db.inmem
-  "In-memory data storage FOR TESTING USE ONLY.
-  Or for storing temporary data like sessions."
   (:use (ringfinger db util)))
 
 (def base (ref {}))
 
-(def inmem (reify Database
+(def #^{:doc "In-memory data storage FOR TESTING USE ONLY.
+  Or for storing temporary data like sessions."} inmem (reify Database
   (create [self coll data]
     (dosync
       (ref-set base
@@ -34,5 +33,5 @@
     (dosync
       (ref-set base (assoc @base coll (remove (partial = entry) (get @base coll))))))))
 
-(defn reset-inmem-db []
+(defn reset-inmem-db "Erase EVERYTHING from the inmem database" []
   (dosync (ref-set base {})))
