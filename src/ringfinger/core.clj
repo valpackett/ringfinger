@@ -63,7 +63,8 @@
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
-  params, session, flash, auth and some security middleware (+ stacktrace and file in development env)
+  params, session, flash, auth, head, jsonp, length and some security middleware
+  (+ stacktrace and file in development env)
   Accepted options:
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
    :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!

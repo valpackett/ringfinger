@@ -3,7 +3,8 @@
   (:require [clojure.contrib.http.agent :as ha]))
 
 (defn postmark
-  "Creates a Postmark mailer function. If no args are given, uses the POSTMARK_API_TEST API key w/o SSL"
+  "Creates a Postmark mailer function. If no args are given, uses the POSTMARK_API_TEST API key w/o SSL.
+  If you provide an API key, SSL is on by default"
   ([] (postmark "POSTMARK_API_TEST" false))
   ([apikey] (postmark apikey true))
   ([apikey ssl]
