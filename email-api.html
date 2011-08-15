@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -52,6 +52,12 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#email.console">email.console</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.email.console/console">console</a>
+    </div>
     <br />
   </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#email.postmark">email.postmark</a>
@@ -77,12 +83,29 @@ namespace.
 <br />Full namespace name: <span id="long-name">ringfinger.email</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr"></pre>
+<pre id="namespace-docstr">Email sending abstraction used by ringfinger.auth-routes.</pre>
 
 
 <br />
 <h2>Public Variables and Functions</h2>
 
+<h2 id="namespace-name">email.console</h2>
+<pre id="namespace-docstr"></pre>
+
+
+<br />
+<div id="var-entry">
+  <hr />
+  <h2 id="ringfinger.email.console/console">console</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (console from to subject body)
+</pre>
+  <pre id="var-docstr">Mailer function which just prints the 'messages' to the console, for development/testing.
+**NOT a function that should be called to create a mailer, but the mailer itself**</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/04a2761c3417c783d02aad9b6b6a8c508971977d/src/ringfinger/email/console.clj#L3" id="var-source">Source</a>
+</div>
 <h2 id="namespace-name">email.postmark</h2>
 <pre id="namespace-docstr"></pre>
 
@@ -96,10 +119,11 @@ namespace.
        (postmark apikey)
        (postmark apikey ssl)
 </pre>
-  <pre id="var-docstr">Creates a Postmark mailer object. If no args are given, uses the POSTMARK_API_TEST API key w/o SSL</pre>
+  <pre id="var-docstr">Creates a Postmark mailer function. If no args are given, uses the POSTMARK_API_TEST API key w/o SSL.
+If you provide an API key, SSL is on by default</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/adb502fb8ad365118309e4002f87db3177e603e9/src/ringfinger/email/postmark.clj#L17" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/email/postmark.clj#L5" id="var-source">Source</a>
 </div>
 <h2 id="namespace-name">email.smtp</h2>
 <pre id="namespace-docstr"></pre>
@@ -112,11 +136,11 @@ namespace.
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (gmail username password)
 </pre>
-  <pre id="var-docstr">Creates a new SMTP mailer object with given Gmail username and password.
-Shortcut for (smtp 'smtp.gmail.com' 587 username password true)</pre>
+  <pre id="var-docstr">Creates a new SMTP mailer function with given Gmail username and password.
+Short for (smtp 'smtp.gmail.com' 587 username password true)</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/b7ce9195f6b84c95f2c41965d25be98b244cfb97/src/ringfinger/email/smtp.clj#L25" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/04a2761c3417c783d02aad9b6b6a8c508971977d/src/ringfinger/email/smtp.clj#L22" id="var-source">Source</a>
 </div><div id="var-entry">
   <hr />
   <h2 id="ringfinger.email.smtp/smtp">smtp</h2>
@@ -125,10 +149,10 @@ Shortcut for (smtp 'smtp.gmail.com' 587 username password true)</pre>
        (smtp host port username password)
        (smtp host port username password tls)
 </pre>
-  <pre id="var-docstr">Creates a new SMTP mailer object with given settings</pre>
+  <pre id="var-docstr">Creates a new SMTP mailer function with given settings</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/b7ce9195f6b84c95f2c41965d25be98b244cfb97/src/ringfinger/email/smtp.clj#L19" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/04a2761c3417c783d02aad9b6b6a8c508971977d/src/ringfinger/email/smtp.clj#L4" id="var-source">Source</a>
 </div>
 
 

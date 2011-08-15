@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -54,6 +54,8 @@ namespace.
     <div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.fields/alphanumeric">alphanumeric</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/checkbox">checkbox</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.fields/color">color</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.fields/date">date</a>
@@ -61,10 +63,6 @@ namespace.
       <a href="#ringfinger.fields/email">email</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.fields/email-with-lookup">email-with-lookup</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.fields/form-fields">form-fields</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.fields/html-from-fields">html-from-fields</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.fields/ipv4">ipv4</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
@@ -84,9 +82,13 @@ namespace.
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.fields/required">required</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.fields/url">url</a>
+      <a href="#ringfinger.fields/text">text</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.fields/validations-from-fields">validations-from-fields</a>
+      <a href="#ringfinger.fields/textarea">textarea</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/time-field">time-field</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.fields/url">url</a>
     </div>
     <br />
   </div>
@@ -99,7 +101,10 @@ namespace.
 <br />Full namespace name: <span id="long-name">ringfinger.fields</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr"></pre>
+<pre id="namespace-docstr">All functions in this module make fields for you to use
+with ringfinger.resource.
+They're defined as functions even when they need no
+customization just for consistency.</pre>
 
 
 <br />
@@ -114,7 +119,18 @@ namespace.
   <pre id="var-docstr">Validates alphanumeric strings</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L14" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L40" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/checkbox">checkbox</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (checkbox)
+</pre>
+  <pre id="var-docstr">A boolean field</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L32" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -125,7 +141,7 @@ namespace.
   <pre id="var-docstr">Validates hexadecimal color codes</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L45" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L83" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -133,10 +149,10 @@ namespace.
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (date)
 </pre>
-  <pre id="var-docstr">Validates dates</pre>
+  <pre id="var-docstr">Validates/parses/outputs dates</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L49" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L88" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -147,7 +163,7 @@ namespace.
   <pre id="var-docstr">Validates email addresses</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L25" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L58" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -158,32 +174,7 @@ namespace.
   <pre id="var-docstr">Validates email addresses with an additional DNS lookup. Safer, but slower</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L29" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.fields/form-fields">form-fields</h2>
-  <span id="var-type">macro</span><br />
-  <pre id="var-usage">Usage: (form-fields fields-html data errors wrap-html err-html style)
-</pre>
-  <pre id="var-docstr">HTML templating helper for rendering forms. Allowed styles are :label and :placeholder</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L89" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.fields/html-from-fields">html-from-fields</h2>
-  <span id="var-type">macro</span><br />
-  <pre id="var-usage">Usage: (html-from-fields fields)
-</pre>
-  <pre id="var-docstr">Makes a map of field names - html attributes from a list of fields, eg.
-([:name {:pred (required) :html {:required 'required'}} 'y u no say ur name']
- [:name {:pred (my-check) :html {:maxlength 10}} 'too long'])
-becomes ([:name {:required 'required' :maxlength 10}])</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L71" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L63" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -194,7 +185,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Validates IPv4 addresses</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L38" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L74" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -205,7 +196,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Sets the maximum length to the given number</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L17" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L50" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -216,7 +207,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Sets the minimum length to the given number</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L21" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L54" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -227,7 +218,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Sets the minimum and maximum numbers to given ones</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L65" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L134" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -238,7 +229,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Sets the maximum number to the given one</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L61" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L129" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -249,7 +240,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Sets the minimum number to the given one</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L57" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L124" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -260,7 +251,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Validates integer numbers</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L53" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L118" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -271,7 +262,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Validates according to given regexp</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L10" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L28" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -282,7 +273,40 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Validates presence</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L6" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L23" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/text">text</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (text)
+</pre>
+  <pre id="var-docstr">input type=text</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L43" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/textarea">textarea</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (textarea)
+</pre>
+  <pre id="var-docstr">textarea</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L46" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.fields/time-field">time-field</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (time-field)
+</pre>
+  <pre id="var-docstr">Validates/parses/outputs times</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L106" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -293,22 +317,7 @@ becomes ([:name {:required 'required' :maxlength 10}])</pre>
   <pre id="var-docstr">Validates URLs</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L34" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.fields/validations-from-fields">validations-from-fields</h2>
-  <span id="var-type">macro</span><br />
-  <pre id="var-usage">Usage: (validations-from-fields fields)
-</pre>
-  <pre id="var-docstr">Makes a list of validations from a list of fields, eg.
-([:name {:pred (required) :html {:required 'required'}} 'y u no say ur name']
- [:name {:pred (my-check) :html {:maxlength 10}} 'too long'])
-becomes ([:name (required) 'y u no say ur name']
-         [:name (my-check) 'too long']) ; the valip format</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/8a366e227819cff5600e4c9fc194e7fa4e7f02eb/src/ringfinger/fields.clj#L80" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/fields.clj#L69" id="var-source">Source</a>
 </div>
 
 

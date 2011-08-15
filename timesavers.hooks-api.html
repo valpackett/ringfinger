@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>auth - Ringfinger nil API documentation</title>
+    <title>timesavers.hooks - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -52,24 +52,20 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.auth/get-user">get-user</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.auth/make-user">make-user</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.auth/wrap-auth">wrap-auth</a>
+      <a href="#ringfinger.timesavers.hooks/make-slug-for">make-slug-for</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">auth</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">timesavers.hooks</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.auth</span>
+<br />Full namespace name: <span id="long-name">ringfinger.timesavers.hooks</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr">Low-level authorization API (creating users, getting users after checking) and the auth middleware.</pre>
+<pre id="namespace-docstr">Ready-to-use hooks for use with ringfinger.resource. Save even more time!</pre>
 
 
 <br />
@@ -77,37 +73,18 @@ namespace.
 <div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.auth/get-user">get-user</h2>
+  <h2 id="ringfinger.timesavers.hooks/make-slug-for">make-slug-for</h2>
   <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (get-user db coll username password fixed-salt-part)
+  <pre id="var-usage">Usage: (make-slug-for field)
+       (make-slug-for field output-field)
 </pre>
-  <pre id="var-docstr">Returns a user from coll in db with given username and password if the password is valid</pre>
+  <pre id="var-docstr">Returns a hook which makes a slug (URL-friendly name, eg. My Article -&gt; my-article)
+for a given field. Default output-field is field + '_slug'.
+Don't forget that if you use a custom output-field, you need to whitelist it.
+Never returns empty values</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/feb78f66928e124a16d37fa3e6dbc35764d1fee8/src/ringfinger/auth.clj#L9" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.auth/make-user">make-user</h2>
-  <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (make-user db coll user password fixed-salt-part)
-</pre>
-  <pre id="var-docstr">Creates a user in coll in db with given fields (username and whatever you want) and password</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/feb78f66928e124a16d37fa3e6dbc35764d1fee8/src/ringfinger/auth.clj#L17" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.auth/wrap-auth">wrap-auth</h2>
-  <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (wrap-auth handler)
-       (wrap-auth handler options)
-</pre>
-  <pre id="var-docstr">Ring middleware that adds :user if there's a user logged in. Supports session/form-based auth and HTTP Basic auth</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/feb78f66928e124a16d37fa3e6dbc35764d1fee8/src/ringfinger/auth.clj#L28" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/feb78f66928e124a16d37fa3e6dbc35764d1fee8/src/ringfinger/timesavers/hooks.clj#L7" id="var-source">Source</a>
 </div>
 
 

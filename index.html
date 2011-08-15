@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -70,6 +70,10 @@ namespace.
     
     <br />
   </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#field-helpers">field-helpers</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#fields">fields</a>
     
     <br />
@@ -90,6 +94,10 @@ namespace.
     
     <br />
   </div><div style="margin-left: 1em;" class="toc-section">
+    <a href="#timesavers.hooks">timesavers.hooks</a>
+    
+    <br />
+  </div><div style="margin-left: 1em;" class="toc-section">
     <a href="#util">util</a>
     
     <br />
@@ -106,7 +114,7 @@ namespace.
   <h2 id="auth">auth</h2>
   
   <a href="auth-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">Low-level authorization API (creating users, getting users after checking) and the auth middleware.</pre>
   
   
   
@@ -119,7 +127,8 @@ namespace.
   <h2 id="auth-routes">auth-routes</h2>
   
   <a href="auth-routes-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">Authorization routes -- magical registration (if you really want, even with
+e-mail confirmation) and logging in/out.</pre>
   
   
   
@@ -132,12 +141,13 @@ namespace.
   <h2 id="core">core</h2>
   
   <a href="core-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">Ringfinger's core: All You Need Is defapp! And if-env.
+Magic starts here.</pre>
   
   
   
   Public variables and functions:
-  <span id="var-link"><a href="core-api.html#ringfinger.core/app" id="var-tag">app</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/defapp" id="var-tag">defapp</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/head-handler" id="var-tag">head-handler</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/if-env" id="var-tag">if-env</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/route" id="var-tag">route</a> </span><br />
+  <span id="var-link"><a href="core-api.html#ringfinger.core/app" id="var-tag">app</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/defapp" id="var-tag">defapp</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/if-env" id="var-tag">if-env</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/route" id="var-tag">route</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/wrap-head" id="var-tag">wrap-head</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/wrap-jsonp" id="var-tag">wrap-jsonp</a> </span><span id="var-link"><a href="core-api.html#ringfinger.core/wrap-length" id="var-tag">wrap-length</a> </span><br />
   
 </div><div id="namespace-entry">
   <br />
@@ -145,7 +155,7 @@ namespace.
   <h2 id="db">db</h2>
   
   <a href="db-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">Document-oriented database abstraction used by ringfinger.resource.</pre>
   
   
   
@@ -153,7 +163,11 @@ namespace.
   <br />
   <span id="subspace"><br />Variables and functions in
     <span id="name">db.inmem</span>:
-    
+    <span id="sub-var-link">
+      <a href="db-api.html#ringfinger.db.inmem/inmem">inmem</a>
+    </span><span id="sub-var-link">
+      <a href="db-api.html#ringfinger.db.inmem/reset-inmem-db">reset-inmem-db</a>
+    </span>
     <br />
   </span><span id="subspace"><br />Variables and functions in
     <span id="name">db.mongodb</span>:
@@ -168,13 +182,19 @@ namespace.
   <h2 id="email">email</h2>
   
   <a href="email-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">Email sending abstraction used by ringfinger.auth-routes.</pre>
   
   
   
   Public variables and functions:
   <br />
   <span id="subspace"><br />Variables and functions in
+    <span id="name">email.console</span>:
+    <span id="sub-var-link">
+      <a href="email-api.html#ringfinger.email.console/console">console</a>
+    </span>
+    <br />
+  </span><span id="subspace"><br />Variables and functions in
     <span id="name">email.postmark</span>:
     <span id="sub-var-link">
       <a href="email-api.html#ringfinger.email.postmark/postmark">postmark</a>
@@ -192,15 +212,33 @@ namespace.
 </div><div id="namespace-entry">
   <br />
   <hr />
-  <h2 id="fields">fields</h2>
+  <h2 id="field-helpers">field-helpers</h2>
   
-  <a href="fields-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <a href="field-helpers-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr">The only useful thing for users here is form-fields.
+Everything else is kinda internal, but feel free to use this if you
+don't use ringfinger.resource and write all the boilerplate by hand.</pre>
   
   
   
   Public variables and functions:
-  <span id="var-link"><a href="fields-api.html#ringfinger.fields/alphanumeric" id="var-tag">alphanumeric</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/color" id="var-tag">color</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/date" id="var-tag">date</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/email" id="var-tag">email</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/email-with-lookup" id="var-tag">email-with-lookup</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/form-fields" id="var-tag">form-fields</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/html-from-fields" id="var-tag">html-from-fields</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/ipv4" id="var-tag">ipv4</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/maxlength" id="var-tag">maxlength</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/minlength" id="var-tag">minlength</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/nbetween" id="var-tag">nbetween</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/nmax" id="var-tag">nmax</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/nmin" id="var-tag">nmin</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/number" id="var-tag">number</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/pattern" id="var-tag">pattern</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/required" id="var-tag">required</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/url" id="var-tag">url</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/validations-from-fields" id="var-tag">validations-from-fields</a> </span><br />
+  <span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/data-post-hook-from-fields" id="var-tag">data-post-hook-from-fields</a> </span><span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/data-pre-hook-from-fields" id="var-tag">data-pre-hook-from-fields</a> </span><span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/defaults-from-fields" id="var-tag">defaults-from-fields</a> </span><span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/fakers-from-fields" id="var-tag">fakers-from-fields</a> </span><span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/form-fields" id="var-tag">form-fields</a> </span><span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/get-hook-from-fields" id="var-tag">get-hook-from-fields</a> </span><span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/html-from-fields" id="var-tag">html-from-fields</a> </span><span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/required-fields-of" id="var-tag">required-fields-of</a> </span><span id="var-link"><a href="field-helpers-api.html#ringfinger.field-helpers/validations-from-fields" id="var-tag">validations-from-fields</a> </span><br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="fields">fields</h2>
+  
+  <a href="fields-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr">All functions in this module make fields for you to use
+with ringfinger.resource.
+They're defined as functions even when they need no
+customization just for consistency.</pre>
+  
+  
+  
+  Public variables and functions:
+  <span id="var-link"><a href="fields-api.html#ringfinger.fields/alphanumeric" id="var-tag">alphanumeric</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/checkbox" id="var-tag">checkbox</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/color" id="var-tag">color</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/date" id="var-tag">date</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/email" id="var-tag">email</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/email-with-lookup" id="var-tag">email-with-lookup</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/ipv4" id="var-tag">ipv4</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/maxlength" id="var-tag">maxlength</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/minlength" id="var-tag">minlength</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/nbetween" id="var-tag">nbetween</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/nmax" id="var-tag">nmax</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/nmin" id="var-tag">nmin</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/number" id="var-tag">number</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/pattern" id="var-tag">pattern</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/required" id="var-tag">required</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/text" id="var-tag">text</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/textarea" id="var-tag">textarea</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/time-field" id="var-tag">time-field</a> </span><span id="var-link"><a href="fields-api.html#ringfinger.fields/url" id="var-tag">url</a> </span><br />
   
 </div><div id="namespace-entry">
   <br />
@@ -208,7 +246,7 @@ namespace.
   <h2 id="output">output</h2>
   
   <a href="output-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">The output system used by ringfinger.resource.</pre>
   
   
   
@@ -221,12 +259,14 @@ namespace.
   <h2 id="resource">resource</h2>
   
   <a href="resource-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">This module saves your time by writing all the Create/Read/Update/Delete
+boilerplate for you. Flash messages, validation, inserting example data,
+customization via hooks and channels -- you name it, this module does it.</pre>
   
   
   
   Public variables and functions:
-  <span id="var-link"><a href="resource-api.html#ringfinger.resource/call-flash" id="var-tag">call-flash</a> </span><span id="var-link"><a href="resource-api.html#ringfinger.resource/params-to-dboptions" id="var-tag">params-to-dboptions</a> </span><span id="var-link"><a href="resource-api.html#ringfinger.resource/resource" id="var-tag">resource</a> </span><br />
+  <span id="var-link"><a href="resource-api.html#ringfinger.resource/resource" id="var-tag">resource</a> </span><br />
   
 </div><div id="namespace-entry">
   <br />
@@ -234,7 +274,7 @@ namespace.
   <h2 id="security">security</h2>
   
   <a href="security-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">Some security-related Ring middleware used by ringfinger.core.</pre>
   
   
   
@@ -247,7 +287,7 @@ namespace.
   <h2 id="session">session</h2>
   
   <a href="session-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <pre id="namespace-docstr">This is used automatically when you provide a :session-db option to ringfinger.core/(def)app.</pre>
   
   
   
@@ -257,15 +297,28 @@ namespace.
 </div><div id="namespace-entry">
   <br />
   <hr />
-  <h2 id="util">util</h2>
+  <h2 id="timesavers.hooks">timesavers.hooks</h2>
   
-  <a href="util-api.html" id="api-link">Detailed API documentation</a><br />
-  <pre id="namespace-docstr"></pre>
+  <a href="timesavers.hooks-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr">Ready-to-use hooks for use with ringfinger.resource. Save even more time!</pre>
   
   
   
   Public variables and functions:
-  <span id="var-link"><a href="util-api.html#ringfinger.util/andf" id="var-tag">andf</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/from-browser?" id="var-tag">from-browser?</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/keywordize" id="var-tag">keywordize</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/sort-maps" id="var-tag">sort-maps</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/typeify" id="var-tag">typeify</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/typeize" id="var-tag">typeize</a> </span><br />
+  <span id="var-link"><a href="timesavers.hooks-api.html#ringfinger.timesavers.hooks/make-slug-for" id="var-tag">make-slug-for</a> </span><br />
+  
+</div><div id="namespace-entry">
+  <br />
+  <hr />
+  <h2 id="util">util</h2>
+  
+  <a href="util-api.html" id="api-link">Detailed API documentation</a><br />
+  <pre id="namespace-docstr">Various functions and macros used by Ringfinger.</pre>
+  
+  
+  
+  Public variables and functions:
+  <span id="var-link"><a href="util-api.html#ringfinger.util/andf" id="var-tag">andf</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/call-or-ret" id="var-tag">call-or-ret</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/from-browser?" id="var-tag">from-browser?</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/haz?" id="var-tag">haz?</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/is-xhr?" id="var-tag">is-xhr?</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/keywordize" id="var-tag">keywordize</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/nice-count" id="var-tag">nice-count</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/sort-maps" id="var-tag">sort-maps</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/typeify" id="var-tag">typeify</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/typeize" id="var-tag">typeize</a> </span><span id="var-link"><a href="util-api.html#ringfinger.util/zeroify" id="var-tag">zeroify</a> </span><br />
   
 </div>
 </div>

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>auth - Ringfinger nil API documentation</title>
+    <title>email.smtp - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email.console-api.html" class="wiki_link">email.console</a></li><li><a href="email.postmark-api.html" class="wiki_link">email.postmark</a></li><li><a href="email.smtp-api.html" class="wiki_link">email.smtp</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -52,24 +52,22 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.auth/get-user">get-user</a>
+      <a href="#ringfinger.email.smtp/gmail">gmail</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.auth/make-user">make-user</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.auth/wrap-auth">wrap-auth</a>
+      <a href="#ringfinger.email.smtp/smtp">smtp</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">auth</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">email.smtp</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.auth</span>
+<br />Full namespace name: <span id="long-name">ringfinger.email.smtp</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr">Low-level authorization API (creating users, getting users after checking) and the auth middleware.</pre>
+<pre id="namespace-docstr">SMTP mailer function.</pre>
 
 
 <br />
@@ -77,37 +75,28 @@ namespace.
 <div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.auth/get-user">get-user</h2>
+  <h2 id="ringfinger.email.smtp/gmail">gmail</h2>
   <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (get-user db coll username password fixed-salt-part)
+  <pre id="var-usage">Usage: (gmail username password)
 </pre>
-  <pre id="var-docstr">Returns a user from coll in db with given username and password if the password is valid</pre>
+  <pre id="var-docstr">Creates a new SMTP mailer function with given Gmail username and password.
+Short for (smtp 'smtp.gmail.com' 587 username password true)</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/feb78f66928e124a16d37fa3e6dbc35764d1fee8/src/ringfinger/auth.clj#L9" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/d143b9eca7a9c5c7866f3ec8956c007eed0e760e/src/ringfinger/email/smtp.clj#L23" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.auth/make-user">make-user</h2>
+  <h2 id="ringfinger.email.smtp/smtp">smtp</h2>
   <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (make-user db coll user password fixed-salt-part)
+  <pre id="var-usage">Usage: (smtp host port)
+       (smtp host port username password)
+       (smtp host port username password tls)
 </pre>
-  <pre id="var-docstr">Creates a user in coll in db with given fields (username and whatever you want) and password</pre>
+  <pre id="var-docstr">Creates a new SMTP mailer function with given settings</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/feb78f66928e124a16d37fa3e6dbc35764d1fee8/src/ringfinger/auth.clj#L17" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.auth/wrap-auth">wrap-auth</h2>
-  <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (wrap-auth handler)
-       (wrap-auth handler options)
-</pre>
-  <pre id="var-docstr">Ring middleware that adds :user if there's a user logged in. Supports session/form-based auth and HTTP Basic auth</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/feb78f66928e124a16d37fa3e6dbc35764d1fee8/src/ringfinger/auth.clj#L28" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/d143b9eca7a9c5c7866f3ec8956c007eed0e760e/src/ringfinger/email/smtp.clj#L5" id="var-source">Source</a>
 </div>
 
 
