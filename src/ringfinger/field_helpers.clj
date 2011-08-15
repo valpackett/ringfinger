@@ -4,7 +4,7 @@
   don't use ringfinger.resource and write all the boilerplate by hand."
   (:use ringfinger.util,
         faker.lorem,
-        [clojure.contrib.string :only [as-str]]))
+        hiccup.core)) ; <- has as-str
 
 ; oh
 
@@ -88,7 +88,7 @@
 (defmacro form-fields
   "HTML templating helper for rendering forms. Allowed styles are :label and :placeholder"
   [fields-html data errors wrap-html err-html style]
-  `(map (fn [f# fval#] (let [title# (as-str f#)] (conj ~wrap-html
+  `(html (map (fn [f# fval#] (let [title# (as-str f#)] (conj ~wrap-html
     (if (= ~style :label) [:label {:for title#} title#] nil)
     (let [value# (as-str (get ~data f#))]
       (if-let [rf# (:_render fval#)]
@@ -98,4 +98,4 @@
                 (if (= ~style :placeholder) {:placeholder title#} nil)
                 fval#)]))
     (if (get ~errors f#) (conj ~err-html (map as-str (get ~errors f#))) nil)
-  ))) (keys ~fields-html) (vals ~fields-html)))
+  ))) (keys ~fields-html) (vals ~fields-html))))
