@@ -3,6 +3,7 @@
   (:use inflections.core,
         faker.lorem,
         net.cgrand.enlive-html,
+        [valip.predicates :as v],
         [clojure.contrib.string :only [as-str]]))
 
 (defn make-slug-for
@@ -37,11 +38,24 @@
 
 (defn escape-input
   "Returns a hook which escapes the contents of the given field for
-  a given context (:html, :urlpart), :html is the default"
+  a given context (:html, :attr, :js, :css or :urlpart), :html is the default"
   ([field] (escape-input field :html))
   ([field context]
-   (let [escfn (case context
+   (let [make-ascii-escfn (fn [prefix]
+                            (fn [s]
+                              (->> (.getBytes s)
+                                   (map #(let [i (int %)]
+                                           (if (or (> i 256)
+                                                   ((v/between 65 122) i) ; alpha-
+                                                   ((v/between 48 57) i)) ; -numeric
+                                             (str (char %))
+                                             (str prefix (Integer/toHexString i)))))
+                                   (apply str))))
+         escfn (case context
                  :html #(-> % str (.replace "&" "&amp;") (.replace "<" "&lt;") (.replace ">" "&gt;")
                                   (.replace "\"" "&quot;") (.replace "'" "&#x27;") (.replace "/" "&#x2F;"))
+                 :attr (make-ascii-escfn "&#x")
+                 :js (make-ascii-escfn "\\x")
+                 :css (make-ascii-escfn "\\")
                  :urlpart #(java.net.URLEncoder/encode (str %) "UTF-8"))]
      (fn [data] (assoc data field (escfn (field data)))))))

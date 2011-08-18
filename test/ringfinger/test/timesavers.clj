@@ -11,4 +11,5 @@
 
 (deftest t-escape-input
   (is (= ((escape-input :i :html) {:i "<tag></tag>"}) {:i "&lt;tag&gt;&lt;&#x2F;tag&gt;"}))
-  (is (= ((escape-input :i :urlpart) {:i "hello world"}) {:i "hello+world"})))
+  (is (= ((escape-input :i :urlpart) {:i "hello world"}) {:i "hello+world"}))
+  (is (= ((escape-input :i :css) {:i "yo "}) {:i "yo\\20"})))
