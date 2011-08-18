@@ -95,8 +95,7 @@
                         ; like "010" or whatever. blame Rich Hickey, Sun/Oracle, whoever you want, but not me.
                         (str "2011-" (zeroify month) "-" (zeroify day))))
    :pre-hook #(try (parse (:date formatters) %) ; returns Joda DateTime
-                (catch IllegalArgumentException ex
-                  nil))
+                (catch IllegalArgumentException ex nil))
    :post-hook to-date
    :view #(unparse (:date formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
@@ -107,23 +106,52 @@
                             minute (rand-int 60)]
                         (str (zeroify hour) ":" (zeroify minute))))
    :pre-hook #(try (parse (:time-parser formatters) %) ; returns Joda DateTime
-                (catch IllegalArgumentException ex
-                  nil))
+                (catch IllegalArgumentException ex nil))
    :post-hook to-date
    :view #(unparse (:hour-minute formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{2}:[0-9]{2}(:[0-9]{2})?(\.[0-9]{2})?" %))})
 
-(defn number-field "Validates/parses integer numbers, input type=number" []
-  {:html {:type "number"}
-   :fake (repeatedly #(str (rand-int 1024)))
-   :pre-hook #(Integer/parseInt %)
-   :pred v/integer-string?})
+(defn date-time-field "Validates/parses/outputs date+times, input type=datetime"
+  ([] (date-time-field false))
+  ([local]
+    {:html {:type (if (true? local) "datetime-local" "datetime")}
+     :fake (repeatedly #(let [month (+ 1 (rand-int 12))
+                              day (+ 1 (rand-int (if (= month 2) 20 29)))
+                              hour (rand-int 24)
+                              minute (rand-int 60)]
+                          (str "2011-" (zeroify month) "-" (zeroify day) "T" (zeroify hour) ":" (zeroify minute) "Z")))
+     :pre-hook from-string ; returns Joda DateTime
+     :post-hook to-date
+     :view #(str (unparse (:date-hour-minute formatters) (from-date %)) "Z") ; gets java.util.Date
+     :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z" %))}))
 
-(defn range-field "Validates/parses integer numbers, input type=range" []
-  {:html {:type "range"}
-   :fake (repeatedly #(str (rand-int 128)))
-   :pre-hook #(Integer/parseInt %)
-   :pred v/integer-string?})
+(defn number-field "Validates/parses integer numbers, input type=number"
+  ([] (number-field 1))
+  ([step]
+    {:html {:type "number" :step step}
+     :fake (repeatedly #(str (rand-int 1024)))
+     :pre-hook #(Integer/parseInt %)
+     :pred v/integer-string?}))
+
+(defn double-field "Validates/parses double numbers, input type=number"
+  ([] (double-field 0.1))
+  ([step]
+   {:html {:type "number" :step step}
+    :fake (repeatedly #(str (rand)))
+    :pre-hook #(Double/parseDouble %)
+    :pred #(boolean (re-matches #"[0-9]+\.[0-9]+"))}))
+
+(defn range-field "Validates/parses integer numbers, input type=range"
+  ([] (range-field 1))
+  ([step]
+   (merge-with merge (number-field step)
+    {:html {:type "range"}})))
+
+(defn double-range-field "Validates/parses double numbers, input type=range"
+  ([] (range-field 0.1))
+  ([step]
+   (merge-with merge (double-field step)
+    {:html {:type "range"}})))
 
 (defn nmin "Sets the minimum number to the given one" [n]
   {:html {:min n}
