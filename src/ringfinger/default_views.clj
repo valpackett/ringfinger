@@ -21,7 +21,7 @@
         pk         (:pk stuff)
         fields     (:fields stuff)
         fieldnames (keys fields)
-        urlbase    (str "/" collname "/")]
+        urlbase    (str (:urlbase stuff) "/")]
     (html5 [:html
       [:head [:title (str collname " / index")]
              [:style default-style]]

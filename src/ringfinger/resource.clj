@@ -1,13 +1,13 @@
 (ns ringfinger.resource
   "This module saves your time by writing all the Create/Read/Update/Delete
   boilerplate for you. Flash messages, validation, inserting example data,
-  customization via hooks and channels -- you name it, this module does it."
+  customization via hooks, actions and channels -- you name it, this module does it."
   (:use (ringfinger core db output util field-helpers default-views)
         valip.core,
         lamina.core,
         [clojure.contrib.string :only [as-str]]))
 
-(defn- qsformat [req]
+(defn qsformat [req]
   (if-let [fmt (get-in req [:query-params "_format"])]
     (str "?_format=" fmt)))
 
@@ -44,11 +44,11 @@
    :channels -- map of Lamina channels (:create, :update, :delete). Ringfinger will publish events
                 to these channels so you could, for example, push updates to clients in real time,
                 enqueue long-running jobs, index changes with a search engine, etc.
-   :actions -- map of handlers for custom actions (callables accepting [req matches entry])
+   :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])
                on resource entries, called by visiting /url-prefix+collname/pk?_action=action"
   [collname options & fields]
   ; biggest let EVAR?
-  (let [store (:db options)
+  (let [db (:db options)
         pk (:pk options)
         owner-field (:owner-field options)
         default-dboptions (:default-dboptions options {})
@@ -67,7 +67,7 @@
                     (concat w (map #(keyword (as-str % "_slug")) w)))
         actions (let [o (:actions options [])]
                   (zipmap (map name (keys o)) (vals o)))
-        default-data {:collname collname :pk pk :fields fieldhtml :actions actions}
+        default-data {:coll coll :db db :collname collname :pk pk :fields fieldhtml :actions actions :urlbase urlbase}
         html-index (html-output (get-in options [:index :views] default-index) default-data)
         html-get   (html-output (get-in options [:get   :views] default-get) default-data)
         html-not-found (html-output (get-in options [:not-found :views] default-not-found) default-data)
@@ -94,7 +94,7 @@
                            result (apply validate (select-keys data ks)
                                          (filter #(haz? ks (first %)) valds))]
                        (if (= result nil) (yep) (nope result))))
-        i-get-one  #(get-one store coll {:query {pk (typeify (:pk %))}})
+        i-get-one  #(get-one db coll {:query {pk (typeify (:pk %))}})
         i-redirect (fn [req form flash status]
                      {:status  status
                       :headers {"Location" (str urlbase "/" (get form pk) (qsformat req))}
@@ -132,7 +132,7 @@
          {:get (if-not-forbidden :index (fn [req matches]
                  (respond req 200 {"Link" (as-str "<" urlbase "/{" pk "}>; rel=\"entry\"")}
                           {:req  req
-                           :data (map get-hook (get-many store coll (i-get-dboptions req)))}
+                           :data (map get-hook (get-many db coll (i-get-dboptions req)))}
                           {"html" html-index}
                           "html")))
           :post (if-not-forbidden :create (fn [req matches]
@@ -141,11 +141,11 @@
                     (i-validate req (merge blank-entry form)
                       (fn []
                         ((:create channels) entry)
-                        (create store coll entry)
+                        (create db coll entry)
                         (i-redirect req entry flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
                         (respond req 400 {}
-                                 {:data (map get-hook (get-many store coll (i-get-dboptions req)))
+                                 {:data (map get-hook (get-many db coll (i-get-dboptions req)))
                                   :newdata form
                                   :req req
                                   :errors errors}
@@ -154,7 +154,7 @@
        (if-env "development"
          (route (str urlbase "/_create_fakes")
            {:get (fn [req matches]
-                   (create-many store coll
+                   (create-many db coll
                      (take (Integer/parseInt (get-in req [:query-params "count"] "5"))
                            (repeatedly (fn [] (process-new req (zipmap (keys fakers) (map #(last (take (rand-int 1000) %)) (vals fakers))))))))
                    {:status  302
@@ -165,7 +165,7 @@
          {:get (fn [req matches]
                  (if-let [entry (i-get-one matches)]
                    (if-let [action (get actions (get-in req [:query-params "_action"] ""))]
-                     (action req matches entry)
+                     (action req matches entry default-data)
                      (if-not-forbidden :read
                        (respond req 200 {}
                                 {:data (get-hook entry)
@@ -183,7 +183,7 @@
                        (i-validate req form
                          (fn []
                            ((:update channels) merged)
-                           (update store coll orig diff)
+                           (update db coll orig diff)
                            (i-redirect req merged flash-updated 302))
                          (fn [errors]
                            (respond req 400 {}
@@ -197,7 +197,7 @@
                       (if-allowed req entry
                         (fn []
                           ((:delete channels) entry)
-                          (delete store coll entry)
+                          (delete db coll entry)
                           {:status  302
                            :headers {"Location" urlbase}
                            :flash   (call-or-ret flash-deleted entry)
