@@ -34,3 +34,14 @@
        (assoc data field
               (-> (html-snippet (field data))
                   rm (at [:iframe] (set-attr "sandbox" "")) emit* mergestr))))))
+
+(defn escape-input
+  "Returns a hook which escapes the contents of the given field for
+  a given context (:html, :urlpart), :html is the default"
+  ([field] (escape-input field :html))
+  ([field context]
+   (let [escfn (case context
+                 :html #(-> % str (.replace "&" "&amp;") (.replace "<" "&lt;") (.replace ">" "&gt;")
+                                  (.replace "\"" "&quot;") (.replace "'" "&#x27;") (.replace "/" "&#x2F;"))
+                 :urlpart #(java.net.URLEncoder/encode (str %) "UTF-8"))]
+     (fn [data] (assoc data field (escfn (field data)))))))
