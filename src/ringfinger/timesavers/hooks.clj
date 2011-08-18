@@ -21,7 +21,9 @@
 
 (defn safe-html
   "Returns a hook which removes script, style, link, title, meta, head, body, html
-  and other given tags from a string of html in a given field"
+  and other given tags from a string of HTML in a given field. Also adds a sandbox
+  attribute to iframes. As a 'side-effect' (not in the programming sense),
+  the HTML is always valid"
   ([field] (safe-html field []))
   ([field moretags]
    (let [tagz (concat moretags [:script :style :link :meta :head :body :html])
@@ -32,4 +34,4 @@
      (fn [data]
        (assoc data field
               (-> (html-snippet (field data))
-                  rm emit* mergestr))))))
+                  rm (at [:iframe] (set-attr "sandbox" "")) emit* mergestr))))))
