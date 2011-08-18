@@ -29,7 +29,7 @@
         [:h1 collname]
         (p-user stuff)
         (p-flash stuff)
-        [:form {:method "post" :action ""}
+        [:form {:method "post" :action "" :class "res"}
           (form-fields fields (:newdata stuff) (:errors stuff) [:div] [:div {:class "error"}] :label)
           (p-csrftoken stuff)
           [:button {:type "submit"} "Add"]]
@@ -56,7 +56,7 @@
         [:h1 [:a {:href (str "/" collname)} collname] (str " / " (get data pk))]
         (p-user stuff)
         (p-flash stuff)
-        [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put")}
+        [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put") :class "res"}
           (form-fields (:fields stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
           (p-csrftoken stuff)
           [:button {:type "submit"} "Save"]]]])))

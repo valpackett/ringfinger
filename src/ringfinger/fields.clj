@@ -101,19 +101,17 @@
    :view #(unparse (:date formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
-(def #^{:private true} time-hhmm-fmt (formatter "HH:mm"))
-
 (defn time-field "Validates/parses/outputs times" []
   {:html {:type "time"}
    :fake (repeatedly #(let [hour (rand-int 24)
-                            minute (rand-int 61)]
+                            minute (rand-int 60)]
                         (str (zeroify hour) ":" (zeroify minute))))
    :pre-hook #(try (parse (:time-parser formatters) %) ; returns Joda DateTime
                 (catch IllegalArgumentException ex
                   nil))
    :post-hook to-date
-   :view #(unparse time-hhmm-fmt (from-date %)) ; gets java.util.Date
-   :pred #(boolean (re-matches #"[0-9]{2}:[0-9]{2}" %))})
+   :view #(unparse (:hour-minute formatters) (from-date %)) ; gets java.util.Date
+   :pred #(boolean (re-matches #"[0-9]{2}:[0-9]{2}(:[0-9]{2})?(\.[0-9]{2})?" %))})
 
 (defn number "Validates integer numbers" []
   {:html {:type "number"}

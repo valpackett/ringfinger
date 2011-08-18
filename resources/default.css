@@ -68,7 +68,7 @@ label {
   min-width: 50px;
   text-align: right;
 }
-button {
+form.res button {
   margin-left: 57px;
 }
 label, button, input[type=checkbox], input[type=radio] {
