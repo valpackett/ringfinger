@@ -67,7 +67,7 @@
                     (concat w (map #(keyword (as-str % "_slug")) w)))
         actions (let [o (:actions options [])]
                   (zipmap (map name (keys o)) (vals o)))
-        default-data {:coll coll :db db :collname collname :pk pk :fields fieldhtml :actions actions :urlbase urlbase}
+        default-data (pack-to-map coll db collname pk fieldhtml actions urlbase)
         html-index (html-output (get-in options [:index :views] default-index) default-data)
         html-get   (html-output (get-in options [:get   :views] default-get) default-data)
         html-not-found (html-output (get-in options [:not-found :views] default-not-found) default-data)

@@ -19,7 +19,7 @@
 (defn default-index [stuff]
   (let [collname   (:collname stuff)
         pk         (:pk stuff)
-        fields     (:fields stuff)
+        fields     (:fieldhtml stuff)
         fieldnames (keys fields)
         urlbase    (str (:urlbase stuff) "/")]
     (html5 [:html
@@ -58,7 +58,7 @@
         (p-user stuff)
         (p-flash stuff)
         [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put") :class "res"}
-          (form-fields (:fields stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
+          (form-fields (:fieldhtml stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
           (p-csrftoken stuff)
           [:button {:type "submit"} "Save"]]]])))
 

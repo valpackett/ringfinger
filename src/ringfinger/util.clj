@@ -39,6 +39,11 @@
         " "
         (if (= ~number 1) ~noun (plural ~noun))))
 
+(defmacro pack-to-map
+  "Packs values into a map, eg.
+  (let [demo 1 test 2] (pack demo test)) -> {:demo 1 :test 2}"
+  [& values] (zipmap (map keyword values) values))
+
 (defn typeify
   "Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles "
   [s]
