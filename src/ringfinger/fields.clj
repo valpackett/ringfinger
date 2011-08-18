@@ -82,7 +82,7 @@
 
 (defn color-field "Validates hexadecimal color codes, input type=color" []
   {:html {:type "color"}
-   :fake (repeatedly #(str "#" (rand-int 10) (rand-int 10) (rand-int 10))) ; okay, enough randomness
+   :fake (repeatedly #(str "#" (rand-int 10) (rand-int 10) (rand-int 10) "fff")) ; okay, enough randomness
    :pred #(boolean (re-matches #"#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})" %))})
 
 (defn date-field "Validates/parses/outputs dates, input type=date" []
