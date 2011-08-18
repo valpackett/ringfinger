@@ -39,6 +39,7 @@
              (map (fn [a] [:td (get e a)]) fieldnames)
              [:td [:a {:href (str urlbase (get e pk))} "edit"]]
              [:td [:a {:href (str urlbase (get e pk) "?_method=delete")} "delete"]]
+             (map (fn [a] [:td [:a {:href (str urlbase (get e pk) "?_action=" a)} a]]) (keys (:actions stuff)))
           ]) (:data stuff))]
        (capitalize (nice-count (count (:data stuff)) "entry")) ". "
        (if-env "development"

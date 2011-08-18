@@ -43,7 +43,9 @@
              Tip: compose hooks with ->
    :channels -- map of Lamina channels (:create, :update, :delete). Ringfinger will publish events
                 to these channels so you could, for example, push updates to clients in real time,
-                enqueue long-running jobs, index changes with a search engine, etc."
+                enqueue long-running jobs, index changes with a search engine, etc.
+   :actions -- map of handlers for custom actions (callables accepting [req matches entry])
+               on resource entries, called by visiting /url-prefix+collname/pk?_action=action"
   [collname options & fields]
   ; biggest let EVAR?
   (let [store (:db options)
@@ -63,7 +65,9 @@
         default-entry (defaults-from-fields fields)
         whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))] ; cut off :csrftoken, don't allow users to store everything
                     (concat w (map #(keyword (as-str % "_slug")) w)))
-        default-data {:collname collname :pk pk :fields fieldhtml}
+        actions (let [o (:actions options [])]
+                  (zipmap (map name (keys o)) (vals o)))
+        default-data {:collname collname :pk pk :fields fieldhtml :actions actions}
         html-index (html-output (get-in options [:index :views] default-index) default-data)
         html-get   (html-output (get-in options [:get   :views] default-get) default-data)
         html-not-found (html-output (get-in options [:not-found :views] default-not-found) default-data)
@@ -158,14 +162,17 @@
                     :body    nil})})
          nil)
        (route (str urlbase "/:pk")
-         {:get (if-not-forbidden :read (fn [req matches]
+         {:get (fn [req matches]
                  (if-let [entry (i-get-one matches)]
-                   (respond req 200 {}
-                            {:data (get-hook entry)
-                             :req req}
-                            {"html" html-get}
-                            "html")
-                   (i-respond-404 req))))
+                   (if-let [action (get actions (get-in req [:query-params "_action"] ""))]
+                     (action req matches entry)
+                     (if-not-forbidden :read
+                       (respond req 200 {}
+                                {:data (get-hook entry)
+                                 :req req}
+                                {"html" html-get}
+                              "html")))
+                 (i-respond-404 req)))
           :put (if-not-forbidden :update (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        orig (i-get-one matches)

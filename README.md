@@ -36,13 +36,13 @@ Yeah, URLs are the same. The app is an API, and HTML is just another output form
 The `Accept` HTTP header (or `?_format=something`) is what "separates" the API.
 And insert some example data by visiting `/contacts/_create_fakes` (only in development environment, of course). Nice, eh?
 
-You can customize the behavior via hooks (eg. if you need to automatically add URL-friendly "slugs", as in the example, or automatic timestamps)
-and via providing [Lamina](https://github.com/ztellman/lamina) channels and subscribing to them (eg. if you need real-time push).
+You can customize the behavior via hooks (eg. if you need to automatically add URL-friendly "slugs", as in the example, or automatic timestamps),
+via providing [Lamina](https://github.com/ztellman/lamina) channels and subscribing to them (eg. if you need real-time push)
+or adding custom actions, eg. for voting in a poll.
 You also can use lower-level auth/database/validation/output/routing APIs if you can't fit something into these RESTful constraints.
 
 ## Coming "soon" ##
 
-- custom actions for resources (so eg. a polls app would be easy to make)
 - optionally separating create/index and view/edit pages in html
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
