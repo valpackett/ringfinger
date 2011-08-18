@@ -3,7 +3,6 @@
   (:use inflections.core,
         faker.lorem,
         net.cgrand.enlive-html,
-        ringfinger.util,
         [clojure.contrib.string :only [as-str]]))
 
 (defn make-slug-for
