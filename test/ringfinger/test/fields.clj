@@ -46,6 +46,10 @@
   (is (= ((:pred (date-field)) "2011-11-02") true))
   (is (= ((:pred (date-field)) "not-a-date") false)))
 
+(deftest t-time
+  (is (= ((:pred (time-field)) "10:01") true))
+  (is (= ((:pred (time-field)) "lolwtf") false)))
+
 (deftest t-number
   (is (= ((:pred (number-field)) "1234") true))
   (is (= ((:pred (number-field)) "-123") true))
