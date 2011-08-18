@@ -1,7 +1,17 @@
 (ns ringfinger.security
-  "Some security-related Ring middleware used by ringfinger.core."
+  "Some security-related Ring middleware used by ringfinger.core and other related functions."
   (:use ringfinger.util)
-  (:import org.apache.commons.codec.digest.DigestUtils))
+  (:import org.apache.commons.codec.digest.DigestUtils,
+           org.apache.commons.codec.binary.Base64,
+           java.security.SecureRandom))
+
+(defn secure-rand
+  "Secure random (SHA1PRNG) Base64-encoded string generator"
+  ([] (secure-rand 32))
+  ([b]
+    (let [s (byte-array b)]
+      (.nextBytes (SecureRandom/getInstance "SHA1PRNG") s)
+      (Base64/encodeBase64String s))))
 
 (defn wrap-csrf "CSRF protection middleware for Ring" [handler]
   (fn [req]
@@ -13,7 +23,7 @@
         {:status  403
          :headers {"Content-Type" "text/plain"}
          :body    "CSRF attempt detected!"}
-        (let [token (DigestUtils/md5Hex (str (rand)))]
+        (let [token (java.net.URLEncoder/encode (secure-rand))]
           (assoc-in (handler (assoc req :csrf-token token)) [:session :csrftoken] token)))
       (handler req))))
 

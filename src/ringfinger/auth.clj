@@ -1,10 +1,9 @@
 (ns ringfinger.auth
   "Low-level authorization API (creating users, getting users after checking) and the auth middleware."
-  (:use ringfinger.db, ringfinger.db.inmem)
+  (:use (ringfinger db security), ringfinger.db.inmem)
   (:require [clojure.contrib.string :as cstr])
   (:import org.apache.commons.codec.digest.DigestUtils,
-           org.apache.commons.codec.binary.Base64,
-           java.security.SecureRandom))
+           org.apache.commons.codec.binary.Base64))
 
 (defn get-user
   "Returns a user from coll in db with given username and password if the password is valid"
@@ -17,9 +16,7 @@
 (defn make-user
   "Creates a user in coll in db with given fields (username and whatever you want) and password"
   [db coll user password fixed-salt-part]
-  (let [salt (let [s (byte-array 32)]
-               (.nextBytes (SecureRandom/getInstance "SHA1PRNG") s)
-               (Base64/encodeBase64String s))]
+  (let [salt (secure-rand)]
     (create db coll
       (merge user
         {:password_salt salt
