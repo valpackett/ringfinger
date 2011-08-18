@@ -2,6 +2,8 @@
   "Ready-to-use hooks for use with ringfinger.resource. Save even more time!"
   (:use inflections.core,
         faker.lorem,
+        net.cgrand.enlive-html,
+        ringfinger.util,
         [clojure.contrib.string :only [as-str]]))
 
 (defn make-slug-for
@@ -16,3 +18,18 @@
        (assoc data output-field
               (let [r (parameterize (get data field))]
                 (if (= r "") (parameterize (first (take 1 fakes))) r)))))))
+
+(defn safe-html
+  "Returns a hook which removes script, style, link, title, meta, head, body, html
+  and other given tags from a string of html in a given field"
+  ([field] (safe-html field []))
+  ([field moretags]
+   (let [tagz (concat moretags [:script :style :link :meta :head :body :html])
+         mergestr (fn [a] (apply str a))
+         rm (fn [s] (loop [tagz tagz
+                           s s]
+                      (if (empty? tagz) s (recur (rest tagz) (at s [(first tagz)] nil)))))]
+     (fn [data]
+       (assoc data field
+              (-> (html-snippet (field data))
+                  rm emit* mergestr))))))
