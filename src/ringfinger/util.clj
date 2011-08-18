@@ -61,16 +61,16 @@
 (defmacro sorted-zipmap [ks vs] `(zipmap (reverse ~ks) (reverse ~vs))) ; this should be built into zipmap, dammit
 
 (defn sort-maps
-  ; FIXME: wrong order w/ desc
   "Sorts a sequence of maps using a map of sort args that maps keys to -1 for desc and 1 for asc order"
   [m sargs]
-  (if (or (= sargs nil) (= sargs {})) m
-    (if (= (count sargs) 1)
-      ((if (= (first (vals sargs)) -1) reverse identity)
-        (sort-by #(get % (first (keys sargs))) m))
-      (let [a (reverse sargs)]
-        (recur (sort-maps m (apply array-map (first a)))
-               (conj {} (rest a)))))))
+  (loop [m m
+         ks (reverse (keys sargs))]
+    (if (empty? ks) m
+      (let [k (first ks)
+            c (if (neg? (get sargs k))
+                        #(compare %2 %1)
+                        compare)]
+        (recur (sort-by k c m) (rest ks))))))
 
 (defn from-browser?
   "Checks if the request comes from a web browser. Or something pretending to be a web browser, really"

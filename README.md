@@ -33,7 +33,7 @@ Not ready yet, but a lot of things work, including MongoDB support, ready-to-use
 or something like that. You can do create/read/update/delete operations on the same resource with a browser
 (there are default HTML templates, like in Rails) or something that supports JSON or XML. Or even CSV.
 Yeah, URLs are the same. The app is an API, and HTML is just another output format.
-The `Accept` HTTP header (or ?format=something) is what "separates" the API.
+The `Accept` HTTP header (or `?_format=something`) is what "separates" the API.
 And insert some example data by visiting `/contacts/_create_fakes` (only in development environment, of course). Nice, eh?
 
 You can customize the behavior via hooks (eg. if you need to automatically add URL-friendly "slugs", as in the example, or automatic timestamps)

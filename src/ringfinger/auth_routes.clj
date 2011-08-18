@@ -24,7 +24,7 @@
    :fixed-salt -- fixed part of the salt, must be the same as you use with app. NEVER change this in production!!
    :url-base -- the starting part of auth URLs, the default is /auth/
    :redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /
-   :redir-param -- query string parameter for keeping the redirect url, the default is redirect, you generally don't need to care about this
+   :redir-param -- query string parameter for keeping the redirect url, the default is _redirect, you generally don't need to care about this
    :confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template
    :fields -- list of validations, defaults are: requiring username and at least 6 characters password"
   [options]
@@ -38,7 +38,7 @@
         fixed-s  (:fixed-salt  options "ringfingerFTW")
         url-base (:url-base    options "/auth/")
         redir-to (:redir-to    options "/")
-        redir-p  (:redir-param options "redirect")
+        redir-p  (:redir-param options "_redirect")
         db       (:db          options inmem)
         coll     (:coll        options :ringfinger_auth)
         confirm  (:confirm     options)

@@ -39,53 +39,53 @@
   (header req "Authorization" (str "Basic " (Base64/encodeBase64String (. "test:demo" getBytes)))))
 
 (deftest t-create
-  (let [res (testapp (body (request :post "/todos?format=json")
+  (let [res (testapp (body (request :post "/todos?_format=json")
                            {:body  "test"
                             :state "false"}))]
     (is (= (:status res 201)))
-    (is (= (get (:headers res) "Location") "/todos/test?format=json")))
-  (let [res (testapp (body (request :post "/todos?format=json") {:state "false"}))]
+    (is (= (get (:headers res) "Location") "/todos/test?_format=json")))
+  (let [res (testapp (body (request :post "/todos?_format=json") {:state "false"}))]
     (is (= (:status res) 400))
     (is (= (:body res) "{\"body\":[\"should be present\"]}")))
   (is (= (:body (testapp (header (request :post "/todos") "Accept" "application/xml")))
           "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"))
-  (is (= (:status (testapp (body (request :post "/hooked?format=json") {:name "test"}))) 201))
-  (is (= (:status (testapp (body (authd (request :post "/owned?format=json")) {:name "sup"}))) 201)))
+  (is (= (:status (testapp (body (request :post "/hooked?_format=json") {:name "test"}))) 201))
+  (is (= (:status (testapp (body (authd (request :post "/owned?_format=json")) {:name "sup"}))) 201)))
 
 (deftest t-update
-  (let [res (testapp (body (request :put "/todos/test?format=json")
+  (let [res (testapp (body (request :put "/todos/test?_format=json")
                            {:body  "test"
                             :state "on"}))]
     (is (= (:status res) 302))
-    (is (= (get (:headers res) "Location") "/todos/test?format=json")))
-  (is (= (:status (testapp (body (request :put "/hooked/test?format=json") {:name "test2"}))) 302))
-  (is (= (:status (testapp (body (request :put "/owned/sup?format=json") {:name "hacked"}))) 403))
-  (is (= (:status (testapp (body (authd (request :put "/owned/sup?format=json")) {:name "wassup"}))) 302)))
+    (is (= (get (:headers res) "Location") "/todos/test?_format=json")))
+  (is (= (:status (testapp (body (request :put "/hooked/test?_format=json") {:name "test2"}))) 302))
+  (is (= (:status (testapp (body (request :put "/owned/sup?_format=json") {:name "hacked"}))) 403))
+  (is (= (:status (testapp (body (authd (request :put "/owned/sup?_format=json")) {:name "wassup"}))) 302)))
 
 (deftest t-show
-  (is (= (:body (testapp (request :get "/todos/test?format=json")))
+  (is (= (:body (testapp (request :get "/todos/test?_format=json")))
           "{\"state\":\"on\",\"body\":\"test\"}"))
   (is (= (:body (testapp (header (request :get "/todos/test") "Accept" "application/xml")))
           "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><state>on</state><body>test</body></response>"))
-  (is (= (:body (testapp (request :get "/hooked/test2?format=json")))
+  (is (= (:body (testapp (request :get "/hooked/test2?_format=json")))
          "{\"onpost\":\"posted\",\"ondata\":\"yo\",\"name\":\"test2\",\"onput\":\"put\"}"))
-  (is (= (:body (testapp (request :get "/owned/wassup?format=json")))
+  (is (= (:body (testapp (request :get "/owned/wassup?_format=json")))
          "{\"name\":\"wassup\",\"owner\":\"test\"}")))
 
 (deftest t-index
-  (is (= (:body (testapp (request :get "/todos?format=json")))
+  (is (= (:body (testapp (request :get "/todos?_format=json")))
           "[{\"state\":\"on\",\"body\":\"test\"}]"))
-  (is (= (:body (testapp (request :get "/todos?format=json&query_state_ne=on")))
+  (is (= (:body (testapp (request :get "/todos?_format=json&query_state_ne=on")))
           "[]"))
   (is (= (:body (testapp (header (request :get "/todos") "Accept" "application/xml")))
           "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><state>on</state><body>test</body></entry></response>")))
 
 (deftest t-delete
-  (let [res (testapp (request :delete "/todos/test?format=json"))]
+  (let [res (testapp (request :delete "/todos/test?_format=json"))]
     (is (= (:status res) 302))
     (is (= (get (:headers res) "Location") "/todos")))
-  (testapp (body (request :post "/forbidden?format=json") {:name "test"}))
-  (is (= (:status (testapp (request :delete "/forbidden/test?format=json"))) 405))
+  (testapp (body (request :post "/forbidden?_format=json") {:name "test"}))
+  (is (= (:status (testapp (request :delete "/forbidden/test?_format=json"))) 405))
 
   (is (= (get-one inmem :todos {:body "test"}) nil)))
 

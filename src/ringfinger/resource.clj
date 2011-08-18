@@ -8,20 +8,17 @@
         [clojure.contrib.string :only [as-str]]))
 
 (defn- qsformat [req]
-  (if-let [fmt (get-in req [:query-params "format"])]
-    (str "?format=" fmt)))
+  (if-let [fmt (get-in req [:query-params "_format"])]
+    (str "?_format=" fmt)))
 
-(defmacro respond [req status headers data outputs default]
+(defmacro respond [req status headers data custom default]
   `(render
      (getoutput
        (first
          (filter identity
-           (list
-             (qsformat ~req)
-             (get-in ~req [:headers "accept"]) ; it must be lowercase!
-             ~default
-           )))
-     ~outputs)
+            [(get-in ~req [:query-params "_format"])
+             (get-in ~req [:headers "accept"]) ; must be lowercase!
+             ~default])) ~custom)
    ~status ~headers ~data))
 
 (defn resource
