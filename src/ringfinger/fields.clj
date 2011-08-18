@@ -29,7 +29,7 @@
   {:html {:pattern (str re)}
    :pred #(boolean (re-matches re %))})
 
-(defn checkbox "A boolean field" []
+(defn checkbox "A boolean field, input type=checkbox" []
   {:html {:_render (fn [title value attrs]
                      [:input (merge {:id title :name title :type "checkbox"}
                                     (if (= value "true") {:checked "checked"} nil)
@@ -55,18 +55,18 @@
   {:html {:pattern (str ".{" n ",}")}
    :pred #(>= (count %) n)})
 
-(defn email-field "Validates email addresses" []
+(defn email-field "Validates email addresses, input type=email" []
   {:html {:type "email"}
    :fake (repeatedly netfake/email)
    :pred v/email-address?})
 
 (defn email-lookup
-  "Validates email addresses with an additional DNS lookup. Safer, but slower" []
+  "Validates email addresses with an additional DNS lookup. Safer, but slower, input type=email" []
   {:html {:type "email"}
    :fake (repeatedly netfake/free-email)
    :pred v/valid-email-domain?})
 
-(defn url-field "Validates URLs" []
+(defn url-field "Validates URLs, input type=url" []
   {:html {:type "url"}
    :fake (repeatedly #(str "http://" (netfake/domain-name)))
    :pred v/url?})
@@ -80,12 +80,12 @@
               (map #(> (Integer/parseInt %) 255)
                    (drop 1 (re-matches #"([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})" a)))))})
 
-(defn color-field "Validates hexadecimal color codes" []
+(defn color-field "Validates hexadecimal color codes, input type=color" []
   {:html {:type "color"}
    :fake (repeatedly #(str "#" (rand-int 10) (rand-int 10) (rand-int 10))) ; okay, enough randomness
    :pred #(boolean (re-matches #"#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})" %))})
 
-(defn date-field "Validates/parses/outputs dates" []
+(defn date-field "Validates/parses/outputs dates, input type=date" []
   {:html {:type "date"}
    :fake (repeatedly #(let [month (+ 1 (rand-int 12))
                             ; i don't remember how much days there are in february,
@@ -101,7 +101,7 @@
    :view #(unparse (:date formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{4}-[0-9]{2}-[0-9]{2}" %))})
 
-(defn time-field "Validates/parses/outputs times" []
+(defn time-field "Validates/parses/outputs times, input type=time" []
   {:html {:type "time"}
    :fake (repeatedly #(let [hour (rand-int 24)
                             minute (rand-int 60)]
@@ -113,9 +113,15 @@
    :view #(unparse (:hour-minute formatters) (from-date %)) ; gets java.util.Date
    :pred #(boolean (re-matches #"[0-9]{2}:[0-9]{2}(:[0-9]{2})?(\.[0-9]{2})?" %))})
 
-(defn number-field "Validates integer numbers" []
+(defn number-field "Validates/parses integer numbers, input type=number" []
   {:html {:type "number"}
    :fake (repeatedly #(str (rand-int 1024)))
+   :pre-hook #(Integer/parseInt %)
+   :pred v/integer-string?})
+
+(defn range-field "Validates/parses integer numbers, input type=range" []
+  {:html {:type "range"}
+   :fake (repeatedly #(str (rand-int 128)))
    :pre-hook #(Integer/parseInt %)
    :pred v/integer-string?})
 
