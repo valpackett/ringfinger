@@ -24,32 +24,32 @@
   (is (= ((:pred (minlength 3)) "12")  false)))
 
 (deftest t-email
-  (is (= ((:pred (email)) "me@myfreeweb.ru") true))
-  (is (= ((:pred (email)) "not.an.email")    false)))
+  (is (= ((:pred (email-field)) "me@myfreeweb.ru") true))
+  (is (= ((:pred (email-field)) "not.an.email")    false)))
 
 (deftest t-url
-  (is (= ((:pred (url)) "http://floatboth.com") true))
-  (is (= ((:pred (url)) "not@an.address!!")     false)))
+  (is (= ((:pred (url-field)) "http://floatboth.com") true))
+  (is (= ((:pred (url-field)) "not@an.address!!")     false)))
 
 (deftest t-ipv4
-  (is (= ((:pred (ipv4)) "127.0.0.1")       true))
-  (is (= ((:pred (ipv4)) "255.255.255.255") true))
-  (is (= ((:pred (ipv4)) "256.0.0.0")       false))
-  (is (= ((:pred (ipv4)) "127.0.lolwut")    false)))
+  (is (= ((:pred (ipv4-field)) "127.0.0.1")       true))
+  (is (= ((:pred (ipv4-field)) "255.255.255.255") true))
+  (is (= ((:pred (ipv4-field)) "256.0.0.0")       false))
+  (is (= ((:pred (ipv4-field)) "127.0.lolwut")    false)))
 
 (deftest t-color
-  (is (= ((:pred (color)) "1f4")     true))
-  (is (= ((:pred (color)) "#00fF00") true))
-  (is (= ((:pred (color)) "#FFail")  false)))
+  (is (= ((:pred (color-field)) "1f4")     true))
+  (is (= ((:pred (color-field)) "#00fF00") true))
+  (is (= ((:pred (color-field)) "#FFail")  false)))
 
 (deftest t-date
-  (is (= ((:pred (date)) "2011-11-02") true))
-  (is (= ((:pred (date)) "not-a-date") false)))
+  (is (= ((:pred (date-field)) "2011-11-02") true))
+  (is (= ((:pred (date-field)) "not-a-date") false)))
 
 (deftest t-number
-  (is (= ((:pred (number)) "1234") true))
-  (is (= ((:pred (number)) "-123") true))
-  (is (= ((:pred (number)) "word") false)))
+  (is (= ((:pred (number-field)) "1234") true))
+  (is (= ((:pred (number-field)) "-123") true))
+  (is (= ((:pred (number-field)) "word") false)))
 
 (deftest t-nmin
   (let [gte-ten (:pred (nmin 10))]
