@@ -17,7 +17,7 @@
                  [lamina "0.4.0-beta2-SNAPSHOT"]
                  [clj-time "0.3.0"]
                  [inflections "0.5.2"]
-                 [faker "0.2.1"]
+                 [faker "0.2.2"]
                  [clojure-csv "1.3.1"]
                  [enlive "1.0.0"]
                  [commons-codec "1.5"]
