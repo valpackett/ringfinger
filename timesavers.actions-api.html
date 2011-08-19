@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>security - Ringfinger nil API documentation</title>
+    <title>timesavers.actions - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -52,24 +52,20 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.security/secure-rand">secure-rand</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.security/wrap-csrf">wrap-csrf</a>
-    </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.security/wrap-refcheck">wrap-refcheck</a>
+      <a href="#ringfinger.timesavers.actions/make-redir-action">make-redir-action</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">security</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">timesavers.actions</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.security</span>
+<br />Full namespace name: <span id="long-name">ringfinger.timesavers.actions</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr">Some security-related Ring middleware used by ringfinger.core and other related functions.</pre>
+<pre id="namespace-docstr">Functions for easy creation of actions</pre>
 
 
 <br />
@@ -77,37 +73,17 @@ namespace.
 <div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.security/secure-rand">secure-rand</h2>
+  <h2 id="ringfinger.timesavers.actions/make-redir-action">make-redir-action</h2>
   <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (secure-rand)
-       (secure-rand b)
+  <pre id="var-usage">Usage: (make-redir-action hook flash)
+       (make-redir-action hook flash channel)
 </pre>
-  <pre id="var-docstr">Secure random (SHA1PRNG) Base64-encoded string generator</pre>
+  <pre id="var-docstr">Makes an action which applies a hook to the entry it's being called on
+and redirects the user to the viewing URL, showing a flash message,
+optionally sending the result to a Lamina channel</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L8" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.security/wrap-csrf">wrap-csrf</h2>
-  <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (wrap-csrf handler)
-</pre>
-  <pre id="var-docstr">CSRF protection middleware for Ring</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L16" id="var-source">Source</a>
-</div><div id="var-entry">
-  <br />
-  <hr />
-  <h2 id="ringfinger.security/wrap-refcheck">wrap-refcheck</h2>
-  <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (wrap-refcheck handler)
-</pre>
-  <pre id="var-docstr">Referer checking middleware for Ring</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L30" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4b8e112f51b299f3b6839c20878b5dfc5d65d6be/src/ringfinger/timesavers/actions.clj#L6" id="var-source">Source</a>
 </div>
 
 

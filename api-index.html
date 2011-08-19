@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -90,24 +90,28 @@ Shortcuts:<br />
   <h2 id="C"><span id="section-head">C</span></h2>
   <pre>
 <span id="section-content"> <a href="util-api.html#ringfinger.util/call-or-ret">call-or-ret</a><span id="line-content">                  macro         util               If value is a callable, calls it with args and ret...
-</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/checkbox">checkbox</a><span id="line-content">                     function      fields             A boolean field.
-</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/color">color</a><span id="line-content">                        function      fields             Validates hexadecimal color codes.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/checkbox">checkbox</a><span id="line-content">                     function      fields             A boolean field, input type=checkbox.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/color-field">color-field</a><span id="line-content">                  function      fields             Validates hexadecimal color codes, input type=colo...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="D"><span id="section-head">D</span></h2>
   <pre>
 <span id="section-content"> <a href="field-helpers-api.html#ringfinger.field-helpers/data-post-hook-from-fields">data-post-hook-from-fields</a><span id="line-content">   var           field-helpers      Makes a data post-hook from a list of fields. You ...
 </span></span><span id="section-content"> <a href="field-helpers-api.html#ringfinger.field-helpers/data-pre-hook-from-fields">data-pre-hook-from-fields</a><span id="line-content">    var           field-helpers      Makes a data pre-hook from a list of fields. You u...
-</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/date">date</a><span id="line-content">                         function      fields             Validates/parses/outputs dates.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/date-field">date-field</a><span id="line-content">                   function      fields             Validates/parses/outputs dates, input type=date.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/date-time-field">date-time-field</a><span id="line-content">              function      fields             Validates/parses/outputs date+times, input type=da...
 </span></span><span id="section-content"> <a href="session-api.html#ringfinger.session/db-store">db-store</a><span id="line-content">                     function      session            Creates a new SessionStore object (for ring.middle...
 </span></span><span id="section-content"> <a href="core-api.html#ringfinger.core/defapp">defapp</a><span id="line-content">                       macro         core               Short for (def nname (app options &amp; routes)).
 </span></span><span id="section-content"> <a href="field-helpers-api.html#ringfinger.field-helpers/defaults-from-fields">defaults-from-fields</a><span id="line-content">         function      field-helpers      Makes a list of defaults from a list of fields. Yo...
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/double-field">double-field</a><span id="line-content">                 function      fields             Validates/parses double numbers, input type=number.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/double-range-field">double-range-field</a><span id="line-content">           function      fields             Validates/parses double numbers, input type=range.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="E"><span id="section-head">E</span></h2>
   <pre>
-<span id="section-content"> <a href="fields-api.html#ringfinger.fields/email">email</a><span id="line-content">                        function      fields             Validates email addresses.
-</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/email-with-lookup">email-with-lookup</a><span id="line-content">            function      fields             Validates email addresses with an additional DNS l...
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/email-field">email-field</a><span id="line-content">                  function      fields             Validates email addresses, input type=email.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/email-lookup">email-lookup</a><span id="line-content">                 function      fields             Validates email addresses with an additional DNS l...
+</span></span><span id="section-content"> <a href="timesavers.hooks-api.html#ringfinger.timesavers.hooks/escape-input">escape-input</a><span id="line-content">                 function      timesavers.hooks   Returns a hook which escapes the contents of the g...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="F"><span id="section-head">F</span></h2>
@@ -132,7 +136,7 @@ Shortcuts:<br />
   <h2 id="I"><span id="section-head">I</span></h2>
   <pre>
 <span id="section-content"> <a href="core-api.html#ringfinger.core/if-env">if-env</a><span id="line-content">                       macro         core               Checks if the current RING_ENV == env.
-</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/ipv4">ipv4</a><span id="line-content">                         function      fields             Validates IPv4 addresses.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/ipv4-field">ipv4-field</a><span id="line-content">                   function      fields             Validates IPv4 addresses.
 </span></span><span id="section-content"> <a href="util-api.html#ringfinger.util/is-xhr?">is-xhr?</a><span id="line-content">                      function      util               Checks if the request is made by an XMLHttpRequest.
 </span></span></pre>
 </div><div id="index-body">
@@ -151,7 +155,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="M"><span id="section-head">M</span></h2>
   <pre>
-<span id="section-content"> <a href="timesavers.hooks-api.html#ringfinger.timesavers.hooks/make-slug-for">make-slug-for</a><span id="line-content">                function      timesavers.hooks   Returns a hook which makes a slug (URL-friendly na...
+<span id="section-content"> <a href="timesavers.actions-api.html#ringfinger.timesavers.actions/make-redir-action">make-redir-action</a><span id="line-content">            function      timesavers.actions Makes an action which applies a hook to the entry ...
+</span></span><span id="section-content"> <a href="timesavers.hooks-api.html#ringfinger.timesavers.hooks/make-slug-for">make-slug-for</a><span id="line-content">                function      timesavers.hooks   Returns a hook which makes a slug (URL-friendly na...
 </span></span><span id="section-content"> <a href="auth-api.html#ringfinger.auth/make-user">make-user</a><span id="line-content">                    function      auth               Creates a user in coll in db with given fields (us...
 </span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/maxlength">maxlength</a><span id="line-content">                    function      fields             Sets the maximum length to the given number.
 </span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/minlength">minlength</a><span id="line-content">                    function      fields             Sets the minimum length to the given number.
@@ -163,7 +168,7 @@ Shortcuts:<br />
 </span></span><span id="section-content"> <a href="util-api.html#ringfinger.util/nice-count">nice-count</a><span id="line-content">                   macro         util               Displays a count of items nicely, eg. 0 'entry' -&gt;...
 </span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/nmax">nmax</a><span id="line-content">                         function      fields             Sets the maximum number to the given one.
 </span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/nmin">nmin</a><span id="line-content">                         function      fields             Sets the minimum number to the given one.
-</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/number">number</a><span id="line-content">                       function      fields             Validates integer numbers.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/number-field">number-field</a><span id="line-content">                 function      fields             Validates/parses integer numbers, input type=numbe...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="O"><span id="section-head">O</span></h2>
@@ -172,7 +177,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="P"><span id="section-head">P</span></h2>
   <pre>
-<span id="section-content"> <a href="fields-api.html#ringfinger.fields/pattern">pattern</a><span id="line-content">                      function      fields             Validates according to given regexp.
+<span id="section-content"> <a href="util-api.html#ringfinger.util/pack-to-map">pack-to-map</a><span id="line-content">                  macro         util               Packs values into a map, eg. (let [demo 1 test 2] ...
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/pattern">pattern</a><span id="line-content">                      function      fields             Validates according to given regexp.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="Q"><span id="section-head">Q</span></h2>
@@ -181,7 +187,8 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="R"><span id="section-head">R</span></h2>
   <pre>
-<span id="section-content"> <a href="fields-api.html#ringfinger.fields/required">required</a><span id="line-content">                     function      fields             Validates presence.
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/range-field">range-field</a><span id="line-content">                  function      fields             Validates/parses integer numbers, input type=range.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/required">required</a><span id="line-content">                     function      fields             Validates presence.
 </span></span><span id="section-content"> <a href="field-helpers-api.html#ringfinger.field-helpers/required-fields-of">required-fields-of</a><span id="line-content">           function      field-helpers      Returns a list of required fields' names from a li...
 </span></span><span id="section-content"> <a href="resource-api.html#ringfinger.resource/resource">resource</a><span id="line-content">                     function      resource           Creates a list of two routes (/url-prefix+collname...
 </span></span><span id="section-content"> <a href="core-api.html#ringfinger.core/route">route</a><span id="line-content">                        function      core               Creates a route accepted by the app function from ...
@@ -189,21 +196,23 @@ Shortcuts:<br />
 </div><div id="index-body">
   <h2 id="S"><span id="section-head">S</span></h2>
   <pre>
-<span id="section-content"> <a href="util-api.html#ringfinger.util/sort-maps">sort-maps</a><span id="line-content">                    function      util               Sorts a sequence of maps using a map of sort args ...
+<span id="section-content"> <a href="timesavers.hooks-api.html#ringfinger.timesavers.hooks/safe-html">safe-html</a><span id="line-content">                    function      timesavers.hooks   Returns a hook which removes script, style, link, ...
+</span></span><span id="section-content"> <a href="security-api.html#ringfinger.security/secure-rand">secure-rand</a><span id="line-content">                  function      security           Secure random (SHA1PRNG) Base64-encoded string gen...
+</span></span><span id="section-content"> <a href="util-api.html#ringfinger.util/sort-maps">sort-maps</a><span id="line-content">                    function      util               Sorts a sequence of maps using a map of sort args ...
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="T"><span id="section-head">T</span></h2>
   <pre>
-<span id="section-content"> <a href="fields-api.html#ringfinger.fields/text">text</a><span id="line-content">                         function      fields             input type=text.
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/text-field">text-field</a><span id="line-content">                   function      fields             input type=text.
 </span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/textarea">textarea</a><span id="line-content">                     function      fields             textarea.
-</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/time-field">time-field</a><span id="line-content">                   function      fields             Validates/parses/outputs times.
+</span></span><span id="section-content"> <a href="fields-api.html#ringfinger.fields/time-field">time-field</a><span id="line-content">                   function      fields             Validates/parses/outputs times, input type=time.
 </span></span><span id="section-content"> <a href="util-api.html#ringfinger.util/typeify">typeify</a><span id="line-content">                      function      util               Normalizes the type of s. If it's a string 'true',...
 </span></span><span id="section-content"> <a href="util-api.html#ringfinger.util/typeize">typeize</a><span id="line-content">                      macro         util               Maps typeify to values of map a.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="U"><span id="section-head">U</span></h2>
   <pre>
-<span id="section-content"> <a href="fields-api.html#ringfinger.fields/url">url</a><span id="line-content">                          function      fields             Validates URLs.
+<span id="section-content"> <a href="fields-api.html#ringfinger.fields/url-field">url-field</a><span id="line-content">                    function      fields             Validates URLs, input type=url.
 </span></span></pre>
 </div><div id="index-body">
   <h2 id="V"><span id="section-head">V</span></h2>

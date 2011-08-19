@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
       </ul>
     </div>
     
@@ -85,12 +85,12 @@ e-mail confirmation) and logging in/out.</pre>
 :fixed-salt -- fixed part of the salt, must be the same as you use with app. NEVER change this in production!!
 :url-base -- the starting part of auth URLs, the default is /auth/
 :redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /
-:redir-param -- query string parameter for keeping the redirect url, the default is redirect, you generally don't need to care about this
+:redir-param -- query string parameter for keeping the redirect url, the default is _redirect, you generally don't need to care about this
 :confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template
 :fields -- list of validations, defaults are: requiring username and at least 6 characters password</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/04a2761c3417c783d02aad9b6b6a8c508971977d/src/ringfinger/auth_routes.clj#L19" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4ae39002e2952a47d2fd88f5b7a8c101d004d50c/src/ringfinger/auth_routes.clj#L19" id="var-source">Source</a>
 </div>
 
 
