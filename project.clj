@@ -14,11 +14,11 @@
             :load-except-list [#"/test/" #"project\.clj"]}
   :dependencies ([org.clojure/clojure "1.2.1"]
                  [org.clojure/clojure-contrib "1.2.0"]
-                 [lamina "0.4.0-alpha3-SNAPSHOT"]
+                 [lamina "0.4.0-beta2-SNAPSHOT"]
                  [clj-time "0.3.0"]
                  [inflections "0.5.2"]
                  [faker "0.2.1"]
-                 [clojure-csv "0.3.0-SNAPSHOT"]
+                 [clojure-csv "1.3.1"]
                  [enlive "1.0.0"]
                  [commons-codec "1.5"]
                  [commons-email "1.1"]
@@ -28,4 +28,5 @@
                  [valip "0.2.0"])
   :dev-dependencies ([ring-mock "0.1.1"]
                      [ring-serve "0.1.1"]
+                     [midje "1.2.0"]
                      [org.clojars.weavejester/autodoc "0.9.0"]))

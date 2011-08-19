@@ -54,7 +54,7 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - live reloader (long poll, on disconnect: try to reconnect, when server is up, reload)
 - middleware like django-paranoid-sessions
-- extracting ringfinger.security into a separate ring-security package
+- extracting security, db and output once they'll be more stable and have more features
 - atom feeds for resources
 - invite mode for registration
 - file attachments w/ GridFS support
