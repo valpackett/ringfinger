@@ -1,11 +1,11 @@
 (ns ringfinger.test.util
-  (:use ringfinger.util, clojure.test))
+  (:use ringfinger.util, midje.sweet))
 
-(deftest t-sort-maps
+(facts "about sort-maps"
   (let [m [{:a 1 :b 1} {:a 1 :b 2} {:a 2 :b 1} {:a 2 :b 2}]]
-    (is (= (sort-maps m {:a 1 :b -1}) '({:a 1 :b 2} {:a 1 :b 1} {:a 2 :b 2} {:a 2 :b 1})))
-    (is (= (sort-maps m {:a -1 :b 1}) '({:a 2 :b 1} {:a 2 :b 2} {:a 1 :b 1} {:a 1 :b 2})))))
+    (sort-maps m {:a 1 :b -1}) => '({:a 1 :b 2} {:a 1 :b 1} {:a 2 :b 2} {:a 2 :b 1})
+    (sort-maps m {:a -1 :b 1}) => '({:a 2 :b 1} {:a 2 :b 2} {:a 1 :b 1} {:a 1 :b 2})))
 
-(deftest t-haz
-  (is (= (haz? [:a :b] :a) true))
-  (is (= (haz? [:a :b] :c) false)))
+(facts "about haz?"
+  (haz? [:a :b] :a) => true
+  (haz? [:a :b] :c) => false)

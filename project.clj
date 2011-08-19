@@ -29,4 +29,6 @@
   :dev-dependencies ([ring-mock "0.1.1"]
                      [ring-serve "0.1.1"]
                      [midje "1.2.0"]
+                     [lein-midje "1.0.3"]
+                     [congomongo "0.1.7-SNAPSHOT"]
                      [org.clojars.weavejester/autodoc "0.9.0"]))

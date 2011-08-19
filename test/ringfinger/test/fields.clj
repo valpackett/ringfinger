@@ -1,73 +1,73 @@
 (ns ringfinger.test.fields
-  (:use clojure.test, ringfinger.fields))
+  (:use ringfinger.fields, midje.sweet))
 
-(deftest t-required
-  (is (= ((:pred (required)) "s") true))
-  (is (= ((:pred (required)) "")  false))
-  (is (= ((:pred (required)) nil) false)))
+(facts "about required"
+  ((:pred (required)) "s") => true
+  ((:pred (required)) "")  => false
+  ((:pred (required)) nil) => false)
 
-(deftest t-pattern
+(facts "about pattern"
   (let [low (:pred (pattern #"[a-z]"))]
-    (is (= (low "a") true))
-    (is (= (low "A") false))))
+    (low "a") => true
+    (low "A") => false))
 
-(deftest t-alphanumeric
-  (is (= ((:pred (alphanumeric)) "aB0") true))
-  (is (= ((:pred (alphanumeric)) ":-)") false)))
+(facts "about alphanumeric"
+  ((:pred (alphanumeric)) "aB0") => true
+  ((:pred (alphanumeric)) ":-)") => false)
 
-(deftest t-maxlength
-  (is (= ((:pred (maxlength 3)) "123")  true))
-  (is (= ((:pred (maxlength 3)) "1234") false)))
+(facts "about maxlength"
+  ((:pred (maxlength 3)) "123")  => true
+  ((:pred (maxlength 3)) "1234") => false)
 
-(deftest t-minlength
-  (is (= ((:pred (minlength 3)) "123") true))
-  (is (= ((:pred (minlength 3)) "12")  false)))
+(facts "about minlength"
+  ((:pred (minlength 3)) "123") => true
+  ((:pred (minlength 3)) "12")  => false)
 
-(deftest t-email
-  (is (= ((:pred (email-field)) "me@myfreeweb.ru") true))
-  (is (= ((:pred (email-field)) "not.an.email")    false)))
+(facts "about email-field"
+  ((:pred (email-field)) "me@myfreeweb.ru") => true
+  ((:pred (email-field)) "not.an.email")    => false)
 
-(deftest t-url
-  (is (= ((:pred (url-field)) "http://floatboth.com") true))
-  (is (= ((:pred (url-field)) "not@an.address!!")     false)))
+(facts "about url-field"
+  ((:pred (url-field)) "http://floatboth.com") => true
+  ((:pred (url-field)) "not@an.address!!")     => false)
 
-(deftest t-ipv4
-  (is (= ((:pred (ipv4-field)) "127.0.0.1")       true))
-  (is (= ((:pred (ipv4-field)) "255.255.255.255") true))
-  (is (= ((:pred (ipv4-field)) "256.0.0.0")       false))
-  (is (= ((:pred (ipv4-field)) "127.0.lolwut")    false)))
+(facts "about ipv4-field"
+  ((:pred (ipv4-field)) "127.0.0.1")       => true
+  ((:pred (ipv4-field)) "255.255.255.255") => true
+  ((:pred (ipv4-field)) "256.0.0.0")       => false
+  ((:pred (ipv4-field)) "127.0.lolwut")    => false)
 
-(deftest t-color
-  (is (= ((:pred (color-field)) "1f4")     true))
-  (is (= ((:pred (color-field)) "#00fF00") true))
-  (is (= ((:pred (color-field)) "#FFail")  false)))
+(facts "about color-field"
+  ((:pred (color-field)) "1f4")     => true
+  ((:pred (color-field)) "#00fF00") => true
+  ((:pred (color-field)) "#FFail")  => false)
 
-(deftest t-date
-  (is (= ((:pred (date-field)) "2011-11-02") true))
-  (is (= ((:pred (date-field)) "not-a-date") false)))
+(facts "about date-field"
+  ((:pred (date-field)) "2011-11-02") => true
+  ((:pred (date-field)) "not-a-date") => false)
 
-(deftest t-time
-  (is (= ((:pred (time-field)) "10:01") true))
-  (is (= ((:pred (time-field)) "lolwtf") false)))
+(facts "about time-field"
+  ((:pred (time-field)) "10:01")  => true
+  ((:pred (time-field)) "lolwtf") => false)
 
-(deftest t-number
-  (is (= ((:pred (number-field)) "1234") true))
-  (is (= ((:pred (number-field)) "-123") true))
-  (is (= ((:pred (number-field)) "word") false)))
+(facts "about number-field"
+  ((:pred (number-field)) "1234") => true
+  ((:pred (number-field)) "-123") => true
+  ((:pred (number-field)) "word") => false)
 
-(deftest t-nmin
+(facts "about nmin"
   (let [gte-ten (:pred (nmin 10))]
-    (is (= (gte-ten "10") true))
-    (is (= (gte-ten "9")  false))))
+    (gte-ten "10") => true
+    (gte-ten "9")  => false))
 
-(deftest t-nmax
+(facts "about nmax"
   (let [lte-ten (:pred (nmax 10))]
-    (is (= (lte-ten "10") true))
-    (is (= (lte-ten "11") false))))
+    (lte-ten "10") => true
+    (lte-ten "11") => false))
 
-(deftest t-nbetween
+(facts "about nbetween"
   (let [btw (:pred (nbetween 10 15))]
-    (is (= (btw "10") true))
-    (is (= (btw "15") true))
-    (is (= (btw "9")  false))
-    (is (= (btw "16") false))))
+    (btw "10") => true
+    (btw "15") => true
+    (btw "9")  => false
+    (btw "16") => false))
