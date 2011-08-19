@@ -1,5 +1,4 @@
-# ringfinger #
-[![Build Status](https://secure.travis-ci.org/myfreeweb/ringfinger.png)](http://travis-ci.org/)
+# ringfinger [![Build Status](https://secure.travis-ci.org/myfreeweb/ringfinger.png)](http://travis-ci.org/) #
 Fun, fast, secure web development on top of [Clojure](http://clojure.org)/[Ring](https://github.com/mmcgrana/ring).
 A framework for the age of non-relational databases, content delivery networks, cloud hosting, HTML5 and coffee.
 InstaRESTful, if you like the hipster-speak. Named after a great Nine Inch Nails song.
