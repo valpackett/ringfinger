@@ -28,7 +28,7 @@ Not ready yet, but a lot of things work, including MongoDB support, ready-to-use
             contacts
             (auth-routes {:db mymongo}))
     
-   (serve myapp 3000)
+    (serve myapp 3000)
 
 or something like that. You can do create/read/update/delete operations on the same resource with a browser
 (there are default HTML templates, like in Rails) or something that supports JSON or XML. Or even CSV.
