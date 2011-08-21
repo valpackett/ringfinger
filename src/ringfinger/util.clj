@@ -28,6 +28,12 @@
   ; stolen from clojure.contrib, but it's an obvious one
   [substring #^String s] (.contains s substring))
 
+(defn #^String str-drop
+  "Drops first n characters from s.  Returns an empty string if n is
+   greater than the length of s."
+  ; same
+  [n #^String s] (if (< (count s) n) "" (.substring s n)))
+
 (defmacro zeroify
   "Converts an integer to a string, adding a leading zero if it's < 10,
   e.g. 1 -> '01', but 10 -> '10'

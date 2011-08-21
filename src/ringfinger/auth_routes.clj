@@ -4,7 +4,6 @@
   (:use (ringfinger auth core util db fields field-helpers default-views),
         ringfinger.db.inmem,
         valip.core)
-  (:require [clojure.contrib.string :as cstr])
   (:import java.util.UUID))
 
 (defn get-action [req nm]
@@ -13,7 +12,7 @@
              dmn  (str (name (:scheme req)) "://" (get hdrs "host"))
              rf   (get hdrs "referer" "")]
          (if (and (substring? dmn rf) (not (substring? "/login" rf)))
-           (str "?" nm "=" (cstr/drop (count dmn) rf))
+           (str "?" nm "=" (str-drop (count dmn) rf))
            ""))))
 
 (defn auth-routes
