@@ -86,6 +86,7 @@
               (wrap-jsonp (:callback-param options "callback"))
               wrap-params
               wrap-length
+              wrap-sec-headers
               wrap-head
               wrap-refcheck
               )]

@@ -40,3 +40,12 @@
           {:status  403
            :headers {"Content-Type" "text/plain"}
            :body    (str "You can't " (:request-method req) " from other domains.")})))))
+
+(defn wrap-sec-headers "Middleware for Ring which adds some headers for security" [handler]
+  (fn [req]
+    (let [res (handler req)]
+      (assoc res :headers
+             (merge (:headers res)
+                    {"X-Content-Type-Options" "nosniff"
+                     "X-Frame-Options" "sameorigin"
+                     "X-XSS-Protection" "1; mode=block"})))))
