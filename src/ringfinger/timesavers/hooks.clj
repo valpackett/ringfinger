@@ -37,10 +37,9 @@
                   rm (at [:iframe] (set-attr "sandbox" "")) emit* mergestr))))))
 
 (defn escape-input
-  "Returns a hook which escapes the contents of the given field for
-  a given context (:html, :attr, :js, :css or :urlpart), :html is the default"
-  ([field] (escape-input field :html))
-  ([field context]
+  "Returns a hook which escapes contents of given fields for
+  a given context (:html, :attr, :js, :css or :urlpart)"
+  [context & fields]
    (let [make-ascii-escfn (fn [prefix]
                             (let [ks (filter identity
                                        (map #(if (or ((v/between 65 122) %) ; alpha-
@@ -59,4 +58,5 @@
                  :js (make-ascii-escfn "\\x")
                  :css (make-ascii-escfn "\\")
                  :urlpart #(java.net.URLEncoder/encode (str %) "UTF-8"))]
-     (fn [data] (assoc data field (escfn (field data)))))))
+     (fn [data]
+       (apply assoc data (flatten (map (fn [f] [f (escfn (f data))]) fields))))))
