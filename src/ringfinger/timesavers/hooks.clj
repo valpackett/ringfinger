@@ -3,6 +3,7 @@
   (:use inflections.core,
         faker.lorem,
         net.cgrand.enlive-html,
+        [clojure.string :only [escape]]
         [valip.predicates :as v]))
 
 (defn make-slug-for
@@ -41,18 +42,19 @@
   ([field] (escape-input field :html))
   ([field context]
    (let [make-ascii-escfn (fn [prefix]
-                            (fn [s]
-                              (->> (.getBytes s)
-                                   (map #(let [i (int %)]
-                                           (if (or (> i 256)
-                                                   ((v/between 65 122) i) ; alpha-
-                                                   ((v/between 48 57) i)) ; -numeric
-                                             (str (char %))
-                                             (str prefix (Integer/toHexString i)))))
-                                   (apply str))))
+                            (let [ks (filter identity
+                                       (map #(if (or ((v/between 65 122) %) ; alpha-
+                                                     ((v/between 48 57) %)) ; -numeric
+                                               nil (char %)) (range 256)))
+                                  escmap (zipmap ks (map #(str prefix (Integer/toHexString %)) ks))]
+                              #(escape % escmap)))
          escfn (case context
-                 :html #(-> % str (.replace "&" "&amp;") (.replace "<" "&lt;") (.replace ">" "&gt;")
-                                  (.replace "\"" "&quot;") (.replace "'" "&#x27;") (.replace "/" "&#x2F;"))
+                 :html #(escape % {\& "&amp;"
+                                   \< "&lt;"
+                                   \> "&gt;"
+                                   \\ "&quot;"
+                                   \' "&#x27;"
+                                   \/ "&#x2F;"})
                  :attr (make-ascii-escfn "&#x")
                  :js (make-ascii-escfn "\\x")
                  :css (make-ascii-escfn "\\")

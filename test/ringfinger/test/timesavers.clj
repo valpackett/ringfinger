@@ -8,4 +8,5 @@
 (facts "about escape-input"
   ((escape-input :i :html) {:i "<tag></tag>"})    => {:i "&lt;tag&gt;&lt;&#x2F;tag&gt;"}
   ((escape-input :i :urlpart) {:i "hello world"}) => {:i "hello+world"}
+  ((escape-input :i :js) {:i "Hi :)"})            => {:i "Hi\\x20\\x3a\\x29"}
   ((escape-input :i :css) {:i "yo "})             => {:i "yo\\20"})
