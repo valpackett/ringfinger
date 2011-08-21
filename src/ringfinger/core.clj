@@ -1,10 +1,20 @@
+; A little monkey-patch for using HttpOnly cookies
+(require 'ring.middleware.cookies)
+(intern 'ring.middleware.cookies 'set-cookie-attrs
+  {:comment "Comment", :comment-url "CommentURL", :discard "Discard",
+   :domain "Domain", :max-age "Max-Age", :path "Path", :port "Port",
+   :secure "Secure", :version "Version", :expires "Expires",
+   :httponly "HttpOnly"})
+; -------
+
 (ns ringfinger.core
   "Ringfinger's core: All You Need Is defapp! And if-env.
   Magic starts here."
   (:use clout.core,
         [clojure.string :only [lower-case]],
-        (ring.middleware params session stacktrace flash file),
+        (ring.middleware params cookies session stacktrace flash file),
         (ringfinger session security auth), ringfinger.db.inmem))
+
 
 (defmacro if-env "Checks if the current RING_ENV == env" [env yep nope]
   `(if (= (or (System/getenv "RING_ENV") "development") ~env) ~yep ~nope))
@@ -82,7 +92,9 @@
               (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth) :salt (:fixed-salt options "ringfingerFTW")})
               wrap-flash
               wrap-csrf
-              (wrap-session {:store (:session-store options (db-store (:session-db options inmem)))})
+              (wrap-session {:store (:session-store options (db-store (:session-db options inmem)))
+                             :cookie-attrs {:httponly true}
+                             :cookie-name "s"})
               (wrap-jsonp (:callback-param options "callback"))
               wrap-params
               wrap-length
