@@ -57,6 +57,8 @@ namespace.
       <a href="#ringfinger.security/wrap-csrf">wrap-csrf</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.security/wrap-refcheck">wrap-refcheck</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.security/wrap-sec-headers">wrap-sec-headers</a>
     </div>
     <br />
   </div>
@@ -85,7 +87,7 @@ namespace.
   <pre id="var-docstr">Secure random (SHA1PRNG) Base64-encoded string generator</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L8" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L8" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -96,7 +98,7 @@ namespace.
   <pre id="var-docstr">CSRF protection middleware for Ring</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L16" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L16" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -107,7 +109,18 @@ namespace.
   <pre id="var-docstr">Referer checking middleware for Ring</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L30" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L30" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.security/wrap-sec-headers">wrap-sec-headers</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (wrap-sec-headers handler)
+</pre>
+  <pre id="var-docstr">Middleware for Ring which adds some headers for security</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L44" id="var-source">Source</a>
 </div>
 
 

@@ -70,6 +70,10 @@ namespace.
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.util/sort-maps">sort-maps</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.util/str-drop">str-drop</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#ringfinger.util/substring?">substring?</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.util/typeify">typeify</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
       <a href="#ringfinger.util/typeize">typeize</a>
@@ -104,7 +108,7 @@ namespace.
   <pre id="var-docstr">And function, just like the and macro. For use with apply</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L9" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L9" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -116,7 +120,7 @@ namespace.
 Otherwise, just returns it.</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L15" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L15" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -127,7 +131,7 @@ Otherwise, just returns it.</pre>
   <pre id="var-docstr">Checks if the request comes from a web browser. Or something pretending to be a web browser, really</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L80" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L91" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -139,7 +143,7 @@ Otherwise, just returns it.</pre>
 eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L21" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L21" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -150,7 +154,7 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
   <pre id="var-docstr">Checks if the request is made by an XMLHttpRequest</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L85" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L96" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -161,7 +165,7 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
   <pre id="var-docstr">Turns keys in map a into keywords</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L58" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L69" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -174,7 +178,7 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
 7 'post' -&gt; 'seven posts', 100500 'article' -&gt; '100500 articles'</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L32" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L43" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -186,7 +190,7 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
 (let [demo 1 test 2] (pack demo test)) -&gt; {:demo 1 :test 2}</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L42" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L53" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -197,7 +201,30 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
   <pre id="var-docstr">Sorts a sequence of maps using a map of sort args that maps keys to -1 for desc and 1 for asc order</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L68" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L79" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.util/str-drop">str-drop</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (str-drop n s)
+</pre>
+  <pre id="var-docstr">Drops first n characters from s.  Returns an empty string if n is
+greater than the length of s.</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L31" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="ringfinger.util/substring?">substring?</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (substring? substring s)
+</pre>
+  <pre id="var-docstr">Checks if s contains the substring.</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L26" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -208,7 +235,7 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
   <pre id="var-docstr">Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles </pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L47" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L58" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -219,7 +246,7 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
   <pre id="var-docstr">Maps typeify to values of map a</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L62" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L73" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -232,7 +259,7 @@ e.g. 1 -&gt; '01', but 10 -&gt; '10'
 Used for dates and times</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L26" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L37" id="var-source">Source</a>
 </div>
 
 

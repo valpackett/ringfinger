@@ -1,25 +1,25 @@
 {:namespaces
  ({:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/auth.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth.clj",
    :wiki-url "http://myfreeweb.github.com/ringfinger/auth-api.html",
    :name "ringfinger.auth",
    :doc
    "Low-level authorization API (creating users, getting users after checking) and the auth middleware."}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4ae39002e2952a47d2fd88f5b7a8c101d004d50c/src/ringfinger/auth_routes.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth_routes.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/auth-routes-api.html",
    :name "ringfinger.auth-routes",
    :doc
    "Authorization routes -- magical registration (if you really want, even with\ne-mail confirmation) and logging in/out."}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
    :wiki-url "http://myfreeweb.github.com/ringfinger/core-api.html",
    :name "ringfinger.core",
    :doc
    "Ringfinger's core: All You Need Is defapp! And if-env.\nMagic starts here."}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/db.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/f9154f570496e6a5e6f221fae4389f704e98e32c/src/ringfinger/db.clj",
    :wiki-url "http://myfreeweb.github.com/ringfinger/db-api.html",
    :name "ringfinger.db",
    :doc
@@ -43,19 +43,19 @@
    :doc
    "All functions in this module make fields for you to use\nwith ringfinger.resource.\nThey're defined as functions even when they need no\ncustomization just for consistency."}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/output.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/eb8ecd8cfcdd3d09ecff5705455a5bda5744baa0/src/ringfinger/output.clj",
    :wiki-url "http://myfreeweb.github.com/ringfinger/output-api.html",
    :name "ringfinger.output",
    :doc "The output system used by ringfinger.resource."}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/resource.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/f9154f570496e6a5e6f221fae4389f704e98e32c/src/ringfinger/resource.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/resource-api.html",
    :name "ringfinger.resource",
    :doc
    "This module saves your time by writing all the Create/Read/Update/Delete\nboilerplate for you. Flash messages, validation, inserting example data,\ncustomization via hooks, actions and channels -- you name it, this module does it."}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/security-api.html",
    :name "ringfinger.security",
@@ -74,14 +74,14 @@
    :name "ringfinger.timesavers.actions",
    :doc "Functions for easy creation of actions"}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4bc252918613cab4eae586f483af60bf1e33ca15/src/ringfinger/timesavers/hooks.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/timesavers.hooks-api.html",
    :name "ringfinger.timesavers.hooks",
    :doc
    "Ready-to-use hooks for use with ringfinger.resource. Save even more time!"}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url "http://myfreeweb.github.com/ringfinger/util-api.html",
    :name "ringfinger.util",
    :doc "Various functions and macros used by Ringfinger."}
@@ -105,7 +105,7 @@
    :name "ringfinger.email.console",
    :doc nil}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/email/postmark.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/eaad01570ab9f8872ba60a244f267cc3ea9293d9/src/ringfinger/email/postmark.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/email.postmark-api.html",
    :name "ringfinger.email.postmark",
@@ -121,9 +121,9 @@
    :name "get-user",
    :namespace "ringfinger.auth",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/auth.clj#L8",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth.clj#L8",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/auth.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//auth-api.html#ringfinger.auth/get-user",
    :doc
@@ -135,9 +135,9 @@
    :name "make-user",
    :namespace "ringfinger.auth",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/auth.clj#L16",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth.clj#L16",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/auth.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//auth-api.html#ringfinger.auth/make-user",
    :doc
@@ -149,9 +149,9 @@
    :name "wrap-auth",
    :namespace "ringfinger.auth",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/auth.clj#L25",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth.clj#L25",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/auth.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//auth-api.html#ringfinger.auth/wrap-auth",
    :doc
@@ -163,115 +163,115 @@
    :name "auth-routes",
    :namespace "ringfinger.auth-routes",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4ae39002e2952a47d2fd88f5b7a8c101d004d50c/src/ringfinger/auth_routes.clj#L19",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth_routes.clj#L18",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4ae39002e2952a47d2fd88f5b7a8c101d004d50c/src/ringfinger/auth_routes.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/auth_routes.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//auth-routes-api.html#ringfinger.auth-routes/auth-routes",
    :doc
    "Creates auth routes with given options:\n:db, :coll -- database and collection\n:views -- map of views (:login, :signup and :confirm)\n:flash -- map of flash messages (:login-success, :login-invalid, :signup-success, :logout, :confirm-success and :confirm-fail)\n:fixed-salt -- fixed part of the salt, must be the same as you use with app. NEVER change this in production!!\n:url-base -- the starting part of auth URLs, the default is /auth/\n:redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /\n:redir-param -- query string parameter for keeping the redirect url, the default is _redirect, you generally don't need to care about this\n:confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template\n:fields -- list of validations, defaults are: requiring username and at least 6 characters password",
    :var-type "function",
-   :line 19,
+   :line 18,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/auth_routes.clj"}
   {:arglists ([options & routes]),
    :name "app",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj#L64",
+   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L74",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/app",
    :doc
    "Creates a Ring handler with given options and routes, automatically wrapped with\nparams, session, flash, auth, head, jsonp, length and some security middleware\n(+ stacktrace and file in development env)\nAccepted options:\n :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth\n :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!\n :session-db -- database for session middleware OR\n :session-store -- SessionStore for session middleware, eg. for using the Redis store\n :static-dir -- directory with static files for serving them in development\n :callback-param -- parameter for JSONP callbacks, default is 'callback'\n :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default",
    :var-type "function",
-   :line 64,
+   :line 74,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/core.clj"}
   {:arglists ([nname options & routes]),
    :name "defapp",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj#L98",
+   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L111",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/defapp",
    :doc "Short for (def nname (app options & routes))",
    :var-type "macro",
-   :line 98,
+   :line 111,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/core.clj"}
   {:arglists ([env yep nope]),
    :name "if-env",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj#L9",
+   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L19",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/if-env",
    :doc "Checks if the current RING_ENV == env",
    :var-type "macro",
-   :line 9,
+   :line 19,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/core.clj"}
   {:arglists ([url handlers]),
    :name "route",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj#L52",
+   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L62",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/route",
    :doc
    "Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format and a map of handlers\neg. {:get (fn [req matches] {:status 200 :body nil})}",
    :var-type "function",
-   :line 52,
+   :line 62,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/core.clj"}
   {:arglists ([handler]),
    :name "wrap-head",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj#L19",
+   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L29",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/wrap-head",
    :doc "Ring middleware for handling HEAD requests properly",
    :var-type "function",
-   :line 19,
+   :line 29,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/core.clj"}
   {:arglists ([handler callback-param]),
    :name "wrap-jsonp",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj#L27",
+   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L37",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/wrap-jsonp",
    :doc "Ring middleware for handling JSONP requests",
    :var-type "function",
-   :line 27,
+   :line 37,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/core.clj"}
   {:arglists ([handler]),
    :name "wrap-length",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj#L12",
+   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L22",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/wrap-length",
    :doc "Ring middleware for adding Content-Length",
    :var-type "function",
-   :line 12,
+   :line 22,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/core.clj"}
   {:raw-source-url
@@ -732,23 +732,23 @@
    :name "resource",
    :namespace "ringfinger.resource",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/resource.clj#L24",
+   "https://github.com/myfreeweb/ringfinger/blob/f9154f570496e6a5e6f221fae4389f704e98e32c/src/ringfinger/resource.clj#L23",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/resource.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/f9154f570496e6a5e6f221fae4389f704e98e32c/src/ringfinger/resource.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//resource-api.html#ringfinger.resource/resource",
    :doc
    "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for\nRESTful Create/Read/Update/Delete of entries in collname.\nAlso, while in development environment, you can create example data using faker,\nlike this: /url-prefix+collname/_insert_fakes?count=100 (the default count is 5).\nAccepted options:\n :db -- database (required!)\n :pk -- primary key (required!)\n :url-prefix -- a part of the URL before the collname, default is /\n :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames\n :default-dboptions -- default database options (:query, :sort) for the index page\n :whitelist -- allowed extra fields (not required)\n :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)\n :views -- map of HTML views (:index, :get, :not-found)\n :flash -- map of flash messages (:created, :updated, :deleted, :forbidden),\n           can be either strings or callables expecting a single arg (the entry)\n :hooks -- map of hooks (:data (on both create and update), :create, :update, :view), must be callables expecting\n           the entry and returning it (with modifications you want). Hooks receive data with correct\n           types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time\n           Tip: compose hooks with ->\n :channels -- map of Lamina channels (:create, :update, :delete). Ringfinger will publish events\n              to these channels so you could, for example, push updates to clients in real time,\n              enqueue long-running jobs, index changes with a search engine, etc.\n :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])\n             on resource entries, called by visiting /url-prefix+collname/pk?_action=action",
    :var-type "function",
-   :line 24,
+   :line 23,
    :file "ringfinger/resource.clj"}
   {:arglists ([] [b]),
    :name "secure-rand",
    :namespace "ringfinger.security",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L8",
+   "https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L8",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//security-api.html#ringfinger.security/secure-rand",
    :doc "Secure random (SHA1PRNG) Base64-encoded string generator",
@@ -760,9 +760,9 @@
    :name "wrap-csrf",
    :namespace "ringfinger.security",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L16",
+   "https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L16",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//security-api.html#ringfinger.security/wrap-csrf",
    :doc "CSRF protection middleware for Ring",
@@ -774,14 +774,28 @@
    :name "wrap-refcheck",
    :namespace "ringfinger.security",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj#L30",
+   "https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L30",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/b9da0c890206262092b971931bb9b29bf53eb464/src/ringfinger/security.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//security-api.html#ringfinger.security/wrap-refcheck",
    :doc "Referer checking middleware for Ring",
    :var-type "function",
    :line 30,
+   :file
+   "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/security.clj"}
+  {:arglists ([handler]),
+   :name "wrap-sec-headers",
+   :namespace "ringfinger.security",
+   :source-url
+   "https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L44",
+   :raw-source-url
+   "https://github.com/myfreeweb/ringfinger/raw/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj",
+   :wiki-url
+   "http://myfreeweb.github.com/ringfinger//security-api.html#ringfinger.security/wrap-sec-headers",
+   :doc "Middleware for Ring which adds some headers for security",
+   :var-type "function",
+   :line 44,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/security.clj"}
   {:arglists ([db] [db coll]),
@@ -814,17 +828,17 @@
    :line 6,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/timesavers/actions.clj"}
-  {:arglists ([field] [field context]),
+  {:arglists ([context & fields]),
    :name "escape-input",
    :namespace "ringfinger.timesavers.hooks",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4bc252918613cab4eae586f483af60bf1e33ca15/src/ringfinger/timesavers/hooks.clj#L39",
+   "https://github.com/myfreeweb/ringfinger/blob/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj#L39",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4bc252918613cab4eae586f483af60bf1e33ca15/src/ringfinger/timesavers/hooks.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//timesavers.hooks-api.html#ringfinger.timesavers.hooks/escape-input",
    :doc
-   "Returns a hook which escapes the contents of the given field for\na given context (:html, :attr, :js, :css or :urlpart), :html is the default",
+   "Returns a hook which escapes contents of given fields for\na given context (:html, :attr, :js, :css or :urlpart)",
    :var-type "function",
    :line 39,
    :file
@@ -833,9 +847,9 @@
    :name "make-slug-for",
    :namespace "ringfinger.timesavers.hooks",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4bc252918613cab4eae586f483af60bf1e33ca15/src/ringfinger/timesavers/hooks.clj#L9",
+   "https://github.com/myfreeweb/ringfinger/blob/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj#L9",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4bc252918613cab4eae586f483af60bf1e33ca15/src/ringfinger/timesavers/hooks.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//timesavers.hooks-api.html#ringfinger.timesavers.hooks/make-slug-for",
    :doc
@@ -848,9 +862,9 @@
    :name "safe-html",
    :namespace "ringfinger.timesavers.hooks",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4bc252918613cab4eae586f483af60bf1e33ca15/src/ringfinger/timesavers/hooks.clj#L22",
+   "https://github.com/myfreeweb/ringfinger/blob/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj#L22",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4bc252918613cab4eae586f483af60bf1e33ca15/src/ringfinger/timesavers/hooks.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//timesavers.hooks-api.html#ringfinger.timesavers.hooks/safe-html",
    :doc
@@ -863,9 +877,9 @@
    :name "andf",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L9",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L9",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/andf",
    :doc "And function, just like the and macro. For use with apply",
@@ -877,9 +891,9 @@
    :name "call-or-ret",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L15",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L15",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/call-or-ret",
    :doc
@@ -892,24 +906,24 @@
    :name "from-browser?",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L80",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L91",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/from-browser?",
    :doc
    "Checks if the request comes from a web browser. Or something pretending to be a web browser, really",
    :var-type "function",
-   :line 80,
+   :line 91,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:arglists ([coll elem]),
    :name "haz?",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L21",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L21",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/haz?",
    :doc
@@ -922,117 +936,146 @@
    :name "is-xhr?",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L85",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L96",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/is-xhr?",
    :doc "Checks if the request is made by an XMLHttpRequest",
    :var-type "function",
-   :line 85,
+   :line 96,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:arglists ([a]),
    :name "keywordize",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L58",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L69",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/keywordize",
    :doc "Turns keys in map a into keywords",
    :var-type "macro",
-   :line 58,
+   :line 69,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:arglists ([number noun]),
    :name "nice-count",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L32",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L43",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/nice-count",
    :doc
    "Displays a count of items nicely, eg.\n0 'entry' -> 'no entries', 1 'entry' -> 'one entry'\n7 'post' -> 'seven posts', 100500 'article' -> '100500 articles'",
    :var-type "macro",
-   :line 32,
+   :line 43,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:arglists ([& values]),
    :name "pack-to-map",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L42",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L53",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/pack-to-map",
    :doc
    "Packs values into a map, eg.\n(let [demo 1 test 2] (pack demo test)) -> {:demo 1 :test 2}",
    :var-type "macro",
-   :line 42,
+   :line 53,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:arglists ([m sargs]),
    :name "sort-maps",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L68",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L79",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/sort-maps",
    :doc
    "Sorts a sequence of maps using a map of sort args that maps keys to -1 for desc and 1 for asc order",
    :var-type "function",
-   :line 68,
+   :line 79,
+   :file
+   "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
+  {:arglists ([n s]),
+   :name "str-drop",
+   :namespace "ringfinger.util",
+   :source-url
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L31",
+   :raw-source-url
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
+   :wiki-url
+   "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/str-drop",
+   :doc
+   "Drops first n characters from s.  Returns an empty string if n is\ngreater than the length of s.",
+   :var-type "function",
+   :line 31,
+   :file
+   "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
+  {:arglists ([substring s]),
+   :name "substring?",
+   :namespace "ringfinger.util",
+   :source-url
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L26",
+   :raw-source-url
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
+   :wiki-url
+   "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/substring?",
+   :doc "Checks if s contains the substring.",
+   :var-type "function",
+   :line 26,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:arglists ([s]),
    :name "typeify",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L47",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L58",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/typeify",
    :doc
    "Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles ",
    :var-type "function",
-   :line 47,
+   :line 58,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:arglists ([a]),
    :name "typeize",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L62",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L73",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/typeize",
    :doc "Maps typeify to values of map a",
    :var-type "macro",
-   :line 62,
+   :line 73,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:arglists ([n]),
    :name "zeroify",
    :namespace "ringfinger.util",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj#L26",
+   "https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L37",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/4943d367286123a60ded28c17a764a31fedb3470/src/ringfinger/util.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//util-api.html#ringfinger.util/zeroify",
    :doc
    "Converts an integer to a string, adding a leading zero if it's < 10,\ne.g. 1 -> '01', but 10 -> '10'\nUsed for dates and times",
    :var-type "macro",
-   :line 26,
+   :line 37,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/util.clj"}
   {:raw-source-url
@@ -1097,9 +1140,9 @@
    :name "postmark",
    :namespace "ringfinger.email.postmark",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/email/postmark.clj#L5",
+   "https://github.com/myfreeweb/ringfinger/blob/eaad01570ab9f8872ba60a244f267cc3ea9293d9/src/ringfinger/email/postmark.clj#L5",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/86b44e35da168f28a64a90a6efad69a2a7c3470e/src/ringfinger/email/postmark.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/eaad01570ab9f8872ba60a244f267cc3ea9293d9/src/ringfinger/email/postmark.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//email-api.html#ringfinger.email.postmark/postmark",
    :doc
