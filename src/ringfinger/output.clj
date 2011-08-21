@@ -2,6 +2,7 @@
   "The output system used by ringfinger.resource."
   (:use ringfinger.util,
         [clojure.data.json :only [json-str]],
+        [clj-yaml.core :only [generate-string]],
         (clojure.contrib prxml),
         clojure-csv.core))
 
@@ -38,6 +39,12 @@
            :body    (let [data (:data data [])]
                       (write-csv (map (fn [a] (map #(str (second %)) a)) (if (map? data) [data] data))))})))
 
+(def yaml (reify Output
+  (render [self status headers data]
+          {:status  status
+           :headers (merge {"Content-Type" "text/x-yaml; charset=utf-8"} headers)
+           :body    (generate-string (errors-or-data data))})))
+
 (deftype HTMLOutput [view default-data] Output
   (render [self status headers data]
           {:status  status
@@ -47,7 +54,7 @@
 (defn html-output [view dd] (HTMLOutput. view dd))
 
 (def getoutput (memoize (fn [ctype custom]
-  (let [outputs (merge {"json" json "xml" xml "csv" csv} custom)] ; html before xml
+  (let [outputs (merge {"json" json "xml" xml "csv" csv "yaml" yaml} custom)] ; html before xml
     (first
       (filter identity
               (map #(if (substring? %1 ctype) %2)

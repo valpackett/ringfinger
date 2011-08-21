@@ -14,18 +14,22 @@
             :load-except-list [#"/test/" #"project\.clj"]}
   :dependencies ([org.clojure/clojure "1.2.1"]
                  [org.clojure/clojure-contrib "1.2.0"]
+                 ; Output
                  [org.clojure/data.json "0.1.1"]
+                 [clojure-csv "1.3.1"]
+                 [clj-yaml "0.3.0-SNAPSHOT"]
+                 [enlive "1.0.0"]
+                 [hiccup "0.3.6"]
+                 ; Web
                  [ring/ring-core "0.3.11"]
                  [ring/ring-devel "0.3.11"]
                  [clout "0.4.1"]
                  [valip "0.2.0"]
+                 ; Misc
                  [lamina "0.4.0-beta2-SNAPSHOT"]
                  [clj-time "0.3.0"]
                  [inflections "0.5.2"]
                  [faker "0.2.2"]
-                 [clojure-csv "1.3.1"]
-                 [enlive "1.0.0"]
-                 [hiccup "0.3.6"]
                  [commons-codec "1.5"]
                  [commons-email "1.1"])
   :dev-dependencies ([ring-mock "0.1.1"]
