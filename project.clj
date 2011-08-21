@@ -13,7 +13,6 @@
             :namespaces-to-document ["ringfinger"]
             :load-except-list [#"/test/" #"project\.clj"]}
   :dependencies ([org.clojure/clojure "1.2.1"]
-                 [org.clojure/clojure-contrib "1.2.0"]
                  ; Output
                  [org.clojure/data.json "0.1.1"]
                  [clojure-csv "1.3.1"]

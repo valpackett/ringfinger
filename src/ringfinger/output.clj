@@ -3,7 +3,6 @@
   (:use ringfinger.util,
         [clojure.data.json :only [json-str]],
         [clj-yaml.core :only [generate-string]],
-        (clojure.contrib prxml),
         clojure-csv.core))
 
 (defprotocol Output
@@ -18,19 +17,25 @@
            :headers (merge {"Content-Type" "application/json; charset=utf-8"} headers)
            :body    (json-str (errors-or-data data))})))
 
-; I HATE YOU, XML
 (defn- to-xml [data]
-  (let [errs (:errors data) dt (:data data)]
-    (cond errs      (map (fn [k v] [k (map (fn [t] [:error t]) v)]) (keys errs) (vals errs))
-          (map? dt) (map vec dt)
-          :else     (map (fn [e] [:entry (map vec e)]) dt))))
+  (let [errs (:errors data)
+        dt (:data data)
+        mapfn (fn [d]
+                (apply str (map #(str "<" (name %1) ">" %2 "</" (name %1) ">") (keys d) (vals d))))]
+    (cond errs      (apply str (map (fn [k v]
+                                  (apply str "<" (name k) ">"
+                                    (reduce #(str %1 "<error>" %2 "</error>") (cons "" v))
+                                    "</" (name k) ">")) (keys errs) (vals errs)))
+          (map? dt) (mapfn dt)
+          :else     (reduce #(str %1 "<entry>" (mapfn %2) "</entry>") (cons "" dt)))))
 
 (def xml  (reify Output
   (render [self status headers data]
           {:status  status
            :headers (merge {"Content-Type" "application/xml; charset=utf-8"} headers)
-           :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
-                         (with-out-str (prxml [:response (to-xml data)])))})))
+           :body    (str "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response>"
+                         (to-xml data)
+                         "</response>")})))
 
 (def csv  (reify Output
   (render [self status headers data]
