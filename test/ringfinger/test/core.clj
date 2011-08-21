@@ -15,10 +15,11 @@
 
 (facts "about requests in general"
   (testapp (request :get "/test/hello")) =>
-    {:status  200
-     :headers {"Content-Length" "9"
-               "Content-Type" "text/plain"}
-     :body    "Yo: hello"}
+    (contains
+      {:status  200
+       :headers (contains {"Content-Length" "9"
+                           "Content-Type" "text/plain"})
+       :body    "Yo: hello"})
   (:status (testapp (request :post "/test/hello"))) => 405
   (:body   (testapp (header (request :delete "/method") "X-HTTP-Method-Override" "GET"))) => ":get"
   (:body   (testapp (request :post "/method?_method=get"))) =>":get"
