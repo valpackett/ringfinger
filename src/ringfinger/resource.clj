@@ -4,8 +4,7 @@
   customization via hooks, actions and channels -- you name it, this module does it."
   (:use (ringfinger core db output util field-helpers default-views)
         valip.core,
-        lamina.core,
-        [clojure.contrib.string :only [as-str]]))
+        lamina.core))
 
 (defn qsformat [req]
   (if-let [fmt (get-in req [:query-params "_format"])]
@@ -64,7 +63,7 @@
         blank-entry (zipmap req-fields (repeat ""))
         default-entry (defaults-from-fields fields)
         whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))] ; cut off :csrftoken, don't allow users to store everything
-                    (concat w (map #(keyword (as-str % "_slug")) w)))
+                    (concat w (map #(keyword (str (name %) "_slug")) w)))
         actions (let [o (:actions options [])]
                   (zipmap (map name (keys o)) (vals o)))
         default-data (pack-to-map coll db collname pk fieldhtml actions urlbase)
@@ -130,7 +129,7 @@
      (list
        (route urlbase
          {:get (if-not-forbidden :index (fn [req matches]
-                 (respond req 200 {"Link" (as-str "<" urlbase "/{" pk "}>; rel=\"entry\"")}
+                 (respond req 200 {"Link" (str "<" urlbase "/{" (name pk) "}>; rel=\"entry\"")}
                           {:req  req
                            :data (map get-hook (get-many db coll (i-get-dboptions req)))}
                           {"html" html-index}

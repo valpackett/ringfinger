@@ -1,5 +1,4 @@
 (ns ringfinger.test.security
-  (:require [clojure.contrib.string :as cstr])
   (:use (ringfinger core resource db fields), ringfinger.db.inmem,
         midje.sweet, ring.mock.request))
 

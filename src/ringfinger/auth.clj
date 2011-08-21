@@ -1,6 +1,7 @@
 (ns ringfinger.auth
   "Low-level authorization API (creating users, getting users after checking) and the auth middleware."
-  (:use (ringfinger db security), ringfinger.db.inmem)
+  (:use (ringfinger db security util), ringfinger.db.inmem,
+        [clojure.string :only [split]])
   (:require [clojure.contrib.string :as cstr])
   (:import org.apache.commons.codec.digest.DigestUtils,
            org.apache.commons.codec.binary.Base64))
@@ -35,7 +36,7 @@
          (handler (assoc req :user
             (cond session-username (let [user (get-one db coll {:query {:username session-username}})]
                                      (if (nil? (:_confirm_key user)) user nil))
-                  (cstr/substring? "Basic" auth-hdr)
-                    (let [cr (cstr/split #":" (new String (Base64/decodeBase64 (cstr/drop 6 auth-hdr))))]
+                  (substring? "Basic" auth-hdr)
+                    (let [cr (split (new String (Base64/decodeBase64 (cstr/drop 6 auth-hdr))) #":")]
                       (get-user db coll (first cr) (second cr) salt))
                   :else nil))))))))

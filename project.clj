@@ -14,6 +14,7 @@
             :load-except-list [#"/test/" #"project\.clj"]}
   :dependencies ([org.clojure/clojure "1.2.1"]
                  [org.clojure/clojure-contrib "1.2.0"]
+                 [org.clojure/data.json "0.1.1"]
                  [ring/ring-core "0.3.11"]
                  [ring/ring-devel "0.3.11"]
                  [clout "0.4.1"]

@@ -23,6 +23,11 @@
   eg. [:a :b] :a -> true, [:a :b] :c -> false"
   [coll elem] `(boolean (some #{~elem} ~coll)))
 
+(defn #^String substring?
+  "Checks if s contains the substring."
+  ; stolen from clojure.contrib, but it's an obvious one
+  [substring #^String s] (.contains s substring))
+
 (defmacro zeroify
   "Converts an integer to a string, adding a leading zero if it's < 10,
   e.g. 1 -> '01', but 10 -> '10'

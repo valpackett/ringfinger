@@ -1,8 +1,9 @@
 (ns ringfinger.output
   "The output system used by ringfinger.resource."
-  (:use (clojure.contrib json prxml),
-        clojure-csv.core,
-        [clojure.contrib.string :only [substring?]]))
+  (:use ringfinger.util,
+        [clojure.data.json :only [json-str]],
+        (clojure.contrib prxml),
+        clojure-csv.core))
 
 (defprotocol Output
   (render [self status headers data]))

@@ -1,5 +1,5 @@
 (ns ringfinger.email.postmark
-  (:use clojure.contrib.json)
+  (:use [clojure.data.json :only [json-str]])
   (:require [clojure.contrib.http.agent :as ha]))
 
 (defn postmark

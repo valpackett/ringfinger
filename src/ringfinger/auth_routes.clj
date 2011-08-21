@@ -10,9 +10,9 @@
 (defn get-action [req nm]
   (str (:uri req)
        (let [hdrs (:headers req)
-             dmn  (str (cstr/as-str (:scheme req)) "://" (get hdrs "host"))
+             dmn  (str (name (:scheme req)) "://" (get hdrs "host"))
              rf   (get hdrs "referer" "")]
-         (if (and (cstr/substring? dmn rf) (not (cstr/substring? "/login" rf)))
+         (if (and (substring? dmn rf) (not (substring? "/login" rf)))
            (str "?" nm "=" (cstr/drop (count dmn) rf))
            ""))))
 
@@ -144,7 +144,7 @@
                                (:subject confirm)
                                ((:mail-template confirm demo-mail-template)
                                   {:data  form
-                                   :url   (str (cstr/as-str (:scheme req)) "://" (get (:headers req) "host") url-base "confirm/" akey "?" redir-p "=" (getloc req))}))
+                                   :url   (str (name (:scheme req)) "://" (get (:headers req) "host") url-base "confirm/" akey "?" redir-p "=" (getloc req))}))
                               {:status  200
                                :headers {"Content-Type" "text/html; encoding=utf-8"}
                                :body    ((:confirm views) {:data  form

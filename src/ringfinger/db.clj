@@ -1,7 +1,7 @@
 (ns ringfinger.db
   "Document-oriented database abstraction used by ringfinger.resource."
   (:use ringfinger.util,
-        [clojure.contrib.string :only [split, substring?]]))
+        [clojure.string :only [split]]))
 
 (defprotocol Database
   (create      [self coll data])
@@ -47,4 +47,4 @@
 ;  eg. {'query_field_ne' 3, 'sort_field' -1}
 ;  becomes {:query {:field {:$ne 3}}, :sort {:field -1}}"
   ([qp] (if (empty? qp) nil (apply merge (map params-to-dboptions (keys qp) (vals qp)))))
-  ([q v] (if (substring? "_" q) (param-to-dboptions (flatten (list (split #"_" q) (typeify v)))) nil)))
+  ([q v] (if (substring? "_" q) (param-to-dboptions (flatten (list (split q #"_") (typeify v)))) nil)))
