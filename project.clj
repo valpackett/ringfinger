@@ -25,6 +25,7 @@
                  [ring/ring-devel "0.3.11"]
                  [clout "0.4.1"]
                  [valip "0.2.0"]
+                 [clj-http "0.1.3"]
                  ; Misc
                  [lamina "0.4.0-beta2-SNAPSHOT"]
                  [clj-time "0.3.0"]

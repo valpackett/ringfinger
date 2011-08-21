@@ -1,6 +1,6 @@
 (ns ringfinger.email.postmark
   (:use [clojure.data.json :only [json-str]])
-  (:require [clojure.contrib.http.agent :as ha]))
+  (:require [clj-http.client :as r]))
 
 (defn postmark
   "Creates a Postmark mailer function. If no args are given, uses the POSTMARK_API_TEST API key w/o SSL.
@@ -10,12 +10,11 @@
   ([apikey ssl]
    (let [url (str (if ssl "https://" "http://") "api.postmarkapp.com/email")]
      (fn [from to subject body]
-       (ha/http-agent url
-                     :method  "POST"
-                     :headers {"Accept"       "application/json"
-                               "Content-Type" "application/json"
-                               "X-Postmark-Server-Token" apikey}
-                     :body    (json-str {"From"     from
-                                         "To"       to
-                                         "Subject"  subject
-                                         "TextBody" body}))))))
+       (r/post url
+               {:headers {"X-Postmark-Server-Token" apikey}
+                :content-type :json
+                :accept :json
+                :body    (json-str {"From"     from
+                                    "To"       to
+                                    "Subject"  subject
+                                    "TextBody" body})})))))
