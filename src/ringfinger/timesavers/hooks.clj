@@ -45,8 +45,8 @@
                             (let [ks (filter identity
                                        (map #(if (or ((v/between 65 122) %) ; alpha-
                                                      ((v/between 48 57) %)) ; -numeric
-                                               nil (char %)) (range 256)))
-                                  escmap (zipmap ks (map #(str prefix (Integer/toHexString %)) ks))]
+                                               nil %) (range 256)))
+                                  escmap (zipmap (map char ks) (map #(str prefix (Integer/toHexString %)) ks))]
                               #(escape % escmap)))
          escfn (case context
                  :html #(escape % {\& "&amp;"
