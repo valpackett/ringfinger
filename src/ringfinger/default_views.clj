@@ -54,7 +54,7 @@
       [:head [:title (str collname " / " (get data pk))]
              [:style default-style]]
       [:body
-        [:h1 [:a {:href (str (:urlbase stuff) "/" collname)} collname] (str " / " (get data pk))]
+        [:h1 [:a {:href (:urlbase stuff)} collname] (str " / " (get data pk))]
         (p-user stuff)
         (p-flash stuff)
         [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put") :class "res"}
