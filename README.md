@@ -4,6 +4,8 @@ A framework for the age of non-relational databases, content delivery networks, 
 InstaRESTful, if you like the hipster-speak. Named after a great Nine Inch Nails song.
 Not ready yet, but a lot of things work, including MongoDB support, ready-to-use customizable login/signup system and more.
 
+Check out the [website](http://ringfinger.floatboth.com) for a live demo.
+
 ## Get excited ##
 
     (ns superapp.core
@@ -17,9 +19,9 @@ Not ready yet, but a lot of things work, including MongoDB support, ready-to-use
       {:db mymongo
        :pk :name_slug
        :hooks {:data (make-slug-for :name)}}
-      [:name (required) "sorry, anonymous"]
-      [:bday (date) "invalid date"]
-      [:email (email) "invalid email"])
+      [:name  (required) "sorry, anonymous"]
+      [:bday  (date-field) "invalid date"]
+      [:email (email-field) "invalid email"])
     
     (defapp myapp
             {:static-dir "custom_static_name"
