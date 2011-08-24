@@ -2,16 +2,18 @@
   "MongoDB support. Don't forget to add Congomongo to your deps!"
   (:use ringfinger.db, somnium.congomongo))
 
+; FIXME
+
 (deftype MongoDB [conn] Database
   (create [self coll data]
     (with-mongo conn (insert! coll data)))
   (create-many [self coll data]
     (with-mongo conn (mass-insert! coll data)))
   (get-many [self coll options]
-    (with-mongo conn (fetch coll :where (:query options)
-                                 :one?  (:one?  options)
-                                 :skip  (:skip  options)
-                                 :limit (:limit options)
+    (with-mongo conn (fetch coll :where (:query options {})
+                                 :one?  (:one?  options false)
+                                 :skip  (:skip  options 0)
+                                 :limit (:limit options 0)
                                  :sort  (:sort  options))))
   (get-one [self coll options]
     (get-many self coll (assoc options :one? true)))
@@ -23,9 +25,9 @@
 (defn mongodb
   "Creates a MongoDB data storage object using given db and a list of instances.
   Each instance is a map containing :host and/or :port"
-  ([db] (mongodb db {}))
-  ([db instances] (MongoDB. (make-connection db instances)))
+  ([db] (mongodb db [{}]))
+  ([db instances] (MongoDB. (apply make-connection db instances)))
   ([db username password instances]
-   (let [conn (make-connection db instances)]
+   (let [conn (apply make-connection db instances)]
      (authenticate conn username password)
      (MongoDB. conn))))
