@@ -1,4 +1,4 @@
-(defproject ringfinger "0.1.0-SNAPSHOT"
+(defproject ringfinger "0.1.1-SNAPSHOT"
   :description "Fun, fast, secure web development framework for Clojure/Ring"
   :url "https://github.com/myfreeweb/ringfinger"
   :license {:name "Apache License 2.0"
