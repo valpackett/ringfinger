@@ -13,7 +13,7 @@
    :doc
    "Authorization routes -- magical registration (if you really want, even with\ne-mail confirmation) and logging in/out."}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj",
    :wiki-url "http://myfreeweb.github.com/ringfinger/core-api.html",
    :name "ringfinger.core",
    :doc
@@ -48,7 +48,7 @@
    :name "ringfinger.output",
    :doc "The output system used by ringfinger.resource."}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/f9154f570496e6a5e6f221fae4389f704e98e32c/src/ringfinger/resource.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/bd415a251d84dd6c4a57cccf58e1b17cd9fbd58e/src/ringfinger/resource.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/resource-api.html",
    :name "ringfinger.resource",
@@ -92,7 +92,7 @@
    :name "ringfinger.db.inmem",
    :doc nil}
   {:source-url
-   "https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/db/mongodb.clj",
+   "https://github.com/myfreeweb/ringfinger/blob/f64dcd0880b840bb8ddd2cd155a158eb352ec66e/src/ringfinger/db/mongodb.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger/db.mongodb-api.html",
    :name "ringfinger.db.mongodb",
@@ -178,13 +178,13 @@
    :name "app",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L74",
+   "https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L74",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/app",
    :doc
-   "Creates a Ring handler with given options and routes, automatically wrapped with\nparams, session, flash, auth, head, jsonp, length and some security middleware\n(+ stacktrace and file in development env)\nAccepted options:\n :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth\n :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!\n :session-db -- database for session middleware OR\n :session-store -- SessionStore for session middleware, eg. for using the Redis store\n :static-dir -- directory with static files for serving them in development\n :callback-param -- parameter for JSONP callbacks, default is 'callback'\n :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default",
+   "Creates a Ring handler with given options and routes, automatically wrapped with\nparams, session, flash, auth, head, jsonp, length and some security middleware\n(+ stacktrace and file in development env)\nAccepted options:\n :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth\n :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!\n :session-db -- database for session middleware OR\n :session-store -- SessionStore for session middleware, eg. for using the Redis store\n :static-dir -- directory with static files for serving them in development\n :callback-param -- parameter for JSONP callbacks, default is 'callback'\n :csrf-free -- turn off CSRF protection (if you know what you're doing!)\n :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default",
    :var-type "function",
    :line 74,
    :file
@@ -193,23 +193,23 @@
    :name "defapp",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L111",
+   "https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L113",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/defapp",
    :doc "Short for (def nname (app options & routes))",
    :var-type "macro",
-   :line 111,
+   :line 113,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/core.clj"}
   {:arglists ([env yep nope]),
    :name "if-env",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L19",
+   "https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L19",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/if-env",
    :doc "Checks if the current RING_ENV == env",
@@ -221,9 +221,9 @@
    :name "route",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L62",
+   "https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L62",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/route",
    :doc
@@ -236,9 +236,9 @@
    :name "wrap-head",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L29",
+   "https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L29",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/wrap-head",
    :doc "Ring middleware for handling HEAD requests properly",
@@ -250,9 +250,9 @@
    :name "wrap-jsonp",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L37",
+   "https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L37",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/wrap-jsonp",
    :doc "Ring middleware for handling JSONP requests",
@@ -264,9 +264,9 @@
    :name "wrap-length",
    :namespace "ringfinger.core",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L22",
+   "https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L22",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//core-api.html#ringfinger.core/wrap-length",
    :doc "Ring middleware for adding Content-Length",
@@ -732,13 +732,13 @@
    :name "resource",
    :namespace "ringfinger.resource",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/f9154f570496e6a5e6f221fae4389f704e98e32c/src/ringfinger/resource.clj#L23",
+   "https://github.com/myfreeweb/ringfinger/blob/bd415a251d84dd6c4a57cccf58e1b17cd9fbd58e/src/ringfinger/resource.clj#L23",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/f9154f570496e6a5e6f221fae4389f704e98e32c/src/ringfinger/resource.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/bd415a251d84dd6c4a57cccf58e1b17cd9fbd58e/src/ringfinger/resource.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//resource-api.html#ringfinger.resource/resource",
    :doc
-   "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for\nRESTful Create/Read/Update/Delete of entries in collname.\nAlso, while in development environment, you can create example data using faker,\nlike this: /url-prefix+collname/_insert_fakes?count=100 (the default count is 5).\nAccepted options:\n :db -- database (required!)\n :pk -- primary key (required!)\n :url-prefix -- a part of the URL before the collname, default is /\n :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames\n :default-dboptions -- default database options (:query, :sort) for the index page\n :whitelist -- allowed extra fields (not required)\n :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)\n :views -- map of HTML views (:index, :get, :not-found)\n :flash -- map of flash messages (:created, :updated, :deleted, :forbidden),\n           can be either strings or callables expecting a single arg (the entry)\n :hooks -- map of hooks (:data (on both create and update), :create, :update, :view), must be callables expecting\n           the entry and returning it (with modifications you want). Hooks receive data with correct\n           types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time\n           Tip: compose hooks with ->\n :channels -- map of Lamina channels (:create, :update, :delete). Ringfinger will publish events\n              to these channels so you could, for example, push updates to clients in real time,\n              enqueue long-running jobs, index changes with a search engine, etc.\n :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])\n             on resource entries, called by visiting /url-prefix+collname/pk?_action=action",
+   "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for\nRESTful Create/Read/Update/Delete of entries in collname.\nAlso, while in development environment, you can create example data using faker,\nlike this: /url-prefix+collname/_insert_fakes?count=100 (the default count is 5).\nAccepted options:\n :db -- database (required!)\n :pk -- primary key (required!)\n :url-prefix -- a part of the URL before the collname, default is /\n :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames\n :default-dboptions -- default database options (:query, :sort) for the index page\n :whitelist -- allowed extra fields (not required)\n :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)\n :views -- map of HTML views (:index, :get, :not-found)\n :flash -- map of flash messages (:created, :updated, :deleted, :forbidden),\n           can be either strings or callables expecting a single arg (the entry)\n :hooks -- map of hooks (:data (on both create and update), :create, :update, :view), must be callables expecting\n           the entry and returning it (with modifications you want). Hooks receive data with correct\n           types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time\n           Tip: compose hooks with comp\n :channels -- map of Lamina channels (:create, :update, :delete). Ringfinger will publish events\n              to these channels so you could, for example, push updates to clients in real time,\n              enqueue long-running jobs, index changes with a search engine, etc.\n :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])\n             on resource entries, called by visiting /url-prefix+collname/pk?_action=action",
    :var-type "function",
    :line 23,
    :file "ringfinger/resource.clj"}
@@ -1110,15 +1110,15 @@
    :name "mongodb",
    :namespace "ringfinger.db.mongodb",
    :source-url
-   "https://github.com/myfreeweb/ringfinger/blob/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/db/mongodb.clj#L23",
+   "https://github.com/myfreeweb/ringfinger/blob/f64dcd0880b840bb8ddd2cd155a158eb352ec66e/src/ringfinger/db/mongodb.clj#L25",
    :raw-source-url
-   "https://github.com/myfreeweb/ringfinger/raw/3ad070931e98ccff408003bf18181c3fb0db69c7/src/ringfinger/db/mongodb.clj",
+   "https://github.com/myfreeweb/ringfinger/raw/f64dcd0880b840bb8ddd2cd155a158eb352ec66e/src/ringfinger/db/mongodb.clj",
    :wiki-url
    "http://myfreeweb.github.com/ringfinger//db-api.html#ringfinger.db.mongodb/mongodb",
    :doc
    "Creates a MongoDB data storage object using given db and a list of instances.\nEach instance is a map containing :host and/or :port",
    :var-type "function",
-   :line 23,
+   :line 25,
    :file
    "/Users/myfreeweb/Code/open/ringfinger/src/ringfinger/db/mongodb.clj"}
   {:arglists ([from to subject body]),

@@ -100,10 +100,11 @@ Accepted options:
  :session-store -- SessionStore for session middleware, eg. for using the Redis store
  :static-dir -- directory with static files for serving them in development
  :callback-param -- parameter for JSONP callbacks, default is 'callback'
+ :csrf-free -- turn off CSRF protection (if you know what you're doing!)
  :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L74" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L74" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -114,7 +115,7 @@ Accepted options:
   <pre id="var-docstr">Short for (def nname (app options &amp; routes))</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L111" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L113" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -125,7 +126,7 @@ Accepted options:
   <pre id="var-docstr">Checks if the current RING_ENV == env</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L19" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L19" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -137,7 +138,7 @@ Accepted options:
 eg. {:get (fn [req matches] {:status 200 :body nil})}</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L62" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L62" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -148,7 +149,7 @@ eg. {:get (fn [req matches] {:status 200 :body nil})}</pre>
   <pre id="var-docstr">Ring middleware for handling HEAD requests properly</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L29" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L29" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -159,7 +160,7 @@ eg. {:get (fn [req matches] {:status 200 :body nil})}</pre>
   <pre id="var-docstr">Ring middleware for handling JSONP requests</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L37" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L37" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
@@ -170,7 +171,7 @@ eg. {:get (fn [req matches] {:status 200 :body nil})}</pre>
   <pre id="var-docstr">Ring middleware for adding Content-Length</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/aa438827baa57e4b2a47e1765537c1e0989a724f/src/ringfinger/core.clj#L22" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/ba4065821050ae655fc9d0fa3333126e67301294/src/ringfinger/core.clj#L22" id="var-source">Source</a>
 </div>
 
 
