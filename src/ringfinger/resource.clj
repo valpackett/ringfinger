@@ -39,7 +39,7 @@
    :hooks -- map of hooks (:data (on both create and update), :create, :update, :view), must be callables expecting
              the entry and returning it (with modifications you want). Hooks receive data with correct
              types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time
-             Tip: compose hooks with ->
+             Tip: compose hooks with comp
    :channels -- map of Lamina channels (:create, :update, :delete). Ringfinger will publish events
                 to these channels so you could, for example, push updates to clients in real time,
                 enqueue long-running jobs, index changes with a search engine, etc.
