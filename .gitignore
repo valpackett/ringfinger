@@ -1,9 +1,8 @@
+.lein-*
 pom.xml
-*jar
+*.jar
 lib
 classes
 autodoc
 wiki
 website
-.lein-deps-sum
-.lein-failures
