@@ -2,8 +2,6 @@
   "MongoDB support. Don't forget to add Congomongo to your deps!"
   (:use ringfinger.db, somnium.congomongo))
 
-; FIXME
-
 (deftype MongoDB [conn] Database
   (create [self coll data]
     (with-mongo conn (insert! coll data)))
