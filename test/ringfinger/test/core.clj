@@ -5,8 +5,8 @@
   (route "/method"
     {:get (fn [req matches]
             {:status  200
-             :headers {"Content-Type" "text/plain"}
-             :body    ":get"})})
+             :headers {"Content-Type" "application/json; charset=utf-8"}
+             :body    "{\"method\":\"get\"}"})})
   (route "/test/:a"
     {:get (fn [req matches]
             {:status  200
@@ -21,11 +21,12 @@
                            "Content-Type" "text/plain"})
        :body    "Yo: hello"})
   (:status (testapp (request :post "/test/hello"))) => 405
-  (:body   (testapp (header (request :delete "/method") "X-HTTP-Method-Override" "GET"))) => ":get"
-  (:body   (testapp (request :post "/method?_method=get"))) =>":get"
+  (:body   (testapp (header (request :delete "/method") "X-HTTP-Method-Override" "GET"))) => "{\"method\":\"get\"}"
+  (:body   (testapp (request :post "/method?_method=get"))) =>"{\"method\":\"get\"}"
   (:status (testapp (request :get "/test"))) => 404)
 
 (facts "about JSONP"
-  (let [res (testapp (request :get "/method?format=json&callback=my_cb"))]
-    (get-in res [:headers "Content-Type"]) => "text/javascript; charset=utf-8"
-    (:body res) => "my_cb(:get)")) ; bad example :-)
+  (testapp (request :get "/method?format=json&callback=my_cb")) =>
+    (contains
+      {:headers (contains {"Content-Type" "text/javascript; charset=utf-8"})
+       :body "my_cb({\"method\":\"get\"})"}))
