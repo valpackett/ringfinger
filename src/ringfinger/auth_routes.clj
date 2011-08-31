@@ -54,7 +54,6 @@
                          :headers {"Location" (getloc req)}
                          :body    ""}
                         cb))]
-    (prn *fixed-salt-part*)
     (list
       (route (str url-base "login")
         {:get (fn [req m]
@@ -71,7 +70,7 @@
                  (if-not-user req
                    (let [form (keywordize (:form-params req))
                          fval (apply validate form valds)
-                         user (get-user db coll (:username form) (:password form) *fixed-salt-part*)]
+                         user (get-user db coll (:username form) (:password form))]
                      (if (nil? fval)
                        (if (nil? user)
                          {:status  400
@@ -138,7 +137,7 @@
                               fval (apply validate form valds)]
                           (if (nil? fval)
                             (let [akey (str (UUID/randomUUID))
-                                  user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form) *fixed-salt-part*)]
+                                  user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form))]
                               ((:mailer confirm)
                                (:from confirm)
                                (get form (:email-field confirm :username))
@@ -163,7 +162,7 @@
                         (let [form (keywordize (:form-params req))
                               fval (apply validate form valds)]
                           (if (nil? fval)
-                            (let [user (make-user db coll {:username (:username form)} (:password form) *fixed-salt-part*)]
+                            (let [user (make-user db coll {:username (:username form)} (:password form))]
                               {:status  302
                                :headers {"Location" (getloc req)}
                                :cookies {"a" (auth-cookie user)}

@@ -3,7 +3,7 @@
         midje.sweet, ring.mock.request)
   (:import org.apache.commons.codec.binary.Base64))
 
-(make-user inmem :ringfinger_auth {:username "test"} "demo" "salt")
+(make-user inmem :ringfinger_auth {:username "test"} "demo")
 
 (defresource todos
   {:db inmem
@@ -20,21 +20,20 @@
            :update  #(assoc % :onput  "put")}}
   [:name (required) ""])
 
-(defresource owned
-  {:db inmem
-   :pk :name
-   :owner-field :owner}
-  [:name (required) "hey where's the name?"])
-
 (defresource forbidden
   {:db inmem
    :pk :name
    :forbidden-methods [:delete]}
   [:name (required) ""])
 
+(defresource owned
+  {:db inmem
+   :pk :name
+   :owner-field :owner}
+  [:name (required) "hey where's the name?"])
+
 (defapp testapp
-  {:static-dir "src"
-   :fixed-salt "salt"}
+  {:static-dir "src"}
   todos, hooked, owned, forbidden)
 
 (defn authd [req]
