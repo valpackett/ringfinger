@@ -1,4 +1,8 @@
-html, ::selection {
+html {
+  background: #cece9e;
+  color: #fff;
+}
+::selection {
   background: #cece9e;
   color: #fff;
 }
