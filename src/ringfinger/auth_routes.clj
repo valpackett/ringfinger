@@ -15,12 +15,14 @@
            (str "?" nm "=" (str-drop (count dmn) rf))
            ""))))
 
+(defn auth-cookie [user]
+  {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :http-only true :value (:auth_token user)})
+
 (defn auth-routes
   "Creates auth routes with given options:
    :db, :coll -- database and collection
    :views -- map of views (:login, :signup and :confirm)
    :flash -- map of flash messages (:login-success, :login-invalid, :signup-success, :logout, :confirm-success and :confirm-fail)
-   :fixed-salt -- fixed part of the salt, must be the same as you use with app. NEVER change this in production!!
    :url-base -- the starting part of auth URLs, the default is /auth/
    :redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /
    :redir-param -- query string parameter for keeping the redirect url, the default is _redirect, you generally don't need to care about this
@@ -34,7 +36,6 @@
                                         :logout          "Good bye!"
                                         :confirm-success "Welcome!"
                                         :confirm-fail    "Invalid confirmaton key."})
-        fixed-s  (:fixed-salt  options "ringfingerFTW")
         url-base (:url-base    options "/auth/")
         redir-to (:redir-to    options "/")
         redir-p  (:redir-param options "_redirect")
@@ -53,6 +54,7 @@
                          :headers {"Location" (getloc req)}
                          :body    ""}
                         cb))]
+    (prn *fixed-salt-part*)
     (list
       (route (str url-base "login")
         {:get (fn [req m]
@@ -69,7 +71,7 @@
                  (if-not-user req
                    (let [form (keywordize (:form-params req))
                          fval (apply validate form valds)
-                         user (get-user db coll (:username form) (:password form) fixed-s)]
+                         user (get-user db coll (:username form) (:password form) *fixed-salt-part*)]
                      (if (nil? fval)
                        (if (nil? user)
                          {:status  400
@@ -82,7 +84,7 @@
                                                     :action (get-action req redir-p)})}
                          {:status  302
                           :headers {"Location" (getloc req)}
-                          :cookies {"a" {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :value (:auth_token user)}}
+                          :cookies {"a" (auth-cookie user)}
                           :flash   (:login-success flash)
                           :body    ""})
                        {:status  400
@@ -110,8 +112,8 @@
                         (create db coll (dissoc user :_confirm_key))
                         {:status  302
                          :headers {"Location" (getloc req)}
+                         :cookies {"a" (auth-cookie user)}
                          :flash   (:confirm-success flash)
-                         :cookies {"a" {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :value (:auth_token user)}}
                          :body    ""})
                       {:status  302
                        :headers {"Location" (getloc req)}
@@ -136,7 +138,7 @@
                               fval (apply validate form valds)]
                           (if (nil? fval)
                             (let [akey (str (UUID/randomUUID))
-                                  user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form) fixed-s)]
+                                  user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form) *fixed-salt-part*)]
                               ((:mailer confirm)
                                (:from confirm)
                                (get form (:email-field confirm :username))
@@ -161,10 +163,10 @@
                         (let [form (keywordize (:form-params req))
                               fval (apply validate form valds)]
                           (if (nil? fval)
-                            (let [user (make-user db coll {:username (:username form)} (:password form) fixed-s)]
+                            (let [user (make-user db coll {:username (:username form)} (:password form) *fixed-salt-part*)]
                               {:status  302
                                :headers {"Location" (getloc req)}
-                               :cookies {"a" {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :value (:auth_token user)}}
+                               :cookies {"a" (auth-cookie user)}
                                :flash   (:signup-success flash)
                                :body    ""})
                             {:status  400

@@ -77,7 +77,6 @@
   (+ stacktrace and file in development env)
   Accepted options:
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
-   :fixed-salt -- the fixed part of password hashing salt, must be the same as the one you use with auth-routes. NEVER change this in production!!
    :session-db -- database for session middleware OR
    :session-store -- SessionStore for session middleware, eg. for using the Redis store
    :static-dir -- directory with static files for serving them in development
@@ -90,7 +89,7 @@
         h (-> (fn [req]
                 (let [route (first (filter #(rmf (:route %) req) allroutes))]
                   ((:handler route) req (rmf (:route route) req))))
-              (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth) :salt (:fixed-salt options "ringfingerFTW")})
+              (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth)})
               wrap-flash)
         h (if (:csrf-free options) h (wrap-csrf h))
         h (-> h
