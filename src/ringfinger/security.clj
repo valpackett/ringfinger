@@ -26,7 +26,7 @@
         (let [token (secure-rand)]
           (-> (handler (assoc req :csrf-token token))
               (assoc-in [:cookies "csrftoken"] {:value token :path "/"})
-              (assoc-in [:headers "Vary"] "Cookie")))
+              (assoc-in [:headers "Vary"] "Cookie"))))
       (handler req))))
 
 (defn wrap-refcheck "Referer checking middleware for Ring" [handler]
@@ -36,7 +36,7 @@
       (let [referer (get-in req [:headers "referer"])]
         (if (or (= referer nil)
                 (boolean (re-matches
-                           (re-pattern (str "https?://[a-zA-Z0-9\\.]*\\.?" (get-in req [:headers "host"]) ".*"))
+                           (re-pattern (str "^https?://[a-zA-Z0-9\\.]*" (get-in req [:headers "host"]) ".*"))
                            referer)))
           (handler req)
           {:status  403
