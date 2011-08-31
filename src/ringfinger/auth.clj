@@ -11,6 +11,7 @@
   "Changes the fixed part of the salt used for password hashing.
    Wrap both app call and auth-routes calls (they're usually nested,
    but you're free to (def something (auth-routes {…})), right?).
+   And (make|get)-user call if you do them (in tests?)
    Change the salt once to a random value and NEVER change it later
    (or your app's user will seriously hate you)"
   [salt & body]

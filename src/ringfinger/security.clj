@@ -24,7 +24,9 @@
          :headers {"Content-Type" "text/plain"}
          :body    "CSRF attempt detected!"}
         (let [token (secure-rand)]
-          (assoc-in (handler (assoc req :csrf-token token)) [:cookies "csrftoken"] {:value token :path "/"})))
+          (-> (handler (assoc req :csrf-token token))
+              (assoc-in [:cookies "csrftoken"] {:value token :path "/"})
+              (assoc-in [:headers "Vary"] "Cookie")))
       (handler req))))
 
 (defn wrap-refcheck "Referer checking middleware for Ring" [handler]
