@@ -8,29 +8,31 @@ Check out the [website](http://ringfinger.floatboth.com) for a live demo.
 
 ## Get excited ##
 
-    (ns superapp.core
-      (:use (ringfinger core resource fields auth-routes),
-            ringfinger.db.mongodb, ringfinger.timesavers.hooks,
-            ring.util.serve))
-    
-    (def mymongo (mongodb "mydb"))
-    
-    (defresource contacts
-      {:db mymongo
-       :pk :name_slug
-       :hooks {:data (make-slug-for :name)}}
-      [:name  (required) "sorry, anonymous"]
-      [:bday  (date-field) "invalid date"]
-      [:email (email-field) "invalid email"])
-    
-    (defapp myapp
-            {:static-dir "custom_static_name"
-             :session-db mymongo
-             :auth-db mymongo}
-            contacts
-            (auth-routes {:db mymongo}))
-    
-    (serve myapp 3000)
+```clojure
+(ns superapp.core
+  (:use (ringfinger core resource fields auth-routes),
+        ringfinger.db.mongodb, ringfinger.timesavers.hooks,
+        ring.util.serve))
+
+(def mymongo (mongodb "mydb"))
+
+(defresource contacts
+  {:db mymongo
+   :pk :name_slug
+   :hooks {:data (make-slug-for :name)}}
+  [:name  (required) "sorry, anonymous"]
+  [:bday  (date-field) "invalid date"]
+  [:email (email-field) "invalid email"])
+
+(defapp myapp
+        {:static-dir "custom_static_name"
+         :session-db mymongo
+         :auth-db mymongo}
+        contacts
+        (auth-routes {:db mymongo}))
+
+(serve myapp 3000)
+```
 
 or something like that. You can do create/read/update/delete operations on the same resource with a browser
 (there are default HTML templates, like in Rails) or something that supports JSON, YAML, CSV or XML.
