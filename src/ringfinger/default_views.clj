@@ -57,7 +57,7 @@
         [:h1 [:a {:href (:urlbase stuff)} collname] (str " / " (get data pk))]
         (p-user stuff)
         (p-flash stuff)
-        [:form {:method "post" :action (str "/" collname "/" (get data pk) "?_method=put") :class "res"}
+        [:form {:method "post" :action (str (:urlbase stuff) "/" (get data pk) "?_method=put") :class "res"}
           (form-fields (:fieldhtml stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
           (p-csrftoken stuff)
           [:button {:type "submit"} "Save"]]]])))
