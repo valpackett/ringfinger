@@ -51,7 +51,7 @@
                       (if (:user req)
                         {:status  302
                          :headers {"Location" (getloc req)}
-                         :body    nil}
+                         :body    ""}
                         cb))]
     (list
       (route (str url-base "login")
@@ -82,9 +82,9 @@
                                                     :action (get-action req redir-p)})}
                          {:status  302
                           :headers {"Location" (getloc req)}
-                          :session {:username (:username user)}
+                          :cookies {"a" {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :value (:auth_token user)}}
                           :flash   (:login-success flash)
-                          :body    nil})
+                          :body    ""})
                        {:status  400
                         :headers {"Content-Type" "text/html; encoding=utf-8"}
                         :body    ((:login views) {:errors fval
@@ -97,9 +97,9 @@
         {:get (fn [req m]
                 {:status  302
                  :headers {"Location" (getloc req)}
-                 :session {:username nil}
+                 :cookies {"a" {:expires "Thu, 01-Jan-1970 00:00:01 GMT" :path "/" :value ""}}
                  :flash   (:logout flash)
-                 :body    nil})})
+                 :body    ""})})
       (if confirm
         (route (str url-base "confirm/:akey")
           {:get (fn [req m]
@@ -111,12 +111,12 @@
                         {:status  302
                          :headers {"Location" (getloc req)}
                          :flash   (:confirm-success flash)
-                         :session {:username (:username user)}
-                         :body    nil})
+                         :cookies {"a" {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :value (:auth_token user)}}
+                         :body    ""})
                       {:status  302
                        :headers {"Location" (getloc req)}
                        :flash   (:confirm-fail flash)
-                       :body    nil}
+                       :body    ""}
                         )))}))
       (route (str url-base "signup")
         {:get (fn [req m]
@@ -164,9 +164,9 @@
                             (let [user (make-user db coll {:username (:username form)} (:password form) fixed-s)]
                               {:status  302
                                :headers {"Location" (getloc req)}
-                               :session {:username (:username form)}
+                               :cookies {"a" {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :value (:auth_token user)}}
                                :flash   (:signup-success flash)
-                               :body    nil})
+                               :body    ""})
                             {:status  400
                              :headers {"Content-Type" "text/html; encoding=utf-8"}
                              :body    ((:signup views) {:errors fval

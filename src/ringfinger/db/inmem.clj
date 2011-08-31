@@ -10,7 +10,8 @@
       (ref-set base
         (assoc @base coll (if (false? (coll base))
                               [data]
-                              (conj (get @base coll) data))))))
+                              (conj (get @base coll) data)))))
+    data)
   (create-many [self coll data]
     (dosync
       (ref-set base

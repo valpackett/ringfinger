@@ -19,7 +19,8 @@
   (let [salt (secure-rand)]
     (create db coll
       (merge user
-        {:password_salt salt
+        {:auth_token    (secure-rand 64)
+         :password_salt salt
          :password_hash (DigestUtils/sha256Hex (str salt fixed-salt-part password))}))))
 
 (defn wrap-auth
@@ -31,10 +32,10 @@
          salt (:salt options "ringfingerFTW")]
      (fn [req]
        (let [auth-hdr (get-in req [:headers "authorization"] "")
-             session-username (get-in req [:session :username])]
+             cookie-token (get-in req [:cookies "a" :value])]
          (handler (assoc req :user
-            (cond session-username (let [user (get-one db coll {:query {:username session-username}})]
-                                     (if (nil? (:_confirm_key user)) user nil))
+            (cond cookie-token (let [user (get-one db coll {:query {:auth_token cookie-token}})]
+                                 (if (nil? (:_confirm_key user)) user nil))
                   (substring? "Basic" auth-hdr)
                     (let [cr (split (new String (Base64/decodeBase64 (str-drop 6 auth-hdr))) #":")]
                       (get-user db coll (first cr) (second cr) salt))

@@ -95,7 +95,7 @@
         h (if (:csrf-free options) h (wrap-csrf h))
         h (-> h
               (wrap-session {:store (:session-store options (db-store (:session-db options inmem)))
-                             :cookie-attrs {:httponly true :max-age 31556926}
+                             :cookie-attrs {:httponly true}
                              :cookie-name "s"})
               (wrap-jsonp (:callback-param options "callback"))
               wrap-params

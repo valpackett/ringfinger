@@ -19,12 +19,12 @@
     (if (from-browser? req)
       (if (and (or (= :post (:request-method req)) (= :put (:request-method req)))
                (not (= (get-in req [:form-params "csrftoken"])
-                       (get-in req [:session :csrftoken]))))
+                       (get-in req [:cookies "csrftoken" :value]))))
         {:status  403
          :headers {"Content-Type" "text/plain"}
          :body    "CSRF attempt detected!"}
-        (let [token (java.net.URLEncoder/encode (secure-rand))]
-          (assoc-in (handler (assoc req :csrf-token token)) [:session :csrftoken] token)))
+        (let [token (secure-rand)]
+          (assoc-in (handler (assoc req :csrf-token token)) [:cookies "csrftoken"] {:value token :path "/"})))
       (handler req))))
 
 (defn wrap-refcheck "Referer checking middleware for Ring" [handler]
