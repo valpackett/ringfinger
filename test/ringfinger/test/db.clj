@@ -4,7 +4,7 @@
 (reset-inmem-db)
 
 (facts "about CRUD"
-  (create  inmem :test {:key "value"}) => {:test [{:key "value"}]}
+  (create  inmem :test {:key "value"}) => {:key "value"}}
   (get-one inmem :test {:query {:key "value"}}) => {:key "value"}
   (update  inmem :test (get-one inmem :test {:query {:key "value"}}) {:key "updated"}) => {:test [{:key "updated"}]}
   (delete  inmem :test (get-one inmem :test {:query {:key "updated"}})) => {:test []})
