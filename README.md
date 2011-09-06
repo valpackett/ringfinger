@@ -37,7 +37,7 @@ Check out the [website](http://ringfinger.floatboth.com) for a live demo.
 or something like that. You can do create/read/update/delete operations on the same resource with a browser
 (there are default HTML templates, like in Rails) or something that supports JSON, YAML, CSV or XML.
 Yeah, URLs are the same. The app is an API, and HTML is just another output format.
-The `Accept` HTTP header (or `?_format=something`) is what "separates" the API.
+The `Accept` HTTP header (or adding `.format` to the URL) is what "separates" the API.
 And insert some example data by visiting `/contacts/_create_fakes` (only in development environment, of course). Nice, eh?
 
 You can customize the behavior via hooks (eg. if you need to automatically add URL-friendly "slugs", as in the example, or automatic timestamps),
@@ -48,7 +48,6 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 ## Coming "soon"
 
 ### Really Important Features
-- res.format instead of res?_format=format
 - optionally separating create/index and view/edit pages in html
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)

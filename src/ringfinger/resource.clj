@@ -6,25 +6,24 @@
         valip.core,
         lamina.core))
 
-(defn qsformat [req]
-  (if-let [fmt (get-in req [:query-params "_format"])]
-    (str "?_format=" fmt)))
+(defmacro dotformat [matches] `(if-let [fmt# (:format ~matches)] fmt#))
 
-(defmacro respond [req status headers data custom default]
+(defmacro respond [req matches status headers data custom default]
   `(render
      (getoutput
        (first
          (filter identity
-            [(get-in ~req [:query-params "_format"])
-             (get-in ~req [:headers "accept"]) ; must be lowercase!
+            [(get-in ~req [:headers "accept"]) ; must be lowercase!
+             (:format ~matches)
              ~default])) ~custom)
    ~status ~headers ~data))
 
 (defn resource
-  "Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for
-  RESTful Create/Read/Update/Delete of entries in collname.
+  "Creates a list of two routes (/url-prefix+collname.format and
+  /url-prefix+collname/pk.format) for RESTful Create/Read/Update/Delete
+  of entries in collname.
   Also, while in development environment, you can create example data using faker,
-  like this: /url-prefix+collname/_insert_fakes?count=100 (the default count is 5).
+  like this: /url-prefix+collname.format/_insert_fakes?count=100 (the default count is 5).
   Accepted options:
    :db -- database (required!)
    :pk -- primary key (required!)
@@ -62,7 +61,8 @@
         req-fields (required-fields-of fields)
         blank-entry (zipmap req-fields (repeat ""))
         default-entry (defaults-from-fields fields)
-        whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))] ; cut off :csrftoken, don't allow users to store everything
+        whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))]
+        ; cut off :csrftoken, don't allow users to store everything
                     (concat w (map #(keyword (str (name %) "_slug")) w)))
         actions (let [o (:actions options [])]
                   (zipmap (map name (keys o)) (vals o)))
@@ -94,16 +94,16 @@
                                          (filter #(haz? ks (first %)) valds))]
                        (if (= result nil) (yep) (nope result))))
         i-get-one  #(get-one db coll {:query {pk (typeify (:pk %))}})
-        i-redirect (fn [req form flash status]
+        i-redirect (fn [req matches form flash status]
                      {:status  status
-                      :headers {"Location" (str urlbase "/" (get form pk) (qsformat req))}
+                      :headers {"Location" (str urlbase "/" (get form pk) (dotformat matches))}
                       :flash   (call-or-ret flash form)
                       :body    ""})
         i-get-dboptions (if owner-field
                       #(assoc-in (or (params-to-dboptions (:query-params %)) default-dboptions) [:query owner-field] (get-in % [:user :username]))
                       #(or (params-to-dboptions (:query-params %)) default-dboptions))
-        i-respond-404 (fn [req]
-                        (respond req 404 {}
+        i-respond-404 (fn [req matches]
+                        (respond req matches 404 {}
                                  {:req req}
                                  {"html" html-not-found}
                                  "html"))
@@ -127,9 +127,10 @@
                        #(post-hook %2))
         if-not-forbidden #(if (not (haz? forbidden %1)) %2 method-na-handler)]
      (list
-       (route urlbase
-         {:get (if-not-forbidden :index (fn [req matches]
-                 (respond req 200 {"Link" (str "<" urlbase "/{" (name pk) "}>; rel=\"entry\"")}
+       (route (str urlbase ":format")
+         {:get (if-not-forbidden :index
+                  (fn [req matches]
+                    (respond req matches 200 {"Link" (str "<" urlbase "/{" (name pk) "}.{format}>; rel=\"entry\"")}
                           {:req  req
                            :data (map get-hook (get-many db coll (i-get-dboptions req)))}
                           {"html" html-index}
@@ -141,9 +142,9 @@
                       (fn []
                         ((:create channels) entry)
                         (create db coll entry)
-                        (i-redirect req entry flash-created (if (from-browser? req) 302 201)))
+                        (i-redirect req matches entry flash-created (if (from-browser? req) 302 201)))
                       (fn [errors]
-                        (respond req 400 {}
+                        (respond req matches 400 {}
                                  {:data (map get-hook (get-many db coll (i-get-dboptions req)))
                                   :newdata form
                                   :req req
@@ -157,21 +158,21 @@
                      (take (Integer/parseInt (get-in req [:query-params "count"] "5"))
                            (repeatedly (fn [] (process-new req (zipmap (keys fakers) (map #(last (take (rand-int 1000) %)) (vals fakers))))))))
                    {:status  302
-                    :headers {"Location" urlbase}
+                    :headers {"Location" (str urlbase (dotformat matches))}
                     :body    nil})})
          nil)
-       (route (str urlbase "/:pk")
+       (route (str urlbase "/:pk:format")
          {:get (fn [req matches]
                  (if-let [entry (i-get-one matches)]
                    (if-let [action (get actions (get-in req [:query-params "_action"] ""))]
                      (action req matches entry default-data)
                      (if-not-forbidden :read
-                       (respond req 200 {}
+                       (respond req matches 200 {}
                                 {:data (get-hook entry)
                                  :req req}
                                 {"html" html-get}
                               "html")))
-                 (i-respond-404 req)))
+                 (i-respond-404 req matches)))
           :put (if-not-forbidden :update (fn [req matches]
                  (let [form (keywordize (:form-params req))
                        orig (i-get-one matches)
@@ -183,9 +184,9 @@
                          (fn []
                            ((:update channels) merged)
                            (update db coll orig diff)
-                           (i-redirect req merged flash-updated 302))
+                           (i-redirect req matches merged flash-updated 302))
                          (fn [errors]
-                           (respond req 400 {}
+                           (respond req matches 400 {}
                                     {:data (merge orig form) ; with form! so users can correct errors
                                      :req req
                                      :errors errors}
@@ -201,7 +202,7 @@
                            :headers {"Location" urlbase}
                            :flash   (call-or-ret flash-deleted entry)
                            :body    nil}))
-                      (i-respond-404 req))))}))))
+                      (i-respond-404 req matches))))}))))
 
 (defmacro defresource [nname options & fields]
   ; dirty magic

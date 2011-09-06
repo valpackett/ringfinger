@@ -14,5 +14,5 @@
        (update (:db default-data) (:coll default-data) entry result)
        (if channel (enqueue channel result))
        {:status  302
-        :headers {"Location" (str (:urlbase default-data) "/" (get result (:pk default-data) (qsformat req)))}
+        :headers {"Location" (str (:urlbase default-data) "/" (get result (:pk default-data) (dotformat matches)))}
         :flash   (call-or-ret flash result)}))))

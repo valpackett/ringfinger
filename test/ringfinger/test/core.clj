@@ -26,7 +26,7 @@
   (:status (testapp (request :get "/test"))) => 404)
 
 (facts "about JSONP"
-  (testapp (request :get "/method?format=json&callback=my_cb")) =>
+  (testapp (request :get "/method?callback=my_cb")) =>
     (contains
       {:headers (contains {"Content-Type" "text/javascript; charset=utf-8"})
        :body "my_cb({\"method\":\"get\"})"}))

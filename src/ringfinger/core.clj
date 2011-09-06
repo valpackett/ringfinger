@@ -78,7 +78,7 @@
   eg. {:get (fn [req matches] {:status 200 :body nil})}"
   [url handlers]
   (let [handlers (merge default-handlers handlers)]
-    {:route   (route-compile url)
+    {:route   (route-compile url {:format #"\.?[a-zA-Z]*"})
      :handler (fn [req matches]
                 (let [rm       (or (get-in req [:headers "x-http-method-override"])
                                    (get-in req [:query-params "_method"]))

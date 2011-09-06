@@ -40,47 +40,47 @@
   (header req "Authorization" (str "Basic " (Base64/encodeBase64String (. "test:demo" getBytes)))))
 
 (facts "about creating"
-  (testapp (body (request :post "/todos?_format=json")
+  (testapp (body (request :post "/todos.json")
                            {:body  "test"
                             :state "false"}))
        => (contains {:status 201
-                     :headers (contains {"Location" "/todos/test?_format=json"})})
-  (testapp (body (request :post "/todos?_format=json") {:state "false"}))
+                     :headers (contains {"Location" "/todos/test.json"})})
+  (testapp (body (request :post "/todos.json") {:state "false"}))
        => (contains {:status 400
                      :body "{\"body\":[\"should be present\"]}"})
   (:body (testapp (header (request :post "/todos") "Accept" "application/xml")))
        => "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"
-  (:status (testapp (body (request :post "/hooked?_format=json") {:name "test"}))) => 201
-  (:status (testapp (body (authd (request :post "/owned?_format=json")) {:name "sup"}))) => 201)
+  (:status (testapp (body (request :post "/hooked.json") {:name "test"}))) => 201
+  (:status (testapp (body (authd (request :post "/owned.json")) {:name "sup"}))) => 201)
 
 (facts "about updating"
-  (testapp (body (request :put "/todos/test?_format=json")
+  (testapp (body (request :put "/todos/test.json")
                  {:body  "test" :state "on"}))
-       => (contains {:status 302 :headers (contains {"Location" "/todos/test?_format=json"})})
-  (:status (testapp (body (request :put "/hooked/test?_format=json") {:name "test2"}))) => 302
-  (:status (testapp (body (request :put "/owned/sup?_format=json") {:name "hacked"})))  => 403
-  (:status (testapp (body (authd (request :put "/owned/sup?_format=json")) {:name "wassup"}))) => 302)
+       => (contains {:status 302 :headers (contains {"Location" "/todos/test.json"})})
+  (:status (testapp (body (request :put "/hooked/test.json") {:name "test2"}))) => 302
+  (:status (testapp (body (request :put "/owned/sup.json") {:name "hacked"})))  => 403
+  (:status (testapp (body (authd (request :put "/owned/sup.json")) {:name "wassup"}))) => 302)
 
 (facts "about reading"
-  (:body (testapp (request :get "/todos/test?_format=json"))) => "{\"state\":\"on\",\"body\":\"test\"}"
+  (:body (testapp (request :get "/todos/test.json"))) => "{\"state\":\"on\",\"body\":\"test\"}"
   (:body (testapp (header (request :get "/todos/test") "Accept" "application/xml")))
           => "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><state>on</state><body>test</body></response>"
-  (:body (testapp (request :get "/hooked/test2?_format=json")))
+  (:body (testapp (request :get "/hooked/test2.json")))
           => "{\"onpost\":\"posted\",\"ondata\":\"yo\",\"name\":\"test2\",\"onput\":\"put\"}"
-  (:body (testapp (request :get "/owned/wassup?_format=json")))
+  (:body (testapp (request :get "/owned/wassup.json")))
           => "{\"name\":\"wassup\",\"owner\":\"test\"}")
 
 (facts "about index"
-  (:body (testapp (request :get "/todos?_format=json"))) => "[{\"state\":\"on\",\"body\":\"test\"}]"
-  (:body (testapp (request :get "/todos?_format=json&query_state_ne=on"))) => "[]"
+  (:body (testapp (request :get "/todos.json"))) => "[{\"state\":\"on\",\"body\":\"test\"}]"
+  (:body (testapp (request :get "/todos.json?query_state_ne=on"))) => "[]"
   (:body (testapp (header (request :get "/todos") "Accept" "application/xml")))
        => "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><state>on</state><body>test</body></entry></response>")
 
 (facts "about deleting"
-  (testapp (request :delete "/todos/test?_format=json"))
+  (testapp (request :delete "/todos/test.json"))
        => (contains {:status 302 :headers (contains {"Location" "/todos"})})
-  (:status (testapp (body (request :post "/forbidden?_format=json") {:name "test"}))) => 201
-  (:status (testapp (request :delete "/forbidden/test?_format=json"))) => 405
+  (:status (testapp (body (request :post "/forbidden.json") {:name "test"}))) => 201
+  (:status (testapp (request :delete "/forbidden/test.json"))) => 405
   (get-one inmem :todos {:body "test"}) => nil)
 
 (reset-inmem-db)
