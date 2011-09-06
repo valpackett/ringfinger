@@ -12,6 +12,7 @@
   Magic starts here."
   (:use clout.core,
         [clojure.string :only [lower-case]],
+        [clojure.data.json :only [read-json]],
         (ring.middleware params cookies session stacktrace flash file),
         (ringfinger session security auth), ringfinger.db.inmem))
 
@@ -43,6 +44,19 @@
         (assoc (assoc-in res [:headers "Content-Type"] "text/javascript; charset=utf-8")
                :body (str cb "(" (:body res) ")"))
         res))))
+
+(defn wrap-json-params
+  "Ring middleware for parsing JSON params"
+  [handler]
+  (fn [req]
+    (if (and (:content-type req)
+             (:body req)
+             (.startsWith (:content-type req) "application/json"))
+      (let [jsp (read-json (slurp (:body req)) false)]
+            (handler (-> req
+                         (assoc :form-params jsp)
+                         (assoc :params (merge (:params req) jsp)))))
+      (handler req))))
 
 (defn method-na-handler [req matches]
   {:status  405
@@ -97,6 +111,7 @@
                              :cookie-attrs {:httponly true}
                              :cookie-name "s"})
               (wrap-jsonp (:callback-param options "callback"))
+              wrap-json-params
               wrap-params
               wrap-length
               wrap-sec-headers
