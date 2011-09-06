@@ -1,4 +1,4 @@
-# ringfinger [![Build Status](https://secure.travis-ci.org/myfreeweb/ringfinger.png)](http://travis-ci.org/) #
+# ringfinger [![Build Status](https://secure.travis-ci.org/myfreeweb/ringfinger.png)](http://travis-ci.org/)
 Fun, fast, secure web development on top of [Clojure](http://clojure.org)/[Ring](https://github.com/mmcgrana/ring).
 A framework for the age of non-relational databases, content delivery networks, cloud hosting, HTML5 and coffee.
 InstaRESTful, if you like the hipster-speak. Named after a great Nine Inch Nails song.
@@ -6,7 +6,7 @@ Not ready yet, but a lot of things work, including MongoDB support, ready-to-use
 
 Check out the [website](http://ringfinger.floatboth.com) for a live demo.
 
-## Get excited ##
+## Get excited
 
 ```clojure
 (ns superapp.core
@@ -45,24 +45,26 @@ via providing [Lamina](https://github.com/ztellman/lamina) channels and subscrib
 or adding custom actions, eg. for voting in a poll.
 You also can use lower-level auth/database/validation/output/routing APIs if you can't fit something into these RESTful constraints.
 
-## Coming "soon" ##
+## Coming "soon"
 
+### Really Important Features
 - optionally separating create/index and view/edit pages in html
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
 - pagination link (including HTTP Link header) things
-- enlive views quick builder
-- cyrillic transliteration for slugs
-- automatic API docs route for resources w/ examples using faker
-- [Swagger](http://swagger.wordnik.com) implementation
-- automatic javascript model definitions for client-side mvc per resource, using clojurescript
-- live reloader (long poll, on disconnect: try to reconnect, when server is up, reload)
+- cyrillic transliteration for slugs – maybe fork inflections and add?
 - middleware like django-paranoid-sessions
-- extracting security, db and output once they'll be more stable and have more features
 - atom feeds for resources
 - invite mode for registration
 - file attachments w/ GridFS support
-- asset system that doesn't suck & supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, supporting attachment storages
+- asset system that supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, using attachment storages. kinda like rails 3.1
+
+### Someday
+- i18n
+- automatic API docs route for resources w/ examples using faker
+- [Swagger](http://swagger.wordnik.com) implementation
+- automatic javascript model definitions for client-side mvc per resource, using clojurescript
+- extracting security, db and output once they'll be more stable and have more features?? like, db makes a unified document db api useful even for non-web apps
 - pre-made Lamina subscribers for Pusher/pubsub.io/hook.io
 - FleetDB, CouchDB support
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
@@ -71,3 +73,4 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - field renaming
 - (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus, yaml for ruby
 - easy full text search (elasticsearch, lucene): lamina subscriber + route for querying
+- timesavers.actions for polls (change -1/0/+1 per user, like reddit), voting (like [votebox](https://www.dropbox.com/votebox))
