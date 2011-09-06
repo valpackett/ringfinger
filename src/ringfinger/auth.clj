@@ -13,7 +13,7 @@
    but you're free to (def something (auth-routes {…})), right?).
    And (make|get)-user call if you do them (in tests?)
    Change the salt once to a random value and NEVER change it later
-   (or your app's user will seriously hate you)"
+   (or your app's users will seriously hate you)"
   [salt & body]
   `(do
      (let [s# ~salt]

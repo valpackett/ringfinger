@@ -48,6 +48,7 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 ## Coming "soon"
 
 ### Really Important Features
+- res.format instead of res?_format=format
 - optionally separating create/index and view/edit pages in html
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
