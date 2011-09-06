@@ -61,7 +61,6 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 
 ### Someday
 - i18n
-- automatic API docs route for resources w/ examples using faker
 - [Swagger](http://swagger.wordnik.com) implementation
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - extracting security, db and output once they'll be more stable and have more features?? like, db makes a unified document db api useful even for non-web apps
