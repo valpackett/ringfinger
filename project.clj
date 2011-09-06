@@ -15,8 +15,8 @@
   :dependencies ([org.clojure/clojure "1.2.1"]
                  ; Output
                  [org.clojure/data.json "0.1.1"]
-                 [clojure-csv "1.3.1"]
-                 [clj-yaml "0.3.0-SNAPSHOT"]
+                 [clojure-csv "1.3.2"]
+                 [clj-yaml "0.3.0"]
                  [enlive "1.0.0"]
                  [hiccup "0.3.6"]
                  ; Web
