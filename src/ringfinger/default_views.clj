@@ -5,13 +5,13 @@
 
 (defn p-flash [stuff]
   (if-let [f (get-in stuff [:req :flash])]
-    [:div {:class "flash"} f]))
+    [:div.flash f]))
 
 (defn p-csrftoken [stuff]
   [:input {:type "hidden" :name "csrftoken" :value (get-in stuff [:req :csrf-token])}])
 
 (defn p-user [stuff]
-  [:div {:class "user"}
+  [:div.user
    (if-let [u (get-in stuff [:req :user :username])]
      (str "Logged in as " u ".")
      "Not logged in.")])
@@ -29,8 +29,8 @@
         [:h1 collname]
         (p-user stuff)
         (p-flash stuff)
-        [:form {:method "post" :action "" :class "res"}
-          (form-fields fields (:newdata stuff) (:errors stuff) [:div] [:div {:class "error"}] :label)
+        [:form.res {:method "post" :action ""}
+          (form-fields fields (:newdata stuff) (:errors stuff) [:div] [:div.error] :label)
           (p-csrftoken stuff)
           [:button {:type "submit"} "Add"]]
         [:table
@@ -57,8 +57,8 @@
         [:h1 [:a {:href (:urlbase stuff)} collname] (str " / " (get data pk))]
         (p-user stuff)
         (p-flash stuff)
-        [:form {:method "post" :action (str (:urlbase stuff) "/" (get data pk) "?_method=put") :class "res"}
-          (form-fields (:fieldhtml stuff) data (:errors stuff) [:div] [:div {:class "error"}] :label)
+        [:form.res {:method "post" :action (str (:urlbase stuff) "/" (get data pk) "?_method=put")}
+          (form-fields (:fieldhtml stuff) data (:errors stuff) [:div] [:div.error] :label)
           (p-csrftoken stuff)
           [:button {:type "submit"} "Save"]]]])))
 
@@ -68,7 +68,7 @@
            [:style default-style]]
     [:body [:h1 "Not found :-("]
            (p-user stuff)
-           [:div {:class "cb"}]
+           [:div.cb]
     ]]))
 
 (def auth-demo-views
@@ -79,10 +79,10 @@
      [:h1 "Log in"]
      (p-flash stuff)
      [:form {:method "post" :action (:action stuff)}
-      (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
+      (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div.error] :placeholder)
       (p-csrftoken stuff)
       [:button {:type "submit"} "Log in!"]
-      [:a {:class "altact" :href (str (:urlb stuff) "signup")} "or sign up"]
+      [:a.altact {:href (str (:urlb stuff) "signup")} "or sign up"]
      ]]])))
    :signup (fn [stuff] (html5 [:html
     [:head [:title "Sign up"]
@@ -91,10 +91,10 @@
      [:h1 "Sign up"]
      (p-flash stuff)
      [:form {:method "post" :action (:action stuff)}
-      (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div {:class "error"}] :placeholder)
+      (form-fields (:fields stuff) (:data stuff) (:errors stuff) [:div] [:div.error] :placeholder)
       (p-csrftoken stuff)
       [:button {:type "submit"} "Sign up!"]
-      [:a {:class "altact" :href (str (:urlb stuff) "login")} "or log in"]
+      [:a.altact {:href (str (:urlb stuff) "login")} "or log in"]
       ]]]))
    :confirm (fn [stuff] (html5 [:html
     [:head [:title "Confirm"]
