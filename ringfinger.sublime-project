@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "folder_exclude_patterns": ["autodoc", "classes", "lib"],
+      "file_exclude_patterns": [".lein-failures"]
+    }
+  ],
+  "build_systems": [
+    {
+      "name": "Test",
+      "cmd": ["/usr/local/bin/lein", "midje"],
+      "file_regex": "^FAIL at \\((.*):([0-9]*)\\)"
+    },
+    {
+      "name": "Autodoc",
+      "cmd": ["/usr/local/bin/lein", "autodoc"]
+    }
+  ]
+}
