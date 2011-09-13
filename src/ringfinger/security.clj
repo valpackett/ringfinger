@@ -15,8 +15,9 @@
 
 (defn wrap-csrf "CSRF protection middleware for Ring" [handler]
   (fn [req]
-    ; stop early if the req isn't coming from a browser
-    (if (from-browser? req)
+    ; CSRF happens in browsers. Browsers use form-based auth.
+    ; CSRF is pointless w/ public (no-auth) stuff.
+    (if (= (:auth-type req) :form)
       (if (and (or (= :post (:request-method req)) (= :put (:request-method req)))
                (not (= (get-in req [:form-params "csrftoken"])
                        (get-in req [:cookies "csrftoken" :value]))))
@@ -41,7 +42,7 @@
           (handler req)
           {:status  403
            :headers {"Content-Type" "text/plain"}
-           :body    (str "You can't " (:request-method req) " from other domains.")})))))
+           :body    (str "You can't " (name (:request-method req)) " from other domains.")})))))
 
 (defn wrap-sec-headers "Middleware for Ring which adds some headers for security" [handler]
   (fn [req]
