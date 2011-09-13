@@ -47,11 +47,16 @@
          coll (:coll options :ringfinger_auth)]
      (fn [req]
        (let [auth-hdr (get-in req [:headers "authorization"] "")
-             cookie-token (get-in req [:cookies "a" :value])]
-         (handler (assoc req :user
-            (cond cookie-token (let [user (get-one db coll {:query {:auth_token cookie-token}})]
-                                 (if (nil? (:_confirm_key user)) user nil))
-                  (substring? "Basic" auth-hdr)
-                    (let [cr (split (new String (Base64/decodeBase64 (str-drop 6 auth-hdr))) #":")]
-                      (get-user db coll (first cr) (second cr)))
-                  :else nil))))))))
+             cookie-token (get-in req [:cookies "a" :value])
+             auth-type (cond cookie-token :form
+                             (substring? "Basic" auth-hdr) :basic
+                             :else nil)]
+         (-> req
+             (assoc :user (case auth-type
+                            :form (let [user (get-one db coll {:query {:auth_token cookie-token}})]
+                                    (if (nil? (:_confirm_key user)) user nil))
+                            :basic (let [cr (split (new String (Base64/decodeBase64 (str-drop 6 auth-hdr))) #":")]
+                                     (get-user db coll (first cr) (second cr)))
+                            nil))
+             (assoc :auth-type auth-type)
+             handler))))))
