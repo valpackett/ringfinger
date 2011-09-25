@@ -6,6 +6,8 @@
         valip.core,
         lamina.core))
 
+(def regexps {:format #"\.?[a-zA-Z]*"})
+
 (defmacro dotformat [matches] `(if-let [fmt# (:format ~matches)] fmt#))
 
 (defmacro respond [req matches status headers data custom default]
@@ -150,7 +152,7 @@
                                   :req req
                                   :errors errors}
                                  {"html" html-index}
-                                 "html"))))))})
+                                 "html"))))))} regexps)
        (if-env "development"
          (route (str urlbase "/_create_fakes")
            {:get (fn [req matches]
@@ -202,7 +204,7 @@
                            :headers {"Location" urlbase}
                            :flash   (call-or-ret flash-deleted entry)
                            :body    nil}))
-                      (i-respond-404 req matches))))}))))
+                      (i-respond-404 req matches))))} regexps))))
 
 (defmacro defresource [nname options & fields]
   ; dirty magic

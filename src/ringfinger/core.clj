@@ -76,14 +76,15 @@
 (defn route
   "Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format and a map of handlers
   eg. {:get (fn [req matches] {:status 200 :body nil})}"
-  [url handlers]
+  ([url handlers] (route url handlers {}))
+  ([url handlers custom-regexps]
   (let [handlers (merge default-handlers handlers)]
-    {:route   (route-compile url {:format #"\.?[a-zA-Z]*"})
+    {:route   (route-compile url custom-regexps)
      :handler (fn [req matches]
                 (let [rm       (or (get-in req [:headers "x-http-method-override"])
                                    (get-in req [:query-params "_method"]))
                       method   (if rm (keyword (lower-case rm)) (:request-method req))]
-                    ((get handlers method) req matches)))}))
+                    ((get handlers method) req matches)))})))
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
