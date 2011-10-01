@@ -17,6 +17,8 @@
     (get-many self coll (assoc options :one? true)))
   (update [self coll entry data]
     (with-mongo conn (update! coll entry data)))
+  (modify [self coll entry modifiers]
+    (with-mongo conn (fetch-and-modify coll entry modifiers :return-new true :upsert? true)))
   (delete [self coll entry]
     (with-mongo conn (destroy! coll entry))))
 

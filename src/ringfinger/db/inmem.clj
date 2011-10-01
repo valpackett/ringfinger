@@ -30,6 +30,9 @@
   (update  [self coll entry data]
     (dosync
       (ref-set base (assoc @base coll (replace {entry (merge entry data)} (get @base coll))))))
+  (modify [self coll entry modifiers]
+    (dosync
+      (ref-set base (assoc @base coll (replace {entry (apply-modifications entry modifiers)} (get @base coll))))))
   (delete [self coll entry]
     (dosync
       (ref-set base (assoc @base coll (remove (partial = entry) (get @base coll))))))))

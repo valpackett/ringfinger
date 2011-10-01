@@ -9,6 +9,14 @@
   (update  inmem :test (get-one inmem :test {:query {:key "value"}}) {:key "updated"}) => {:test [{:key "updated"}]}
   (delete  inmem :test (get-one inmem :test {:query {:key "updated"}})) => {:test []})
 
+(create inmem :atm {:num 1})
+
+(facts "about atomic modifications"
+  (modify inmem :atm {:num 1} {:$inc {:num 10}}) => (contains {:atm (list {:num 11})})
+  (modify inmem :atm {:num 11} {:$dec {:num 1}}) => (contains {:atm (list {:num 10})})
+  (modify inmem :atm {:num 10} {:$set {:num 0}}) => (contains {:atm (list {:num 0})})
+  (modify inmem :atm {:num 0} {:$unset {:num 1}}) => (contains {:atm (list {})}))
+
 (create inmem :q {:a 1 :b 1})
 (create inmem :q {:a 1 :b 2})
 (create inmem :q {:a 1 :b 3})

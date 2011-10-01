@@ -9,6 +9,7 @@
   (get-many    [self coll options])
   (get-one     [self coll options])
   (update      [self coll entry data])
+  (modify      [self coll entry modifiers])
   (delete      [self coll entry]))
 
 ; For databases w/o built-in filters, eg. inmem
@@ -31,6 +32,21 @@
     (apply andf (map (fn [k v]
       (if (map? v) (make-query (get entry k) v)
                    (= (get entry k) v))) (keys query) (vals query)))))
+
+; For databases w/o built-in modifiers, eg. inmem
+; http://www.mongodb.org/display/DOCS/Updating
+(def modifiers
+  {:$inc +
+   :$dec -
+   :$set (fn [o m] m)
+   :$unset (fn [o m] nil)
+   :$push conj})
+
+(defn apply-modifications [obj mods]
+  (if (empty? mods) (select-keys obj (filter identity (map #(if (nil? %2) nil %1) (keys obj) (vals obj))))
+    (recur (let [f (first mods)
+                 mod (get modifiers (key f))]
+                 (merge-with mod obj (val f))) (rest mods))))
 
 (defmacro qs [a] `(keyword (str "$" ~a)))
 
