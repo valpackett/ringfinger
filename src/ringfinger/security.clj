@@ -15,9 +15,9 @@
 
 (defn wrap-csrf "CSRF protection middleware for Ring" [handler]
   (fn [req]
-    ; CSRF happens in browsers. Browsers use form-based auth.
-    ; CSRF is pointless w/ public (no-auth) stuff.
-    (if (= (:auth-type req) :form)
+    ; CSRF happens in browsers
+    ; don't check auth type here because it wouldn't let anyone log in or sign up
+    (if (from-browser? req)
       (if (and (or (= :post (:request-method req)) (= :put (:request-method req)))
                (not (= (get-in req [:form-params "csrftoken"])
                        (get-in req [:cookies "csrftoken" :value]))))

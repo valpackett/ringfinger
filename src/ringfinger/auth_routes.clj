@@ -11,10 +11,11 @@
        (let [hdrs (:headers *request*)
              dmn  (str (name (:scheme *request*)) "://" (get hdrs "host"))
              rf   (get hdrs "referer" "")]
-         (map-to-querystring (apply merge (:query-string *request*)
-                                    (if (and (substring? dmn rf) (not (substring? "/login" rf)))
-                                      {nm (str-drop (count dmn) rf)}
-                                      {}))))))
+         (map-to-querystring
+           (apply merge (:query-string *request*)
+                        (if (and (substring? dmn rf) (not (substring? "/login" rf)))
+                          {nm (str-drop (count dmn) rf)}
+                          {}))))))
 
 (defn auth-cookie [user]
   {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :http-only true :value (:auth_token user)})
@@ -67,32 +68,32 @@
                                              :urlb   url-base
                                              :action (get-action redir-p)})}))
          :post (fn [req m]
-                 (if-not-user req
-                   (let [form (keywordize (:form-params req))
-                         fval (apply validate form valds)
-                         user (get-user db coll (:username form) (:password form))]
-                     (if (nil? fval)
-                       (if (nil? user)
+                (if-not-user req
+                  (let [form (keywordize (:form-params req))
+                        fval (apply validate form valds)
+                        user (get-user db coll (:username form) (:password form))]
+                    (if (nil? fval)
+                      (if (nil? user)
                         (binding [*request* (assoc *request* :flash (:login-invalid flash))]
-                         {:status  400
-                          :headers {"Content-Type" "text/html; encoding=utf-8"}
-                          :body    ((:login views) {:errors {}
-                                                    :data   (merge form {:password nil})
-                                                    :fields fieldhtml
-                                                    :urlb   url-base
-                                                    :action (get-action redir-p)})})
-                         {:status  302
-                          :headers {"Location" (getloc req)}
-                          :cookies {"a" (auth-cookie user)}
-                          :flash   (:login-success flash)
-                          :body    ""})
-                       {:status  400
-                        :headers {"Content-Type" "text/html; encoding=utf-8"}
-                        :body    ((:login views) {:errors fval
-                                                  :data   form
-                                                  :fields fieldhtml
-                                                  :urlb   url-base
-                                                  :action (get-action redir-p)})}))))})
+                          {:status  400
+                           :headers {"Content-Type" "text/html; encoding=utf-8"}
+                           :body    ((:login views) {:errors {}
+                                                     :data   (merge form {:password nil})
+                                                     :fields fieldhtml
+                                                     :urlb   url-base
+                                                     :action (get-action redir-p)})})
+                        {:status  302
+                         :headers {"Location" (getloc req)}
+                         :cookies {"a" (auth-cookie user)}
+                         :flash   (:login-success flash)
+                         :body    ""})
+                      {:status  400
+                       :headers {"Content-Type" "text/html; encoding=utf-8"}
+                       :body    ((:login views) {:errors fval
+                                                 :data   form
+                                                 :fields fieldhtml
+                                                 :urlb   url-base
+                                                 :action (get-action redir-p)})}))))})
       (route (str url-base "logout")
         {:get (fn [req m]
                 {:status  302

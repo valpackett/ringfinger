@@ -79,14 +79,13 @@
   eg. {:get (fn [req matches] {:status 200 :body nil})}"
   ([url handlers] (route url handlers {}))
   ([url handlers custom-regexps]
-  (let [handlers (merge default-handlers handlers)]
-    {:route   (route-compile url custom-regexps)
-     :handler (fn [req matches]
-                (let [rm       (or (get-in req [:headers "x-http-method-override"])
-                                   (get-in req [:query-params "_method"]))
-                      method   (if rm (keyword (lower-case rm)) (:request-method req))]
-                    (binding [*request* req]
-                      ((get handlers method) req matches))))})))
+    (let [handlers (merge default-handlers handlers)]
+      {:route   (route-compile url custom-regexps)
+       :handler (fn [req matches]
+                  (let [rm       (or (get-in req [:headers "x-http-method-override"])
+                                     (get-in req [:query-params "_method"]))
+                        method   (if rm (keyword (lower-case rm)) (:request-method req))]
+                          ((get handlers method) req matches)))})))
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
@@ -105,7 +104,8 @@
         rmf (if (= (:memoize-routing options true) true) (memoize route-matches) route-matches)
         h (-> (fn [req]
                 (let [route (first (filter #(rmf (:route %) req) allroutes))]
-                  ((:handler route) req (rmf (:route route) req))))
+                  (binding [*request* req]
+                    ((:handler route) req (rmf (:route route) req)))))
               (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth)})
               wrap-flash)
         h (if (:csrf-free options) h (wrap-csrf h))
