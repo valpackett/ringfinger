@@ -12,10 +12,10 @@
 (create inmem :atm {:num 1})
 
 (facts "about atomic modifications"
-  (modify inmem :atm {:num 1} {:$inc {:num 10}}) => (contains {:atm (list {:num 11})})
-  (modify inmem :atm {:num 11} {:$dec {:num 1}}) => (contains {:atm (list {:num 10})})
-  (modify inmem :atm {:num 10} {:$set {:num 0}}) => (contains {:atm (list {:num 0})})
-  (modify inmem :atm {:num 0} {:$unset {:num 1}}) => (contains {:atm (list {})}))
+  (modify inmem :atm {:num 1} {:$inc {:num 10}})  => (contains {:atm '({:num 11})})
+  (modify inmem :atm {:num 11} {:$dec {:num 1}})  => (contains {:atm '({:num 10})})
+  (modify inmem :atm {:num 10} {:$set {:num 0}})  => (contains {:atm '({:num 0})})
+  (modify inmem :atm {:num 0} {:$unset {:num 1}}) => (contains {:atm '({})}))
 
 (create inmem :q {:a 1 :b 1})
 (create inmem :q {:a 1 :b 2})

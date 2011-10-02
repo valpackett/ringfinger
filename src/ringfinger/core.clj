@@ -8,8 +8,8 @@
 ; -------
 
 (ns ringfinger.core
-  "Ringfinger's core: All You Need Is defapp! And if-env.
-  Magic starts here."
+  "The magic starts here. The routing system, some middleware and
+   the if-env macro are there."
   (:use clout.core,
         [clojure.string :only [lower-case]],
         [clojure.data.json :only [read-json]],
