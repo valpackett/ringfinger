@@ -7,7 +7,8 @@
         (clj-time format coerce),
         faker.lorem)
   (:require [valip.predicates :as v],
-            [faker.internet :as netfake]))
+            [faker.internet :as netfake])
+  (:import (com.ibm.icu.text SpoofChecker SpoofChecker$Builder)))
 
 ; FORMAT:
 ; {:html {:_render -- custom renderer}
@@ -46,6 +47,12 @@
 (defn textarea "textarea" []
   {:html {:_render (fn [title value attrs] [:textarea (merge {:id title :name title} attrs) value])}
    :fake (sentences)})
+
+(defn non-confusing
+  "Validates strings for confusing Unicode characters
+   (the ones that look the same in different scripts)" []
+  (let [spch (.build (SpoofChecker$Builder.))]
+    {:pred #(not (. spch failsChecks %))}))
 
 (defn maxlength "Sets the maximum length to the given number" [n]
   {:html {:maxlength n}

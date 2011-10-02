@@ -15,6 +15,10 @@
   ((:pred (alphanumeric)) "aB0") => true
   ((:pred (alphanumeric)) ":-)") => false)
 
+(facts "about non-confusing"
+  ((:pred (non-confusing)) "amazing") => true
+  ((:pred (non-confusing)) "аmazing") => false) ; Cyrillic а != Latin a
+
 (facts "about maxlength"
   ((:pred (maxlength 3)) "123")  => true
   ((:pred (maxlength 3)) "1234") => false)
