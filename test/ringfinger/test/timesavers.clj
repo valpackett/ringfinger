@@ -1,5 +1,5 @@
 (ns ringfinger.test.timesavers
-  (:use ringfinger.timesavers.hooks, midje.sweet))
+  (:use (ringfinger.timesavers hooks misc), midje.sweet))
 
 (let [orig "My F. Title, можно и по-русски"]
   (fact ((make-slug-for :t) {:t orig}) => {:t orig :t_slug "my-f-title-mo-no-i-po-russki"}))
@@ -11,3 +11,7 @@
   ((escape-input :urlpart :i) {:i "hello world"}) => {:i "hello+world"}
   ((escape-input :js      :i) {:i "Hi :)"})       => {:i "Hi\\x20\\x3a\\x29"}
   ((escape-input :css     :i) {:i "yo "})         => {:i "yo\\20"})
+
+(facts "about gravatar"
+  (gravatar "floatboth@me.com" 200) => "http://www.gravatar.com/avatar/03c738a97e4f7e8dd46a846224fb275b?s=200"
+  (gravatar "floatboth@me.com") => "http://www.gravatar.com/avatar/03c738a97e4f7e8dd46a846224fb275b")

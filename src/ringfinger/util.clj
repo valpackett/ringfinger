@@ -55,6 +55,15 @@
   (let [demo 1 test 2] (pack demo test)) -> {:demo 1 :test 2}"
   [& values] (zipmap (map keyword values) values))
 
+(defmacro map-to-querystring
+  "Turns a map into a query sting, eg.
+  {:abc 123 :def ' '} -> ?abc=123&def=%20"
+  [m] `(if (empty? ~m) ""
+        (apply str "?" (interpose "&" (map #(str
+          (java.net.URLEncoder/encode (name (key %)) "UTF-8")
+          "="
+          (java.net.URLEncoder/encode (str (val %)) "UTF-8")) ~m)))))
+
 (defn typeify
   "Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles "
   [s]

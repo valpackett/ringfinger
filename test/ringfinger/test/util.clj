@@ -22,6 +22,10 @@
 (let [one 1 two 2]
   (fact (pack-to-map one two) => {:one 1 :two 2}))
 
+(facts "about map-to-querystring"
+  (map-to-querystring {:abc 123 :def " "}) => "?abc=123&def=+"
+  (map-to-querystring {}) => "")
+
 (fact (keywordize {"one" 1}) => {:one 1})
 
 (let [mp {:one 1 :two 2}]

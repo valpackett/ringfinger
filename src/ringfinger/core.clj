@@ -16,7 +16,7 @@
         (ring.middleware params cookies session stacktrace flash file),
         (ringfinger session security auth), ringfinger.db.inmem))
 
-(def ^:dynamic *request* nil)
+(def ^:dynamic *request* {:scheme :http})
 
 (defmacro if-env "Checks if the current RING_ENV == env" [env yep nope]
   `(if (= (or (System/getenv "RING_ENV") "development") ~env) ~yep ~nope))

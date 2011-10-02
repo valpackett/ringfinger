@@ -6,14 +6,15 @@
         valip.core)
   (:import java.util.UUID))
 
-(defn get-action [req nm]
-  (str (:uri req)
-       (let [hdrs (:headers req)
-             dmn  (str (name (:scheme req)) "://" (get hdrs "host"))
+(defn get-action [nm]
+  (str (:uri *request*)
+       (let [hdrs (:headers *request*)
+             dmn  (str (name (:scheme *request*)) "://" (get hdrs "host"))
              rf   (get hdrs "referer" "")]
-         (if (and (substring? dmn rf) (not (substring? "/login" rf)))
-           (str "?" nm "=" (str-drop (count dmn) rf))
-           ""))))
+         (map-to-querystring (apply merge (:query-string *request*)
+                                    (if (and (substring? dmn rf) (not (substring? "/login" rf)))
+                                      {nm (str-drop (count dmn) rf)}
+                                      {}))))))
 
 (defn auth-cookie [user]
   {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :http-only true :value (:auth_token user)})
@@ -63,9 +64,8 @@
                    :body    ((:login views) {:errors {}
                                              :data   {}
                                              :fields fieldhtml
-                                             :req    req
                                              :urlb   url-base
-                                             :action (get-action req redir-p)})}))
+                                             :action (get-action redir-p)})}))
          :post (fn [req m]
                  (if-not-user req
                    (let [form (keywordize (:form-params req))
@@ -80,7 +80,7 @@
                                                     :data   (merge form {:password nil})
                                                     :fields fieldhtml
                                                     :urlb   url-base
-                                                    :action (get-action req redir-p)})})
+                                                    :action (get-action redir-p)})})
                          {:status  302
                           :headers {"Location" (getloc req)}
                           :cookies {"a" (auth-cookie user)}
@@ -92,7 +92,7 @@
                                                   :data   form
                                                   :fields fieldhtml
                                                   :urlb   url-base
-                                                  :action (get-action req redir-p)})}))))})
+                                                  :action (get-action redir-p)})}))))})
       (route (str url-base "logout")
         {:get (fn [req m]
                 {:status  302
@@ -127,7 +127,7 @@
                                               :data   {}
                                               :fields fieldhtml
                                               :urlb   url-base
-                                              :action (get-action req redir-p)})}))
+                                              :action (get-action redir-p)})}))
           :post (if confirm
                    (fn [req m]
                      (if-not-user req
@@ -152,7 +152,7 @@
                                                         :data   form
                                                         :fields fieldhtml
                                                         :urlb   url-base
-                                                        :action (get-action req redir-p)})}))))
+                                                        :action (get-action redir-p)})}))))
                    (fn [req m]
                      (if-not-user req
                         (let [form (keywordize (:form-params req))
@@ -170,4 +170,4 @@
                                                         :data   form
                                                         :fields fieldhtml
                                                         :urlb   url-base
-                                                        :action (get-action req redir-p)})})))))}))))
+                                                        :action (get-action redir-p)})})))))}))))

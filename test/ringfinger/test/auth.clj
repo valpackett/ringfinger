@@ -1,6 +1,6 @@
 (ns ringfinger.test.auth
   (:use midje.sweet, ring.mock.request
-        ringfinger.db.inmem, (ringfinger auth auth-routes))
+        ringfinger.db.inmem, (ringfinger core auth auth-routes))
   (:import org.apache.commons.codec.digest.DigestUtils))
 
 (with-salt "salt"
@@ -12,7 +12,7 @@
       (:password_hash usr) => (DigestUtils/sha256Hex (str (:password_salt usr) "saltdemo")))))
 
 (fact
-  (get-action (header (request :post "/auth/login") "Referer" "http://localhost/demo") "redirect")
-  => "/auth/login?redirect=/demo")
+  (binding [*request* (header (request :post "/auth/login") "Referer" "http://localhost/demo")]
+    (get-action "redirect")) => "/auth/login?redirect=%2Fdemo")
 
 (reset-inmem-db)
