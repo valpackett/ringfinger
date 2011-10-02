@@ -19,6 +19,10 @@
   ((:pred (non-confusing)) "amazing") => true
   ((:pred (non-confusing)) "аmazing") => false) ; Cyrillic а != Latin a
 
+(facts "about not-in"
+  ((:pred (not-in ["about"])) "myUser") => true
+  ((:pred (not-in ["about"])) "about")  => false)
+
 (facts "about maxlength"
   ((:pred (maxlength 3)) "123")  => true
   ((:pred (maxlength 3)) "1234") => false)

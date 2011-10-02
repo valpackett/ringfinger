@@ -54,6 +54,12 @@
   (let [spch (.build (SpoofChecker$Builder.))]
     {:pred #(not (. spch failsChecks %))}))
 
+(defn not-in
+  "Given a list of forbidden values, does the right thing.
+   Useful if you have routes like /about and /:username
+   and you don't want someone to have an username 'about'" [lst]
+   {:pred #(not (haz? lst %))})
+
 (defn maxlength "Sets the maximum length to the given number" [n]
   {:html {:maxlength n}
    :pred #(<= (count %) n)})
@@ -81,7 +87,7 @@
 (defn ipv4-field "Validates IPv4 addresses" []
   {:html {:pattern "([0-9]{1,3}\\.){3}[0-9]{1,3}"}
    ; rand-int's second arg is exclusive, 256 means 0-255
-   :fake (repeatedly #(str (rand-int 256) "." (rand-int 256) "." (rand-int 256) "." (rand-int 256)))
+   :fake (apply str (interpose "." (take 4 (repeatedly (partial rand-int 256)))))
    :pred (fn [a]
            (= '(false false false false)
               (map #(> (Integer/parseInt %) 255)
@@ -89,7 +95,7 @@
 
 (defn color-field "Validates hexadecimal color codes, input type=color" []
   {:html {:type "color"}
-   :fake (repeatedly #(str "#" (rand-int 10) (rand-int 10) (rand-int 10) "fff")) ; okay, enough randomness
+   :fake (repeatedly #(str "#" (apply str (take 3 (repeatedly (partial rand-int 10)))) "fff")) ; okay, enough randomness
    :pred #(boolean (re-matches #"#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})" %))})
 
 (defn date-field "Validates/parses/outputs dates, input type=date" []
