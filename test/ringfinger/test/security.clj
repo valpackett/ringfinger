@@ -9,4 +9,4 @@
 
 (defapp testapp {:static-dir "src"} todos)
 
-(fact (:status (testapp (header (request :delete "/todos/test") "Referer" "http://crackersite.tld/wtf.php"))) => 403)
+(fact (:status (testapp (header (request :get "/todos/test?_method=delete") "Referer" "http://crackersite.tld/wtf.php"))) => 403)

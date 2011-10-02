@@ -59,6 +59,14 @@
                          (assoc :params (merge (:params req) jsp)))))
       (handler req))))
 
+(defn wrap-method-override
+  "Ring middleware for method overriding (X-HTTP-Method-Override and _method query parameter)"
+  [handler]
+  (fn [req]
+    (let [rm (or (get-in req [:headers "x-http-method-override"])
+                 (get-in req [:query-params "_method"]))]
+      (handler (assoc req :request-method (if rm (keyword (lower-case rm)) (:request-method req)))))))
+
 (defn method-na-handler [req matches]
   {:status  405
    :headers {"Content-Type" "text/plain"}
@@ -81,11 +89,7 @@
   ([url handlers custom-regexps]
     (let [handlers (merge default-handlers handlers)]
       {:route   (route-compile url custom-regexps)
-       :handler (fn [req matches]
-                  (let [rm       (or (get-in req [:headers "x-http-method-override"])
-                                     (get-in req [:query-params "_method"]))
-                        method   (if rm (keyword (lower-case rm)) (:request-method req))]
-                          ((get handlers method) req matches)))})))
+       :handler (fn [req matches] ((get handlers (:request-method req)) req matches))})))
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
@@ -114,12 +118,13 @@
                              :cookie-attrs {:httponly true}
                              :cookie-name "s"})
               (wrap-jsonp (:callback-param options "callback"))
-              wrap-json-params
-              wrap-params
               wrap-length
               wrap-sec-headers
               wrap-head
               wrap-refcheck
+              wrap-method-override
+              wrap-json-params
+              wrap-params
               )]
     (if-env "development"
       (-> h

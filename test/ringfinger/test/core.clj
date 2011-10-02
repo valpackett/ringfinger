@@ -22,7 +22,7 @@
        :body    "Yo: hello"})
   (:status (testapp (request :post "/test/hello"))) => 405
   (:body   (testapp (header (request :delete "/method") "X-HTTP-Method-Override" "GET"))) => "{\"method\":\"get\"}"
-  (:body   (testapp (request :post "/method?_method=get"))) =>"{\"method\":\"get\"}"
+  (:body   (testapp (request :post "/method?_method=get"))) => "{\"method\":\"get\"}"
   (:status (testapp (request :get "/test"))) => 404)
 
 (facts "about JSONP"
