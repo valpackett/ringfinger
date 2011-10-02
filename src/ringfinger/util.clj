@@ -1,5 +1,5 @@
 (ns ringfinger.util
-  "Various functions and macros used by Ringfinger."
+  "Various functions and macros used by Ringfinger. Feel free to use them too!"
   (:use valip.predicates,
         clj-time.coerce,
         inflections.core)

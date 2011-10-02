@@ -11,7 +11,8 @@
   "Returns a hook which makes a slug (URL-friendly name, eg. My Article -> my-article)
   for a given field. Default output-field is field + '_slug'.
   Don't forget that if you use a custom output-field, you need to whitelist it.
-  Never returns empty values. Transliterates different scripts into Latin"
+  Never returns empty values (takes a random word if the original's empty).
+  Transliterates different scripts (eg. Cyrillic) into Latin"
   ([field] (make-slug-for field (keyword (str (name field) "_slug"))))
   ([field output-field]
    (let [fakes (words)

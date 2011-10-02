@@ -84,7 +84,8 @@
 
 (defn route
   "Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format and a map of handlers
-  eg. {:get (fn [req matches] {:status 200 :body nil})}"
+  eg. {:get (fn [req matches] {:status 200 :body nil})}
+  Accepts custom-regexps for finer matching (eg. only numeric ids)"
   ([url handlers] (route url handlers {}))
   ([url handlers custom-regexps]
     (let [handlers (merge default-handlers handlers)]
@@ -93,7 +94,7 @@
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
-  params, session, flash, auth, head, jsonp, length and some security middleware
+  params, session, flash, auth, head, jsonp, length, method-override and some security middleware
   (+ stacktrace and file in development env)
   Accepted options:
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth

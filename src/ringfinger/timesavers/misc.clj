@@ -1,5 +1,5 @@
 (ns ringfinger.timesavers.misc
-  "Random useful functions for web apps"
+  "Useful common functions for web apps"
   (:use (ringfinger core util)
         [clojure.string :only [trim, lower-case]])
   (:import org.apache.commons.codec.digest.DigestUtils))
