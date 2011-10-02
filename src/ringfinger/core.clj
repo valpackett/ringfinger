@@ -16,6 +16,7 @@
         (ring.middleware params cookies session stacktrace flash file),
         (ringfinger session security auth), ringfinger.db.inmem))
 
+(def ^:dynamic *request* nil)
 
 (defmacro if-env "Checks if the current RING_ENV == env" [env yep nope]
   `(if (= (or (System/getenv "RING_ENV") "development") ~env) ~yep ~nope))
@@ -84,7 +85,8 @@
                 (let [rm       (or (get-in req [:headers "x-http-method-override"])
                                    (get-in req [:query-params "_method"]))
                       method   (if rm (keyword (lower-case rm)) (:request-method req))]
-                    ((get handlers method) req matches)))})))
+                    (binding [*request* req]
+                      ((get handlers method) req matches))))})))
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
