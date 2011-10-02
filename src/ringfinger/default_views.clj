@@ -4,15 +4,15 @@
         (hiccup core page-helpers)))
 
 (defn p-flash [stuff]
-  (if-let [f (get-in stuff [:req :flash])]
+  (if-let [f (:flash *request*)]
     [:div.flash f]))
 
 (defn p-csrftoken [stuff]
-  [:input {:type "hidden" :name "csrftoken" :value (get-in stuff [:req :csrf-token])}])
+  [:input {:type "hidden" :name "csrftoken" :value (:csrf-token *request*)}])
 
 (defn p-user [stuff]
   [:div.user
-   (if-let [u (get-in stuff [:req :user :username])]
+   (if-let [u (get-in *request* [:user :username])]
      (str "Logged in as " u ".")
      "Not logged in.")])
 

@@ -73,14 +73,14 @@
                          user (get-user db coll (:username form) (:password form))]
                      (if (nil? fval)
                        (if (nil? user)
+                        (binding [*request* (assoc *request* :flash (:login-invalid flash))]
                          {:status  400
                           :headers {"Content-Type" "text/html; encoding=utf-8"}
                           :body    ((:login views) {:errors {}
                                                     :data   (merge form {:password nil})
                                                     :fields fieldhtml
-                                                    :req    (assoc req :flash (:login-invalid flash)) ; same page
                                                     :urlb   url-base
-                                                    :action (get-action req redir-p)})}
+                                                    :action (get-action req redir-p)})})
                          {:status  302
                           :headers {"Location" (getloc req)}
                           :cookies {"a" (auth-cookie user)}
@@ -91,7 +91,6 @@
                         :body    ((:login views) {:errors fval
                                                   :data   form
                                                   :fields fieldhtml
-                                                  :req    req
                                                   :urlb   url-base
                                                   :action (get-action req redir-p)})}))))})
       (route (str url-base "logout")
@@ -127,7 +126,6 @@
                    :body    ((:signup views) {:errors {}
                                               :data   {}
                                               :fields fieldhtml
-                                              :req    req
                                               :urlb   url-base
                                               :action (get-action req redir-p)})}))
           :post (if confirm
@@ -147,14 +145,12 @@
                                    :url   (str (name (:scheme req)) "://" (get (:headers req) "host") url-base "confirm/" akey "?" redir-p "=" (getloc req))}))
                               {:status  200
                                :headers {"Content-Type" "text/html; encoding=utf-8"}
-                               :body    ((:confirm views) {:data  form
-                                                           :req    req})})
+                               :body    ((:confirm views) {:data form})})
                             {:status  400
                              :headers {"Content-Type" "text/html; encoding=utf-8"}
                              :body    ((:signup views) {:errors fval
                                                         :data   form
                                                         :fields fieldhtml
-                                                        :req    req
                                                         :urlb   url-base
                                                         :action (get-action req redir-p)})}))))
                    (fn [req m]
@@ -173,6 +169,5 @@
                              :body    ((:signup views) {:errors fval
                                                         :data   form
                                                         :fields fieldhtml
-                                                        :req    req
                                                         :urlb   url-base
                                                         :action (get-action req redir-p)})})))))}))))
