@@ -2,7 +2,6 @@
 Fun, fast, secure web development on top of [Clojure](http://clojure.org)/[Ring](https://github.com/mmcgrana/ring).
 A framework for the age of non-relational databases, content delivery networks, cloud hosting, HTML5 and coffee.
 InstaRESTful, if you like the hipster-speak. Named after a great Nine Inch Nails song.
-Not ready yet, but a lot of things work, including MongoDB support, ready-to-use customizable login/signup system and more.
 
 Check out the [website](http://ringfinger.floatboth.com) for a live demo.
 
@@ -48,28 +47,25 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 ## Coming "soon"
 
 ### Really Important Features
-- optionally separating create/index and view/edit pages in html
+- read-only mode
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
-- pagination link (including HTTP Link header) things
-- cyrillic transliteration for slugs – maybe fork inflections and add?
+- pagination (including HTTP Link header for being RESTful)
 - middleware like django-paranoid-sessions
-- atom feeds for resources
-- invite mode for registration
 - file attachments w/ GridFS support
 - asset system that supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, using attachment storages. kinda like rails 3.1
+- optionally separating create/index and view/edit pages in html - possible to create "create" and "edit" pages manually now, but it should be easy
 
 ### Someday
+- atom feeds for resources
+- invite mode for registration
 - i18n
 - [Swagger](http://swagger.wordnik.com) implementation
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
-- extracting security, db and output once they'll be more stable and have more features?? like, db makes a unified document db api useful even for non-web apps
-- pre-made Lamina subscribers for Pusher/pubsub.io/hook.io
+- timesavers.subscribers: [Pusher](http://pusher.com/), [Superfeedr](http://superfeedr.com) (after adding atom feeds), webhook
+- timesavers.actions for polls (change -1/0/+1 per user, like reddit), voting (like [votebox](https://www.dropbox.com/votebox))
 - FleetDB, CouchDB support
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
-- read-only mode
 - database and attachment migrations (eg. mongodb + gridfs to simpledb + s3)
-- field renaming
-- (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus, yaml for ruby
 - easy full text search (elasticsearch, lucene): lamina subscriber + route for querying
-- timesavers.actions for polls (change -1/0/+1 per user, like reddit), voting (like [votebox](https://www.dropbox.com/votebox))
+- (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus
