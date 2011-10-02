@@ -57,7 +57,7 @@
 
 (defmacro map-to-querystring
   "Turns a map into a query sting, eg.
-  {:abc 123 :def ' '} -> ?abc=123&def=%20"
+  {:abc 123 :def ' '} -> ?abc=123&def=+"
   [m] `(if (empty? ~m) ""
         (apply str "?" (interpose "&" (map #(str
           (java.net.URLEncoder/encode (name (key %)) "UTF-8")
