@@ -6,8 +6,8 @@
   ((:pred (required)) "")  => false
   ((:pred (required)) nil) => false)
 
-(facts "about pattern"
-  (let [low (:pred (pattern #"[a-z]"))]
+(let [low (:pred (pattern #"[a-z]"))]
+  (facts "about pattern"
     (low "a") => true
     (low "A") => false))
 
@@ -63,18 +63,18 @@
   ((:pred (number-field)) "-123") => true
   ((:pred (number-field)) "word") => false)
 
-(facts "about nmin"
-  (let [gte-ten (:pred (nmin 10))]
+(let [gte-ten (:pred (nmin 10))]
+  (facts "about nmin"
     (gte-ten "10") => true
     (gte-ten "9")  => false))
 
-(facts "about nmax"
-  (let [lte-ten (:pred (nmax 10))]
+(let [lte-ten (:pred (nmax 10))]
+  (facts "about nmax"
     (lte-ten "10") => true
     (lte-ten "11") => false))
 
-(facts "about nbetween"
-  (let [btw (:pred (nbetween 10 15))]
+(let [btw (:pred (nbetween 10 15))]
+  (facts "about nbetween"
     (btw "10") => true
     (btw "15") => true
     (btw "9")  => false
