@@ -1,7 +1,8 @@
 (ns ringfinger.test.timesavers
   (:use ringfinger.timesavers.hooks, midje.sweet))
 
-(fact ((make-slug-for :t) {:t "My F. Title"}) => {:t "My F. Title" :t_slug "my-f-title"})
+(let [orig "My F. Title, можно и по-русски"]
+  (fact ((make-slug-for :t) {:t orig}) => {:t orig :t_slug "my-f-title-mo-no-i-po-russki"}))
 
 (fact ((safe-html :s) {:s "<b><script>alert('xss lol');</script></b>"}) => {:s "<b></b>"})
 

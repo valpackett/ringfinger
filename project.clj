@@ -26,6 +26,7 @@
                  [valip "0.2.0"]
                  [clj-http "0.1.3"]
                  ; Misc
+                 [com.ibm.icu/icu4j "4.8.1.1"]
                  [lamina "0.4.0-beta2-SNAPSHOT"]
                  [clj-time "0.3.0"]
                  [inflections "0.5.2"]

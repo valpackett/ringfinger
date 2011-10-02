@@ -4,19 +4,21 @@
         faker.lorem,
         net.cgrand.enlive-html,
         [clojure.string :only [escape]]
-        [valip.predicates :as v]))
+        [valip.predicates :as v])
+  (:import com.ibm.icu.text.Transliterator))
 
 (defn make-slug-for
   "Returns a hook which makes a slug (URL-friendly name, eg. My Article -> my-article)
   for a given field. Default output-field is field + '_slug'.
   Don't forget that if you use a custom output-field, you need to whitelist it.
-  Never returns empty values"
+  Never returns empty values. Transliterates different scripts into Latin"
   ([field] (make-slug-for field (keyword (str (name field) "_slug"))))
   ([field output-field]
-   (let [fakes (words)]
+   (let [fakes (words)
+         tr (Transliterator/getInstance "Any-Latin")]
      (fn [data]
        (assoc data output-field
-              (let [r (parameterize (get data field))]
+              (let [r (parameterize (. tr transliterate (get data field)))]
                 (if (= r "") (parameterize (first (take 1 fakes))) r)))))))
 
 (defn safe-html
