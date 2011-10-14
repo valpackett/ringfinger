@@ -11,9 +11,11 @@
             :web-src-dir "https://github.com/myfreeweb/ringfinger/blob/"
             :web-home "http://myfreeweb.github.com/ringfinger/"
             :output-path "autodoc"
-            :namespaces-to-document ["ringfinger" "toolfinger" "secfinger"]
-            :load-except-list [#".*/test/" #".*project\.clj"]}
-  :sub ["toolfinger" "secfinger"]
+            :root "."
+            :source-path ""
+            :namespaces-to-document ~(conj fingers "ringfinger")
+            :load-except-list [#".*/test/" #".*project\.clj" #"website/" #"autodoc/"]}
+  :sub ~(conj fingers ".")
   :deps [[org.clojure/clojure ~clj-version]
          ; Sub
          [ringfinger/toolfinger ~version]

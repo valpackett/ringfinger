@@ -1,2 +1,2 @@
 language: clojure
-script: "lein midje && lein sub midje"
+script: "lein sub midje"
