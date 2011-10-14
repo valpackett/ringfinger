@@ -2,7 +2,7 @@
   "The only useful thing for users here is form-fields.
   Everything else is kinda internal, but feel free to use this if you
   don't use ringfinger.resource and write all the boilerplate by hand."
-  (:use ringfinger.util,
+  (:use toolfinger,
         faker.lorem,
         hiccup.core)) ; <- has as-str
 

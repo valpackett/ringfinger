@@ -1,6 +1,7 @@
 (ns ringfinger.timesavers.actions
   "Functions for easy creation of actions"
-  (:use (ringfinger resource util db),
+  (:use (ringfinger resource db),
+        toolfinger,
         lamina.core))
 
 (defn make-redir-action

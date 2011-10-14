@@ -1,6 +1,6 @@
 (ns ringfinger.security
   "Some security-related Ring middleware used by ringfinger.core and other related functions."
-  (:use ringfinger.util)
+  (:use toolfinger)
   (:import org.apache.commons.codec.digest.DigestUtils,
            org.apache.commons.codec.binary.Base64,
            java.security.SecureRandom))

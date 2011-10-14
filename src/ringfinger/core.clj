@@ -14,7 +14,8 @@
         [clojure.string :only [lower-case]],
         [clojure.data.json :only [read-json]],
         (ring.middleware params cookies session stacktrace flash file),
-        (ringfinger session security auth), ringfinger.db.inmem))
+        (ringfinger session security auth), ringfinger.db.inmem)
+  (:require [clojure.java.io :as io]))
 
 (def ^:dynamic *request* {:scheme :http})
 
@@ -135,3 +136,6 @@
 
 (defmacro defapp "Short for (def nname (app options & routes))" [nname options & routes]
   (intern *ns* nname (eval `(app ~options ~@routes))))
+
+(def default-style
+  (slurp (io/resource "default.css")))

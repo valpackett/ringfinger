@@ -9,10 +9,12 @@
             :web-src-dir "https://github.com/myfreeweb/ringfinger/blob/"
             :web-home "http://myfreeweb.github.com/ringfinger/"
             :output-path "autodoc"
-            :trim-prefix "ringfinger."
-            :namespaces-to-document ["ringfinger"]
+            :namespaces-to-document ["ringfinger" "toolfinger"]
             :load-except-list [#"/test/" #"project\.clj"]}
+  :sub ["ringfinger/toolfinger"]
   :dependencies ([org.clojure/clojure "1.2.1"]
+                 ; Sub
+                 [ringfinger/toolfinger "0.2.0-SNAPSHOT"]
                  ; Output
                  [org.clojure/data.json "0.1.1"]
                  [clojure-csv "1.3.2"]
@@ -37,5 +39,6 @@
                      [ring-serve "0.1.1"]
                      [midje "1.2.0"]
                      [lein-midje "1.0.3"]
+                     [lein-sub "0.1"]
                      [congomongo "0.1.7-SNAPSHOT"]
                      [org.clojars.weavejester/autodoc "0.9.0"]))

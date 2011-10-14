@@ -1,9 +1,8 @@
-(ns ringfinger.util
+(ns toolfinger
   "Various functions and macros used by Ringfinger. Feel free to use them too!"
   (:use valip.predicates,
         clj-time.coerce,
         inflections.core)
-  (:require [clojure.java.io :as io])
   (:import org.joda.time.DateTime))
 
 (defn andf
@@ -106,6 +105,3 @@
   "Checks if the request is made by an XMLHttpRequest"
   [req]
   (= (get-in req [:headers "x-requested-with"] "") "XMLHttpRequest"))
-
-(def default-style
-  (slurp (io/resource "default.css")))

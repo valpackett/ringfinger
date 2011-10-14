@@ -1,6 +1,6 @@
 (ns ringfinger.db
   "Document-oriented database abstraction used by ringfinger.resource."
-  (:use ringfinger.util,
+  (:use toolfinger,
         [clojure.string :only [split]]))
 
 (defprotocol Database

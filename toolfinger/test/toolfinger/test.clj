@@ -1,5 +1,5 @@
-(ns ringfinger.test.util
-  (:use ringfinger.util, midje.sweet))
+(ns toolfinger.test
+  (:use toolfinger, midje.sweet))
 
 (facts "about call-or-ret"
   (call-or-ret #(str %) 1) => "1"
@@ -31,7 +31,7 @@
 (let [mp {:one 1 :two 2}]
   (fact (sorted-zipmap (keys mp) (vals mp)) => mp))
 
-(facts "about sort-maps"
-  (let [m [{:a 1 :b 1} {:a 1 :b 2} {:a 2 :b 1} {:a 2 :b 2}]]
+(let [m [{:a 1 :b 1} {:a 1 :b 2} {:a 2 :b 1} {:a 2 :b 2}]]
+  (facts "about sort-maps"
     (sort-maps m {:a 1 :b -1}) => '({:a 1 :b 2} {:a 1 :b 1} {:a 2 :b 2} {:a 2 :b 1})
     (sort-maps m {:a -1 :b 1}) => '({:a 2 :b 1} {:a 2 :b 2} {:a 1 :b 1} {:a 1 :b 2})))

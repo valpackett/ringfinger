@@ -1,5 +1,6 @@
 (ns ringfinger.db.inmem
-  (:use (ringfinger db util)))
+  (:use ringfinger.db,
+        toolfinger))
 
 (def base (ref {}))
 

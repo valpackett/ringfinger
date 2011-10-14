@@ -1,6 +1,6 @@
 (ns ringfinger.output
   "The output system used by ringfinger.resource."
-  (:use ringfinger.util,
+  (:use toolfinger,
         [clojure.data.json :only [json-str]],
         [clj-yaml.core :only [generate-string]],
         clojure-csv.core))
