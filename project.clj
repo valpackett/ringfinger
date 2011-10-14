@@ -13,30 +13,30 @@
             :output-path "autodoc"
             :namespaces-to-document ["ringfinger" "toolfinger"]
             :load-except-list [#".*/test/" #".*project\.clj"]}
-  :sub ["ringfinger/toolfinger"]
-  :deps ~`([org.clojure/clojure ~clj-version]
-           ; Sub
-           [ringfinger/toolfinger ~version]
-           ; Output
-           [org.clojure/data.json "0.1.1"]
-           [clojure-csv "1.3.2"]
-           [clj-yaml "0.3.0"]
-           [enlive "1.0.0"]
-           [hiccup "0.3.6"]
-           ; Web
-           [ring/ring-core "0.3.11"]
-           [ring/ring-devel "0.3.11"]
-           [clout "0.4.1"]
-           [valip "0.2.0"]
-           [clj-http "0.1.3"]
-           ; Misc
-           [com.ibm.icu/icu4j "4.8.1.1"]
-           [lamina "0.4.0-beta2-SNAPSHOT"]
-           [clj-time "0.3.0"]
-           [inflections "0.5.2"]
-           [faker "0.2.2"]
-           [commons-codec "1.5"]
-           [commons-email "1.1"])
+  :sub ["toolfinger"]
+  :deps [[org.clojure/clojure ~clj-version]
+         ; Sub
+         [ringfinger/toolfinger ~version]
+         ; Output
+         [org.clojure/data.json "0.1.1"]
+         [clojure-csv "1.3.2"]
+         [clj-yaml "0.3.0"]
+         [enlive "1.0.0"]
+         [hiccup "0.3.6"]
+         ; Web
+         [ring/ring-core "0.3.11"]
+         [ring/ring-devel "0.3.11"]
+         [clout "0.4.1"]
+         [valip "0.2.0"]
+         [clj-http "0.1.3"]
+         ; Misc
+         [com.ibm.icu/icu4j "4.8.1.1"]
+         [lamina "0.4.0-beta2-SNAPSHOT"]
+         [clj-time "0.3.0"]
+         [inflections "0.5.2"]
+         [faker "0.2.2"]
+         [commons-codec "1.5"]
+         [commons-email "1.1"]]
   :dev-dependencies ([ring-mock "0.1.1"]
                      [ring-serve "0.1.1"]
                      [midje "1.2.0"]
