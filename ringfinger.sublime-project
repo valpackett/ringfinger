@@ -9,7 +9,7 @@
   "build_systems": [
     {
       "name": "Test",
-      "cmd": ["/usr/local/bin/lein", "midje"],
+      "cmd": ["/usr/local/bin/lein", "sub", "midje"],
       "file_regex": "^FAIL at \\((.*):([0-9]*)\\)"
     },
     {

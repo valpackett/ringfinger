@@ -6,3 +6,4 @@
     (.substring out 0 (- (count out) 1)))) ; remove the \n
 
 (def clj-version "1.2.1")
+(def ring-version "1.0.0-beta2")

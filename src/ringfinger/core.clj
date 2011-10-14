@@ -1,12 +1,3 @@
-; A little monkey-patch for using HttpOnly cookies
-(require 'ring.middleware.cookies)
-(intern 'ring.middleware.cookies 'set-cookie-attrs
-  {:comment "Comment", :comment-url "CommentURL", :discard "Discard",
-   :domain "Domain", :max-age "Max-Age", :path "Path", :port "Port",
-   :secure "Secure", :version "Version", :expires "Expires",
-   :httponly "HttpOnly"})
-; -------
-
 (ns ringfinger.core
   "The magic starts here. The routing system, some middleware and
    the if-env macro are there."

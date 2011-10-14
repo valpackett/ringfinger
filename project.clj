@@ -24,8 +24,8 @@
          [enlive "1.0.0"]
          [hiccup "0.3.6"]
          ; Web
-         [ring/ring-core "0.3.11"]
-         [ring/ring-devel "0.3.11"]
+         [ring/ring-core ~ring-version]
+         [ring/ring-devel ~ring-version]
          [clout "0.4.1"]
          [valip "0.2.0"]
          [clj-http "0.1.3"]
@@ -37,10 +37,10 @@
          [faker "0.2.2"]
          [commons-codec "1.5"]
          [commons-email "1.1"]]
-  :dev-dependencies ([ring-mock "0.1.1"]
+  :dev-dependencies [[ring-mock "0.1.1"]
                      [ring-serve "0.1.1"]
                      [midje "1.2.0"]
                      [lein-midje "1.0.3"]
                      [lein-sub "0.1"]
                      [congomongo "0.1.7-SNAPSHOT"]
-                     [org.clojars.weavejester/autodoc "0.9.0"]))
+                     [org.clojars.weavejester/autodoc "0.9.0"]])
