@@ -44,5 +44,3 @@
                      [lein-sub "0.1"]
                      [congomongo "0.1.7-SNAPSHOT"]
                      [org.clojars.weavejester/autodoc "0.9.0"]))
-
-(prn project)

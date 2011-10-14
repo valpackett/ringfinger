@@ -1,4 +1,4 @@
-(load-file "metaproject.clj")
+(load-file "../metaproject.clj")
 
 (defproject ringfinger/toolfinger version
   :description "Various utilities used by Ringfinger"
