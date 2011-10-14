@@ -1,5 +1,5 @@
-(ns ringfinger.security
-  "Some security-related Ring middleware used by ringfinger.core and other related functions."
+(ns secfinger
+  "Some security-related Ring middleware and other related functions."
   (:use toolfinger)
   (:import org.apache.commons.codec.digest.DigestUtils,
            org.apache.commons.codec.binary.Base64,

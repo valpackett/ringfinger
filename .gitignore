@@ -1,8 +1,8 @@
-.lein-*
-pom.xml
+*.lein-*
+*pom.xml
 *.jar
-lib
-classes
+*lib/
+*classes/
 autodoc
 wiki
 website

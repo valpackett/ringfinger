@@ -5,7 +5,8 @@
         [clojure.string :only [lower-case]],
         [clojure.data.json :only [read-json]],
         (ring.middleware params cookies session stacktrace flash file),
-        (ringfinger session security auth), ringfinger.db.inmem)
+        (ringfinger session auth), ringfinger.db.inmem,
+        secfinger)
   (:require [clojure.java.io :as io]))
 
 (def ^:dynamic *request* {:scheme :http})
