@@ -1,8 +1,6 @@
 (use 'clojure.java.shell)
 
 ; Ringfinger's version is defined by git tags
-(if (= (System/getenv "HAS_JOSH_K_SEAL_OF_APPROVAL") "true")
-  (sh "git" "checkout" "master")) ; Travis CI, Y U CHECKOUT REVISION
 (def version
   (let [out (:out (sh "git" "describe" "--abbrev=0" "--tags"))]
     (.substring out 0 (- (count out) 1)))) ; remove the \n
