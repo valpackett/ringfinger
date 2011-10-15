@@ -14,7 +14,7 @@
             :root "."
             :source-path ""
             :namespaces-to-document ~(conj fingers "ringfinger")
-            :load-except-list [#".*/test/" #".*project\.clj" #"website/" #"autodoc/"]}
+            :load-except-list [#".*/test/" #".*project\.clj" #"website/" #"autodoc"]}
   :sub ~(conj fingers ".")
   :deps [[org.clojure/clojure ~clj-version]
          ; Sub
