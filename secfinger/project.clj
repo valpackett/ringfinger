@@ -7,7 +7,7 @@
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
   :deps [[org.clojure/clojure ~clj-version]
-         [toolfinger ~version]
+         [ringfinger/toolfinger ~version]
          [commons-codec "1.5"]]
   :dev-dependencies [[midje "1.2.0"]
                      [lein-midje "1.0.3"]
