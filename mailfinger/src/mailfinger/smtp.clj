@@ -1,4 +1,4 @@
-(ns ringfinger.email.smtp
+(ns mailfinger.smtp
   (:import (org.apache.commons.mail SimpleEmail DefaultAuthenticator)))
 
 (defn smtp

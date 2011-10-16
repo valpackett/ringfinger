@@ -20,6 +20,7 @@
          ; Sub
          [ringfinger/toolfinger ~version]
          [ringfinger/secfinger  ~version]
+         [ringfinger/mailfinger ~version]
          ; Output
          [org.clojure/data.json "0.1.1"]
          [clojure-csv "1.3.2"]
@@ -31,7 +32,6 @@
          [ring/ring-devel ~ring-version]
          [clout "0.4.1"]
          [valip "0.2.0"]
-         [clj-http "0.1.3"]
          ; Misc
          [com.ibm.icu/icu4j "4.8.1.1"]
          [lamina "0.4.0-beta2-SNAPSHOT"]
@@ -42,8 +42,7 @@
          [commons-email "1.1"]]
   :dev-dependencies [[ring-mock "0.1.1"]
                      [ring-serve "0.1.1"]
-                     [midje "1.2.0"]
+                     [midje ~midje-version]
                      [lein-midje "1.0.3"]
-                     [lein-sub "0.1"]
                      [congomongo "0.1.7-SNAPSHOT"]
                      [org.clojars.weavejester/autodoc "0.9.0"]])

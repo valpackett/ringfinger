@@ -1,4 +1,4 @@
-(ns ringfinger.email.postmark
+(ns mailfinger.postmark
   (:use [clojure.data.json :only [json-str]])
   (:require [clj-http.client :as r]))
 

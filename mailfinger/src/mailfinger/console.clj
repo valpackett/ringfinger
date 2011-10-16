@@ -1,4 +1,4 @@
-(ns ringfinger.email.console)
+(ns mailfinger.console)
 
 (defn console
   "Mailer function which just prints the 'messages' to the console, for development/testing.

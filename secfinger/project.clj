@@ -9,6 +9,6 @@
   :deps [[org.clojure/clojure ~clj-version]
          [ringfinger/toolfinger ~version]
          [commons-codec "1.5"]]
-  :dev-dependencies [[midje "1.2.0"]
+  :dev-dependencies [[midje ~midje-version]
                      [lein-midje "1.0.3"]
                      [ring-mock "0.1.1"]])
