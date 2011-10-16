@@ -3,7 +3,7 @@
     {
       "path": ".",
       "folder_exclude_patterns": ["autodoc", "classes", "lib"],
-      "file_exclude_patterns": [".lein-failures"]
+      "file_exclude_patterns": [".lein-failures", "*.jar", "*pom.xml"]
     }
   ],
   "build_systems": [
