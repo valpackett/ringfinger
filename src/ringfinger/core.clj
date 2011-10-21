@@ -5,7 +5,7 @@
         [clojure.string :only [lower-case]],
         [clojure.data.json :only [read-json]],
         (ring.middleware params cookies session stacktrace flash file),
-        (ringfinger session auth), ringfinger.db.inmem,
+        (ringfinger session auth), basefinger.inmem,
         secfinger)
   (:require [clojure.java.io :as io]))
 

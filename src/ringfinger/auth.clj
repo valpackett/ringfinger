@@ -1,6 +1,6 @@
 (ns ringfinger.auth
   "Low-level authorization API (creating users, getting users after checking) and the auth middleware."
-  (:use ringfinger.db, ringfinger.db.inmem,
+  (:use (basefinger core inmem),
         toolfinger,
         secfinger,
         [clojure.string :only [split]])

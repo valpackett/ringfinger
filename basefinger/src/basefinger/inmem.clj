@@ -1,5 +1,5 @@
-(ns ringfinger.db.inmem
-  (:use ringfinger.db,
+(ns basefinger.inmem
+  (:use basefinger.core,
         toolfinger))
 
 (def base (ref {}))

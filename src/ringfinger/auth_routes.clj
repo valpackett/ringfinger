@@ -1,8 +1,8 @@
 (ns ringfinger.auth-routes
   "Authorization routes -- magical registration (if you really want, even with
   e-mail confirmation) and logging in/out."
-  (:use (ringfinger auth core db fields field-helpers default-views),
-        ringfinger.db.inmem,
+  (:use (ringfinger auth core fields field-helpers default-views),
+        (basefinger core inmem),
         toolfinger,
         valip.core)
   (:import java.util.UUID))

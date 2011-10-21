@@ -1,5 +1,5 @@
-(ns ringfinger.db
-  "Document-oriented database abstraction used by ringfinger.resource."
+(ns basefinger.core
+  "Document-oriented database abstraction."
   (:use toolfinger,
         [clojure.string :only [split]]))
 

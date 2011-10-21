@@ -1,5 +1,5 @@
-(ns ringfinger.test.db
-  (:use ringfinger.db, ringfinger.db.inmem, midje.sweet))
+(ns basefinger.test
+  (:use basefinger.core, basefinger.inmem, midje.sweet))
 
 (reset-inmem-db)
 

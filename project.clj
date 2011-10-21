@@ -21,6 +21,7 @@
          [ringfinger/toolfinger ~version]
          [ringfinger/secfinger  ~version]
          [ringfinger/mailfinger ~version]
+         [ringfinger/basefinger ~version]
          ; Output
          [org.clojure/data.json "0.1.1"]
          [clojure-csv "1.3.2"]
@@ -44,5 +45,4 @@
                      [ring-serve "0.1.1"]
                      [midje ~midje-version]
                      [lein-midje "1.0.3"]
-                     [congomongo "0.1.7-SNAPSHOT"]
                      [org.clojars.weavejester/autodoc "0.9.0"]])

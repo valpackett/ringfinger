@@ -1,6 +1,7 @@
 (ns ringfinger.timesavers.actions
   "Functions for easy creation of actions"
-  (:use (ringfinger resource db),
+  (:use (ringfinger resource),
+        basefinger,
         toolfinger,
         lamina.core))
 

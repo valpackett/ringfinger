@@ -1,6 +1,6 @@
-(ns ringfinger.db.mongodb
+(ns basefinger.mongodb
   "MongoDB support. Don't forget to add Congomongo to your deps!"
-  (:use ringfinger.db, somnium.congomongo))
+  (:use basefinger.core, somnium.congomongo))
 
 (deftype MongoDB [conn] Database
   (create [self coll data]

@@ -1,7 +1,7 @@
 (ns ringfinger.session
   "This is used automatically when you provide a :session-db option to ringfinger.core/(def)app."
   (:use ring.middleware.session.store,
-        ringfinger.db)
+        basefinger.core)
   (:import java.util.UUID))
 
 (deftype DBStore [db coll] SessionStore
