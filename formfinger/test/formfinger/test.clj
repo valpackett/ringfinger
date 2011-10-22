@@ -1,5 +1,5 @@
-(ns ringfinger.test.fields
-  (:use ringfinger.fields, midje.sweet))
+(ns formfinger.test
+  (:use formfinger.fields, midje.sweet))
 
 (facts "about required"
   ((:pred (required)) "s") => true
