@@ -13,11 +13,10 @@
             :output-path "autodoc"
             :root "."
             :source-path ""
-            :namespaces-to-document ~(conj fingers "ringfinger")
-            :load-except-list [#".*/test/" #".*project\.clj" #"website/" #"autodoc"]}
-  :sub ~(conj fingers ".")
-  :deps [[org.clojure/clojure ~clj-version]
-         [ringfinger/toolfinger ~version]
+            :namespaces-to-document ~fingers
+            :load-except-list [#"test/" #"project\.clj" #"website/" #"autodoc"]}
+  :sub ~fingers
+  :deps [[ringfinger/toolfinger ~version]
          [ringfinger/secfinger  ~version]
          [ringfinger/mailfinger ~version]
          [ringfinger/basefinger ~version]
