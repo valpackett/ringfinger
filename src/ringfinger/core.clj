@@ -6,8 +6,6 @@
         [clojure.data.json :only [read-json]],
         (ring.middleware params cookies session stacktrace flash file),
         ring.middleware.session.memory,
-        ringfinger.auth,
-        basefinger.inmem,
         secfinger)
   (:require [clojure.java.io :as io]))
 
@@ -89,10 +87,10 @@
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
-  params, session, flash, auth, head, jsonp, length, method-override and some security middleware
+  params, session, flash, head, jsonp, length, method-override and some security middleware
   (+ stacktrace and file in development env)
   Accepted options:
-   :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
+   :middleware -- a collection of additional middleware you want
    :session-store -- SessionStore for session middleware
    :static-dir -- directory with static files for serving them in development
    :callback-param -- parameter for JSONP callbacks, default is 'callback'
@@ -101,11 +99,11 @@
   [options & routes]
   (let [allroutes (concat (filter identity (flatten routes)) (list not-found-route))
         rmf (if (= (:memoize-routing options true) true) (memoize route-matches) route-matches)
-        h (-> (fn [req]
-                (let [route (first (filter #(rmf (:route %) req) allroutes))]
-                  (binding [*request* req]
-                    ((:handler route) req (rmf (:route route) req)))))
-              (wrap-auth {:db (:auth-db options inmem) :coll (:auth-coll options :ringfinger_auth)})
+        h (-> (apply comp (conj (:middleware options [])
+                (fn [req]
+                  (let [route (first (filter #(rmf (:route %) req) allroutes))]
+                    (binding [*request* req]
+                      ((:handler route) req (rmf (:route route) req)))))))
               wrap-flash)
         h (if (:csrf-free options) h (wrap-csrf h))
         h (-> h

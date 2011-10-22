@@ -3,7 +3,7 @@
   with ringfinger.resource.
   They're defined as functions even when they need no
   customization just for consistency."
-  (:use ringfinger.db, ringfinger.db.inmem,
+  (:use (basefinger core inmem),
         toolfinger,
         (clj-time format coerce),
         faker.lorem)

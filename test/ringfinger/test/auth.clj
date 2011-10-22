@@ -1,6 +1,6 @@
 (ns ringfinger.test.auth
   (:use midje.sweet, ring.mock.request
-        ringfinger.db.inmem, (ringfinger core auth auth-routes))
+        basefinger.inmem, (ringfinger core auth auth-routes))
   (:import org.apache.commons.codec.digest.DigestUtils))
 
 (with-salt "salt"
