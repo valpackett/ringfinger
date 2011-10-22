@@ -1,5 +1,5 @@
-(ns ringfinger.session
-  "This is used automatically when you provide a :session-db option to ringfinger.core/(def)app."
+(ns basefinger.session
+  "Allows you to store sessions in a database."
   (:use ring.middleware.session.store,
         basefinger.core)
   (:import java.util.UUID))

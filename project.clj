@@ -17,7 +17,6 @@
             :load-except-list [#".*/test/" #".*project\.clj" #"website/" #"autodoc"]}
   :sub ~(conj fingers ".")
   :deps [[org.clojure/clojure ~clj-version]
-         ; Sub
          [ringfinger/toolfinger ~version]
          [ringfinger/secfinger  ~version]
          [ringfinger/mailfinger ~version]
@@ -25,28 +24,8 @@
          [ringfinger/corefinger ~version]
          [ringfinger/fastfinger ~version]
          [ringfinger/restfinger ~version]
-         [ringfinger/formfinger ~version]
-         ; Output
-         [org.clojure/data.json "0.1.1"]
-         [clojure-csv "1.3.2"]
-         [clj-yaml "0.3.0"]
-         [enlive "1.0.0"]
-         [hiccup "0.3.6"]
-         ; Web
-         [ring/ring-core ~ring-version]
-         [ring/ring-devel ~ring-version]
-         [clout "0.4.1"]
-         [valip "0.2.0"]
-         ; Misc
-         [com.ibm.icu/icu4j "4.8.1.1"]
-         [lamina "0.4.0-beta2-SNAPSHOT"]
-         [clj-time "0.3.0"]
-         [inflections "0.5.2"]
-         [faker "0.2.2"]
-         [commons-codec "1.5"]
-         [commons-email "1.1"]]
-  :dev-dependencies [[ring-mock "0.1.1"]
-                     [ring-serve "0.1.1"]
+         [ringfinger/formfinger ~version]]
+  :dev-dependencies [[ring-serve "0.1.1"]
                      [midje ~midje-version]
                      [lein-midje "1.0.3"]
                      [org.clojars.weavejester/autodoc "0.9.0"]])
