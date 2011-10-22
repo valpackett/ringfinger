@@ -1,4 +1,4 @@
-(ns ringfinger.auth
+(ns authfinger.core
   "Low-level authorization API (creating users, getting users after checking) and the auth middleware."
   (:use (basefinger core inmem),
         toolfinger,

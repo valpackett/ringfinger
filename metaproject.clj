@@ -10,4 +10,4 @@
 
 (def fingers ["toolfinger" "secfinger" "mailfinger"
               "basefinger" "corefinger" "fastfinger"
-              "restfinger"])
+              "restfinger" "formfinger"])

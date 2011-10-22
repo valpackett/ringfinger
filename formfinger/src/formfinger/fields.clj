@@ -1,4 +1,4 @@
-(ns restfinger.fields
+(ns formfinger.fields
   "All functions in this module make fields for you to use
   with restfinger.core.
   They're defined as functions even when they need no

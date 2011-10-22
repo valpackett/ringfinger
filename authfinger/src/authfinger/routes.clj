@@ -1,8 +1,9 @@
-(ns ringfinger.auth-routes
+(ns authfinger.routes
   "Authorization routes -- magical registration (if you really want, even with
   e-mail confirmation) and logging in/out."
-  (:use (ringfinger auth fields field-helpers default-views),
+  (:use (formfinger fields field-helpers),
         (basefinger core inmem),
+        (authfinger auth default-views),
         corefinger.core,
         toolfinger,
         valip.core)

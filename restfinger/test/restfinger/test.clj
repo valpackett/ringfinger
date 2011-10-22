@@ -1,6 +1,7 @@
 (ns restfinger.test
-  (:use (restfinger core fields),
-        (basefinger core inmem),
+  (:use (basefinger core inmem),
+        formfinger.fields,
+        restfinger.core,
         ; ringfinger.auth,
         corefinger.core,
         midje.sweet, ring.mock.request)

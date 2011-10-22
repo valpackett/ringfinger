@@ -2,7 +2,8 @@
   "This module saves your time by writing all the Create/Read/Update/Delete
   boilerplate for you. Flash messages, validation, inserting example data,
   customization via hooks, actions and channels -- you name it, this module does it."
-  (:use (restfinger output field-helpers default-views),
+  (:use (restfinger output default-views),
+        formfinger.field-helpers,
         corefinger.core,
         basefinger.core,
         toolfinger,
@@ -26,7 +27,7 @@
   /url-prefix+collname/pk.format) for RESTful Create/Read/Update/Delete
   of entries in collname.
   Also, while in development environment, you can create example data using faker,
-  like this: /url-prefix+collname.format/_insert_fakes?count=100 (the default count is 5).
+  like this: /url-prefix+collname.format/_create_fakes?count=100 (the default count is 5).
   Accepted options:
    :db -- database (required!)
    :pk -- primary key (required!)
