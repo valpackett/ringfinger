@@ -5,7 +5,9 @@
         [clojure.string :only [lower-case]],
         [clojure.data.json :only [read-json]],
         (ring.middleware params cookies session stacktrace flash file),
-        (ringfinger session auth), basefinger.inmem,
+        ring.middleware.session.memory,
+        ringfinger.auth,
+        basefinger.inmem,
         secfinger)
   (:require [clojure.java.io :as io]))
 
@@ -91,8 +93,7 @@
   (+ stacktrace and file in development env)
   Accepted options:
    :auth-db and :auth-coll -- database and collection for auth middleware, must be the same as the ones you use with auth-routes, the default collection is :ringfinger_auth
-   :session-db -- database for session middleware OR
-   :session-store -- SessionStore for session middleware, eg. for using the Redis store
+   :session-store -- SessionStore for session middleware
    :static-dir -- directory with static files for serving them in development
    :callback-param -- parameter for JSONP callbacks, default is 'callback'
    :csrf-free -- turn off CSRF protection (if you know what you're doing!)
@@ -108,7 +109,7 @@
               wrap-flash)
         h (if (:csrf-free options) h (wrap-csrf h))
         h (-> h
-              (wrap-session {:store (:session-store options (db-store (:session-db options inmem)))
+              (wrap-session {:store (:session-store options (memory-store))
                              :cookie-attrs {:httponly true}
                              :cookie-name "s"})
               (wrap-jsonp (:callback-param options "callback"))
