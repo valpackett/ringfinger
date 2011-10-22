@@ -1,8 +1,8 @@
-(ns ringfinger.resource
+(ns restfinger.core
   "This module saves your time by writing all the Create/Read/Update/Delete
   boilerplate for you. Flash messages, validation, inserting example data,
   customization via hooks, actions and channels -- you name it, this module does it."
-  (:use (ringfinger output field-helpers default-views),
+  (:use (restfinger output field-helpers default-views),
         corefinger.core,
         basefinger.core,
         toolfinger,

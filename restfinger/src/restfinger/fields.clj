@@ -1,6 +1,6 @@
-(ns ringfinger.fields
+(ns restfinger.fields
   "All functions in this module make fields for you to use
-  with ringfinger.resource.
+  with restfinger.core.
   They're defined as functions even when they need no
   customization just for consistency."
   (:use (basefinger core inmem),

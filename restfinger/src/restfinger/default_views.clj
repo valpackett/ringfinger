@@ -1,5 +1,5 @@
-(ns #^{:skip-wiki true} ringfinger.default-views
-  (:use ringfinger.field-helpers,
+(ns #^{:skip-wiki true} restfinger.default-views
+  (:use restfinger.field-helpers,
         corefinger.core,
         toolfinger,
         inflections.core,

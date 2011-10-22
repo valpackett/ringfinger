@@ -9,4 +9,5 @@
 (def midje-version "1.2.0")
 
 (def fingers ["toolfinger" "secfinger" "mailfinger"
-              "basefinger" "corefinger" "fastfinger"])
+              "basefinger" "corefinger" "fastfinger"
+              "restfinger"])

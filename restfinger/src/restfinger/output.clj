@@ -1,4 +1,4 @@
-(ns ringfinger.output
+(ns restfinger.output
   "The output system used by ringfinger.resource."
   (:use toolfinger,
         [clojure.data.json :only [json-str]],

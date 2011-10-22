@@ -1,11 +1,12 @@
-(ns ringfinger.test.resource
-  (:use (ringfinger auth resource fields),
+(ns restfinger.test
+  (:use (restfinger core fields),
         (basefinger core inmem),
+        ; ringfinger.auth,
         corefinger.core,
         midje.sweet, ring.mock.request)
   (:import org.apache.commons.codec.binary.Base64))
-
-(make-user inmem :ringfinger_auth {:username "test"} "demo")
+; TODO: auth fix
+; (make-user inmem :ringfinger_auth {:username "test"} "demo")
 
 (defresource todos
   {:db inmem
