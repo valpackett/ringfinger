@@ -3,7 +3,7 @@
   e-mail confirmation) and logging in/out."
   (:use (formfinger fields field-helpers),
         (basefinger core inmem),
-        (authfinger auth default-views),
+        (authfinger core default-views),
         corefinger.core,
         toolfinger,
         valip.core)
