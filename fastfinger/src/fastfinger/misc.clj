@@ -1,4 +1,4 @@
-(ns ringfinger.timesavers.misc
+(ns fastfinger.misc
   "Useful common functions for web apps"
   (:use corefinger.core,
         toolfinger,

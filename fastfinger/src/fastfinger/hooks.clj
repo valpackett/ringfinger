@@ -1,4 +1,4 @@
-(ns ringfinger.timesavers.hooks
+(ns fastfinger.hooks
   "Ready-to-use hooks for use with ringfinger.resource. Save even more time!"
   (:use inflections.core,
         faker.lorem,

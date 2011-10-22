@@ -1,5 +1,5 @@
-(ns ringfinger.test.timesavers
-  (:use (ringfinger.timesavers hooks misc), midje.sweet))
+(ns fastfinger.test
+  (:use (fastfinger hooks misc), midje.sweet))
 
 (let [orig "My F. Title, можно и по-русски"]
   (fact ((make-slug-for :t) {:t orig}) => {:t orig :t_slug "my-f-title-mo-no-i-po-russki"}))
@@ -14,4 +14,4 @@
 
 (facts "about gravatar"
   (gravatar "floatboth@me.com" 200) => "http://www.gravatar.com/avatar/03c738a97e4f7e8dd46a846224fb275b?s=200"
-  (gravatar "floatboth@me.com") => "http://www.gravatar.com/avatar/03c738a97e4f7e8dd46a846224fb275b")
+  (gravatar "floatboth@me.com")     => "http://www.gravatar.com/avatar/03c738a97e4f7e8dd46a846224fb275b")

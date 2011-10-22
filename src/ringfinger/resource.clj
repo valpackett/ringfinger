@@ -11,8 +11,6 @@
 
 (def regexps {:format #"\.?[a-zA-Z]*"})
 
-(defmacro dotformat [matches] `(if-let [fmt# (:format ~matches)] fmt#))
-
 (defmacro respond [req matches status headers data custom default]
   `(render
      (getoutput

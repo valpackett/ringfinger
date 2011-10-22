@@ -84,6 +84,8 @@
 
 (defmacro sorted-zipmap [ks vs] `(zipmap (reverse ~ks) (reverse ~vs))) ; this should be built into zipmap, dammit
 
+(defmacro dotformat [matches] `(if-let [fmt# (:format ~matches)] fmt#))
+
 (defn sort-maps
   "Sorts a sequence of maps using a map of sort args that maps keys to -1 for desc and 1 for asc order"
   [m sargs]

@@ -23,6 +23,7 @@
          [ringfinger/mailfinger ~version]
          [ringfinger/basefinger ~version]
          [ringfinger/corefinger ~version]
+         [ringfinger/fastfinger ~version]
          ; Output
          [org.clojure/data.json "0.1.1"]
          [clojure-csv "1.3.2"]
