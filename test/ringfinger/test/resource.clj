@@ -1,6 +1,7 @@
 (ns ringfinger.test.resource
-  (:use (ringfinger auth core resource fields),
+  (:use (ringfinger auth resource fields),
         (basefinger core inmem),
+        corefinger.core,
         midje.sweet, ring.mock.request)
   (:import org.apache.commons.codec.binary.Base64))
 

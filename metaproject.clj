@@ -8,4 +8,4 @@
 (def ring-version  "1.0.0-beta2")
 (def midje-version "1.2.0")
 
-(def fingers ["toolfinger" "secfinger" "mailfinger" "basefinger"])
+(def fingers ["toolfinger" "secfinger" "mailfinger" "basefinger" "corefinger"])

@@ -1,4 +1,4 @@
-(ns ringfinger.core
+(ns corefinger.core
   "The magic starts here. The routing system, some middleware and
    the if-env macro are there."
   (:use clout.core,

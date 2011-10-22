@@ -1,5 +1,6 @@
 (ns #^{:skip-wiki true} ringfinger.default-views
-  (:use (ringfinger field-helpers core),
+  (:use ringfinger.field-helpers,
+        corefinger.core,
         toolfinger,
         inflections.core,
         (hiccup core page-helpers)))

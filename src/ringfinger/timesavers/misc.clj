@@ -1,6 +1,6 @@
 (ns ringfinger.timesavers.misc
   "Useful common functions for web apps"
-  (:use ringfinger.core,
+  (:use corefinger.core,
         toolfinger,
         [clojure.string :only [trim, lower-case]])
   (:import org.apache.commons.codec.digest.DigestUtils))

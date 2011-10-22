@@ -1,5 +1,5 @@
-(ns ringfinger.test.core
-  (:use ringfinger.core, midje.sweet, ring.mock.request))
+(ns corefinger.test
+  (:use corefinger.core, midje.sweet, ring.mock.request))
 
 (defapp testapp {:static-dir "src"}
   (route "/method"

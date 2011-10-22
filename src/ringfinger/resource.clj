@@ -2,7 +2,8 @@
   "This module saves your time by writing all the Create/Read/Update/Delete
   boilerplate for you. Flash messages, validation, inserting example data,
   customization via hooks, actions and channels -- you name it, this module does it."
-  (:use (ringfinger core output field-helpers default-views),
+  (:use (ringfinger output field-helpers default-views),
+        corefinger.core,
         basefinger.core,
         toolfinger,
         valip.core,
