@@ -90,7 +90,7 @@
   params, session, flash, head, jsonp, length, method-override and some security middleware
   (+ stacktrace and file in development env)
   Accepted options:
-   :middleware -- a collection of additional middleware you want
+   :middleware -- your custom additional middleware (use -> to add many)
    :session-store -- SessionStore for session middleware
    :static-dir -- directory with static files for serving them in development
    :callback-param -- parameter for JSONP callbacks, default is 'callback'
@@ -99,12 +99,12 @@
   [options & routes]
   (let [allroutes (concat (filter identity (flatten routes)) (list not-found-route))
         rmf (if (= (:memoize-routing options true) true) (memoize route-matches) route-matches)
-        h (-> (apply comp (conj (:middleware options [])
-                (fn [req]
-                  (let [route (first (filter #(rmf (:route %) req) allroutes))]
-                    (binding [*request* req]
-                      ((:handler route) req (rmf (:route route) req)))))))
+        h (-> (fn [req]
+                (let [route (first (filter #(rmf (:route %) req) allroutes))]
+                  (binding [*request* req]
+                    ((:handler route) req (rmf (:route route) req)))))
               wrap-flash)
+        f (if-let [mw (:middleware options)] (mw h) h)
         h (if (:csrf-free options) h (wrap-csrf h))
         h (-> h
               (wrap-session {:store (:session-store options (memory-store))

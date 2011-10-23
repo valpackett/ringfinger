@@ -23,8 +23,10 @@
          [ringfinger/corefinger ~version]
          [ringfinger/fastfinger ~version]
          [ringfinger/restfinger ~version]
+         [ringfinger/authfinger ~version]
          [ringfinger/formfinger ~version]]
   :dev-dependencies [[ring-serve "0.1.1"]
                      [midje ~midje-version]
                      [lein-midje "1.0.3"]
+                     [congomongo "0.1.7-SNAPSHOT"]
                      [org.clojars.weavejester/autodoc "0.9.0"]])

@@ -12,7 +12,7 @@ Check out the [website](http://ringfinger.floatboth.com) for a live demo.
   (:use corefinger.core,
         restfinger.core,
         formfinger.fields,
-        authfinger.routes,
+        (authfinger core routes),
         (basefinger core mongodb session),
         fastfinger.hooks,
         ring.util.serve))
@@ -30,7 +30,7 @@ Check out the [website](http://ringfinger.floatboth.com) for a live demo.
 (defapp myapp
         {:static-dir "custom_static_name"
          :session-store (db-store mymongo)
-         :auth-db mymongo}
+         :middleware #(-> % (wrap-auth {:db mymongo}))}
         contacts
         (auth-routes {:db mymongo}))
 
