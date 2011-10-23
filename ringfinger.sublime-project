@@ -3,9 +3,13 @@
     {
       "path": ".",
       "folder_exclude_patterns": ["autodoc", "classes", "lib"],
-      "file_exclude_patterns": [".lein-failures", "*.jar", "*pom.xml"]
+      "file_exclude_patterns": [".lein-failures", "*.jar", "pom.xml", "ringfinger.sublime-workspace"]
     }
   ],
+  "settings": {
+    "tab_size": 4,
+    "detect_indentation": false
+  },
   "build_systems": [
     {
       "name": "Test",

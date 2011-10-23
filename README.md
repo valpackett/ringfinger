@@ -9,8 +9,12 @@ Check out the [website](http://ringfinger.floatboth.com) for a live demo.
 
 ```clojure
 (ns superapp.core
-  (:use (ringfinger core resource fields auth-routes),
-        ringfinger.db.mongodb, ringfinger.timesavers.hooks,
+  (:use corefinger.core,
+        restfinger.core,
+        formfinger.fields,
+        authfinger.routes,
+        (basefinger core mongodb session),
+        fastfinger.hooks,
         ring.util.serve))
 
 (def mymongo (mongodb "mydb"))
@@ -25,7 +29,7 @@ Check out the [website](http://ringfinger.floatboth.com) for a live demo.
 
 (defapp myapp
         {:static-dir "custom_static_name"
-         :session-db mymongo
+         :session-store (db-store mymongo)
          :auth-db mymongo}
         contacts
         (auth-routes {:db mymongo}))
