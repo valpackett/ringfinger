@@ -65,7 +65,7 @@
         req-fields (required-fields-of fields)
         blank-entry (zipmap req-fields (repeat ""))
         default-entry (defaults-from-fields fields)
-        whitelist (let [w (concat (:whitelist options (list)) (keys fieldhtml))]
+        whitelist (let [w (concat (:whitelist options (filter identity (list owner-field))) (keys fieldhtml))]
         ; cut off :csrftoken, don't allow users to store everything
                     (concat w (map #(keyword (str (name %) "_slug")) w)))
         actions (let [o (:actions options [])]
@@ -112,17 +112,18 @@
                                  {"html" html-not-found}
                                  "html"))
         if-allowed  (if owner-field
-                      ; [req entry yep]
-                       #(if (= (get-in %1 [:user :username]) (get %2 owner-field))
-                          (%3)
-                          (if (from-browser? %1)
+                      (fn [req entry yep]
+                        (if (and (= (get-in req [:user :username]) (get entry owner-field))
+                                    (not (= nil (get entry owner-field))))
+                          (yep)
+                          (if (from-browser? req)
                             {:status  302
                              :headers {"Location" urlbase}
-                             :flash   (call-or-ret flash-forbidden %2)
+                             :flash   (call-or-ret flash-forbidden entry)
                              :body    ""}
                             {:status  403
                              :headers {"Content-Type" "text/plain"}
-                             :body    "Forbidden"}))
+                             :body    "Forbidden"})))
                        #(%3))
         process-new  (if owner-field
                        ; [req form]

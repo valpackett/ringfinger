@@ -104,7 +104,7 @@
                   (binding [*request* req]
                     ((:handler route) req (rmf (:route route) req)))))
               wrap-flash)
-        f (if-let [mw (:middleware options)] (mw h) h)
+        h (if-let [mw (:middleware options)] (mw h) h)
         h (if (:csrf-free options) h (wrap-csrf h))
         h (-> h
               (wrap-session {:store (:session-store options (memory-store))

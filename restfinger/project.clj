@@ -20,7 +20,8 @@
          [faker "0.2.2"]
          [clojure-csv "1.3.2"]
          [clj-yaml "0.3.0"]]
-  :dev-dependencies [[midje ~midje-version]
+  :dev-dependencies [[ringfinger/authfinger ~version]
+                     [midje ~midje-version]
                      [lein-midje ~lein-midje-version]
                      [commons-codec "1.5"]
                      [ring-mock "0.1.1"]])

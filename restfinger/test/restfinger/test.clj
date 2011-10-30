@@ -2,23 +2,23 @@
   (:use (basefinger core inmem),
         formfinger.fields,
         restfinger.core,
-        ; ringfinger.auth,
+        authfinger.core,
         corefinger.core,
         midje.sweet, ring.mock.request)
   (:import org.apache.commons.codec.binary.Base64))
-; TODO: auth fix
-; (make-user inmem :ringfinger_auth {:username "test"} "demo")
+
+(make-user inmem :ringfinger_auth {:username "test"} "demo")
 
 (defresource todos
   {:db inmem
    :pk :body
-   :whitelist '(:state)}
+   :whitelist [:state]}
   [:body (required) "should be present"])
 
 (defresource hooked
   {:db inmem
    :pk :name
-   :whitelist '(:ondata :onpost :onput)
+   :whitelist [:ondata :onpost :onput]
    :hooks {:data    #(assoc % :ondata "yo")
            :create  #(assoc % :onpost "posted")
            :update  #(assoc % :onput  "put")}}
@@ -37,8 +37,10 @@
   [:name (required) "hey where's the name?"])
 
 (defapp testapp
-  {:static-dir "src"}
-  todos, hooked, owned, forbidden)
+  {:static-dir "src"
+   :middleware wrap-auth
+   :csrf-free true}
+  todos hooked owned forbidden)
 
 (defn authd [req]
   (header req "Authorization" (str "Basic " (Base64/encodeBase64String (. "test:demo" getBytes)))))
