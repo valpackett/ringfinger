@@ -38,8 +38,7 @@
 
 (defapp testapp
   {:static-dir "src"
-   :middleware wrap-auth
-   :csrf-free true}
+   :middleware wrap-auth}
   todos hooked owned forbidden)
 
 (defn authd [req]

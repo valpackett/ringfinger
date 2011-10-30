@@ -94,7 +94,6 @@
    :session-store -- SessionStore for session middleware
    :static-dir -- directory with static files for serving them in development
    :callback-param -- parameter for JSONP callbacks, default is 'callback'
-   :csrf-free -- turn off CSRF protection (if you know what you're doing!)
    :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default"
   [options & routes]
   (let [allroutes (concat (filter identity (flatten routes)) (list not-found-route))
@@ -105,7 +104,6 @@
                     ((:handler route) req (rmf (:route route) req)))))
               wrap-flash)
         h (if-let [mw (:middleware options)] (mw h) h)
-        h (if (:csrf-free options) h (wrap-csrf h))
         h (-> h
               (wrap-session {:store (:session-store options (memory-store))
                              :cookie-attrs {:httponly true}
