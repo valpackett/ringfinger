@@ -9,4 +9,5 @@
   :deps [[org.clojure/clojure ~clj-version]
          [ringfinger/toolfinger ~version]]
   :dev-dependencies [[midje ~midje-version]
-                     [lein-midje "1.0.3"]])
+                     [lein-midje ~lein-midje-version]
+                     [congomongo "0.1.7"]])

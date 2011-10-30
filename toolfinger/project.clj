@@ -11,4 +11,4 @@
          [clj-time "0.3.0"]
          [inflections "0.5.2"]]
   :dev-dependencies [[midje ~midje-version]
-                     [lein-midje "1.0.3"]])
+                     [lein-midje ~lein-midje-version]])

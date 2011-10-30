@@ -10,5 +10,5 @@
          [ringfinger/toolfinger ~version]
          [commons-codec "1.5"]]
   :dev-dependencies [[midje ~midje-version]
-                     [lein-midje "1.0.3"]
+                     [lein-midje ~lein-midje-version]
                      [ring-mock "0.1.1"]])

@@ -16,5 +16,5 @@
          [valip "0.2.0"]
          [hiccup "0.3.6"]]
   :dev-dependencies [[midje ~midje-version]
-                     [lein-midje "1.0.3"]
+                     [lein-midje ~lein-midje-version]
                      [ring-mock "0.1.1"]])

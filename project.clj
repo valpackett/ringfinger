@@ -27,6 +27,6 @@
          [ringfinger/formfinger ~version]]
   :dev-dependencies [[ring-serve "0.1.1"]
                      [midje ~midje-version]
-                     [lein-midje "1.0.3"]
-                     [congomongo "0.1.7-SNAPSHOT"]
+                     [lein-midje ~lein-midje-version]
+                     [congomongo "0.1.7"]
                      [org.clojars.weavejester/autodoc "0.9.0"]])

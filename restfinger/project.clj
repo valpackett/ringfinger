@@ -21,6 +21,6 @@
          [clojure-csv "1.3.2"]
          [clj-yaml "0.3.0"]]
   :dev-dependencies [[midje ~midje-version]
-                     [lein-midje "1.0.3"]
+                     [lein-midje ~lein-midje-version]
                      [commons-codec "1.5"]
                      [ring-mock "0.1.1"]])

@@ -15,4 +15,4 @@
          [faker "0.2.2"]
          [com.ibm.icu/icu4j "4.8.1.1"]]
   :dev-dependencies [[midje ~midje-version]
-                     [lein-midje "1.0.3"]])
+                     [lein-midje ~lein-midje-version]])

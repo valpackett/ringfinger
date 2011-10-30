@@ -8,7 +8,7 @@
             :distribution :repo}
   :deps [[org.clojure/clojure ~clj-version]
          [org.clojure/data.json "0.1.1"]
-         [clj-http "0.1.3"]
+         [clj-http "0.2.2"]
          [commons-email "1.1"]]
   :dev-dependencies [[midje ~midje-version]
-                     [lein-midje "1.0.3"]])
+                     [lein-midje ~lein-midje-version]])
