@@ -66,8 +66,8 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - i18n
 - [Swagger](http://swagger.wordnik.com) implementation
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
-- timefinger.subscribers: [Pusher](http://pusher.com/), [Superfeedr](http://superfeedr.com) (after adding atom feeds), webhook
-- timefinger.actions for polls (change -1/0/+1 per user, like reddit), voting (like [votebox](https://www.dropbox.com/votebox))
+- fastfinger.subscribers: [Pusher](http://pusher.com/), [Superfeedr](http://superfeedr.com) (after adding atom feeds), webhook
+- fastfinger.actions for polls (change -1/0/+1 per user, like reddit), voting (like [votebox](https://www.dropbox.com/votebox))
 - FleetDB, CouchDB support
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
 - database and attachment migrations (eg. mongodb + gridfs to simpledb + s3)
