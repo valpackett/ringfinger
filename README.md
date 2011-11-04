@@ -1,14 +1,14 @@
 # ringfinger [![Build Status](https://secure.travis-ci.org/myfreeweb/ringfinger.png)](http://travis-ci.org/)
-Fun, fast, secure web development on top of [Clojure](http://clojure.org)/[Ring](https://github.com/mmcgrana/ring).
-A framework for the age of non-relational databases, content delivery networks, cloud hosting, HTML5 and coffee.
-InstaRESTful, if you like the hipster-speak. Named after a great Nine Inch Nails song.
+Modern web development framework on top of [Clojure](http://clojure.org)/[Ring](https://github.com/mmcgrana/ring).
+Designed for the age of NoSQL, HTML5, REST, JSON, VPS, (sadly) CSRF, XSS and other acronyms.
+Modular. Simple. Fast. Secure. Named after a great Nine Inch Nails song.
 
 Check out the [website](http://ringfinger.floatboth.com) for a live demo.
 
 ## Get excited
 
 ```clojure
-(ns superapp.core
+(ns contactly20.core
   (:use corefinger.core,
         restfinger.core,
         formfinger.fields,
@@ -23,8 +23,8 @@ Check out the [website](http://ringfinger.floatboth.com) for a live demo.
   {:db mymongo
    :pk :name_slug
    :hooks {:data (make-slug-for :name)}}
-  [:name  (required) "sorry, anonymous"]
-  [:bday  (date-field) "invalid date"]
+  [:name  (required)    "sorry, anonymous"]
+  [:bday  (date-field)  "invalid date"]
   [:email (email-field) "invalid email"])
 
 (defapp myapp
@@ -66,8 +66,8 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - i18n
 - [Swagger](http://swagger.wordnik.com) implementation
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
-- timesavers.subscribers: [Pusher](http://pusher.com/), [Superfeedr](http://superfeedr.com) (after adding atom feeds), webhook
-- timesavers.actions for polls (change -1/0/+1 per user, like reddit), voting (like [votebox](https://www.dropbox.com/votebox))
+- timefinger.subscribers: [Pusher](http://pusher.com/), [Superfeedr](http://superfeedr.com) (after adding atom feeds), webhook
+- timefinger.actions for polls (change -1/0/+1 per user, like reddit), voting (like [votebox](https://www.dropbox.com/votebox))
 - FleetDB, CouchDB support
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
 - database and attachment migrations (eg. mongodb + gridfs to simpledb + s3)
