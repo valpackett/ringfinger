@@ -48,50 +48,49 @@
                 enqueue long-running jobs, index changes with a search engine, etc.
    :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])
                on resource entries, called by visiting /url-prefix+collname/pk?_action=action"
-  [collname options & fields]
-  ; biggest let EVAR?
-  (let [db (:db options)
-        pk (:pk options)
-        owner-field (:owner-field options)
-        default-dboptions (:default-dboptions options {})
-        coll (keyword collname)
-        urlbase (str (:url-prefix options "/") collname)
+  [collname {:keys [db pk owner-field default-dboptions url-prefix whitelist
+                    actions views forbidden-methods flash channels hooks]
+             :or {db nil pk nil owner-field nil
+                  default-dboptions {} url-prefix "/"
+                  whitelist nil actions []
+                  views {:index default-index
+                         :get default-get
+                         :not-found default-not-found}
+                  forbidden-methods [] flash nil
+                  channels {} hooks {}
+                  }} & fields]
+  (let [coll (keyword collname)
+        urlbase (str url-prefix collname)
         fieldhtml (html-from-fields fields)
         valds (validations-from-fields fields)
         fakers (fakers-from-fields fields)
-        fields-data-pre-hook  (data-pre-hook-from-fields  fields)
-        fields-data-post-hook (data-post-hook-from-fields fields)
-        fields-get-hook (get-hook-from-fields fields)
         req-fields (required-fields-of fields)
         blank-entry (zipmap req-fields (repeat ""))
         default-entry (defaults-from-fields fields)
-        whitelist (let [w (concat (:whitelist options (filter identity (list owner-field))) (keys fieldhtml))]
+        whitelist (let [w (concat (or whitelist (filter identity (list owner-field))) (keys fieldhtml))]
         ; cut off :csrftoken, don't allow users to store everything
                     (concat w (map #(keyword (str (name %) "_slug")) w)))
-        actions (let [o (:actions options [])]
-                  (zipmap (map name (keys o)) (vals o)))
+        actions (zipmap (map name (keys actions)) (vals actions))
         default-data (pack-to-map coll db collname pk fieldhtml actions urlbase)
-        html-index (html-output (get-in options [:index :views] default-index) default-data)
-        html-get   (html-output (get-in options [:get   :views] default-get) default-data)
-        html-not-found (html-output (get-in options [:not-found :views] default-not-found) default-data)
-        flash-created (:created (:flash options) #(str "Created: " (get % pk)))
-        flash-updated (:updated (:flash options) #(str "Saved: "   (get % pk)))
-        flash-deleted (:deleted (:flash options) #(str "Deleted: " (get % pk)))
-        flash-forbidden (:forbidden (:flash options) "Forbidden.")
-        forbidden (:forbidden-methods options [])
+        html-index (html-output (:index views) default-data)
+        html-get   (html-output (:get   views) default-data)
+        html-not-found (html-output (:not-found views) default-data)
         s-channels [:create :update :delete]
         channels (zipmap s-channels
-                   (map #(let [c (get-in options [:channels %])]
+                   (map #(let [c (get channels %)]
                            (if c (fn [msg] (enqueue c msg)) (fn [msg]))) s-channels))
+        flash (or flash {:created #(str "Created: " (get % pk))
+                         :updated #(str "Saved: "   (get % pk))
+                         :deleted #(str "Deleted: " (get % pk))
+                         :forbidden "Forbidden."})
+        hooks (merge (zipmap [:data :create :update :read] (repeat identity)) hooks)
         ; --- functions ---
         clear-form #(select-keys % whitelist)
-        user-data-hook (get-in options [:hooks :data]    identity)
-        user-post-hook (get-in options [:hooks :create]  identity)
-        user-put-hook  (get-in options [:hooks :update]  identity)
-        user-get-hook  (get-in options [:hooks :read]    identity)
-        post-hook #(-> % clear-form fields-data-pre-hook user-data-hook user-post-hook fields-data-post-hook)
-        put-hook  #(-> % clear-form fields-data-pre-hook user-data-hook user-put-hook  fields-data-post-hook)
-        get-hook  #(-> % user-get-hook fields-get-hook)
+        fields-data-pre-hook  (data-pre-hook-from-fields  fields)
+        fields-data-post-hook (data-post-hook-from-fields fields)
+        post-hook (comp clear-form fields-data-pre-hook (:data hooks) (:create hooks) fields-data-post-hook)
+        put-hook  (comp clear-form fields-data-pre-hook (:data hooks) (:update hooks) fields-data-post-hook)
+        get-hook  (comp (:read hooks) (get-hook-from-fields fields))
         i-validate (fn [req data yep nope]
                      (let [ks (filter #(or (haz? req-fields %) (not (or (= (get data %) "") (nil? (get data %))))) (keys data))
                            result (apply validate (select-keys data ks)
@@ -119,7 +118,7 @@
                           (if (from-browser? req)
                             {:status  302
                              :headers {"Location" urlbase}
-                             :flash   (call-or-ret flash-forbidden entry)
+                             :flash   (call-or-ret (:forbidden flash) entry)
                              :body    ""}
                             {:status  403
                              :headers {"Content-Type" "text/plain"}
@@ -130,7 +129,7 @@
                        ; adds creator's username if there's an owner-field
                        #(assoc (post-hook %2) owner-field (get-in %1 [:user :username]))
                        #(post-hook %2))
-        if-not-forbidden #(if (not (haz? forbidden %1)) %2 method-na-handler)]
+        if-not-forbidden #(if (not (haz? forbidden-methods %1)) %2 method-na-handler)]
      (list
        (route (str urlbase ":format")
          {:get (if-not-forbidden :index
@@ -147,7 +146,7 @@
                       (fn []
                         ((:create channels) entry)
                         (create db coll entry)
-                        (i-redirect req matches entry flash-created (if (from-browser? req) 302 201)))
+                        (i-redirect req matches entry (:created flash) (if (from-browser? req) 302 201)))
                       (fn [errors]
                         (respond req matches 400 {}
                                  {:data (map get-hook (get-many db coll (i-get-dboptions req)))
@@ -189,7 +188,7 @@
                          (fn []
                            ((:update channels) merged)
                            (update db coll orig diff)
-                           (i-redirect req matches merged flash-updated 302))
+                           (i-redirect req matches merged (:updated flash) 302))
                          (fn [errors]
                            (respond req matches 400 {}
                                     {:data (merge orig form) ; with form! so users can correct errors
@@ -205,7 +204,7 @@
                           (delete db coll entry)
                           {:status  302
                            :headers {"Location" urlbase}
-                           :flash   (call-or-ret flash-deleted entry)
+                           :flash   (call-or-ret (:deleted flash) entry)
                            :body    nil}))
                       (i-respond-404 req matches))))} regexps))))
 
