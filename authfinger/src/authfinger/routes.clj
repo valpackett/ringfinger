@@ -141,7 +141,9 @@
                          :body    ""}))
                     lwrap-if-not-user)}))
       (route (str url-base "signup")
-        {:get  (-> (fn [req matches] {:status 200 :aview :signup}) lwrap-render-auth-view)
+        {:get  (-> (fn [req matches] {:status 200 :aview :signup})
+                   lwrap-render-auth-view
+                   lwrap-if-not-user)
          :post (-> (fn [req matches form fval]
                      (if (nil? fval)
                        (if confirm
