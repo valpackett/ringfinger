@@ -46,10 +46,15 @@
    :session-store -- SessionStore for session middleware
    :static-dir -- directory with static files for serving them in development
    :callback-param -- parameter for JSONP callbacks, default is 'callback'
-   :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, enabled by default"
-  [options & routes]
+   :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, disabled by default"
+  [{:keys [middleware session-store static-dir callback-param memoize-routing]
+    :or {middleware nil
+         session-store (memory-store)
+         static-dir "static"
+         callback-param "callback"
+         memoize-routing false}} & routes]
   (let [allroutes (concat (filter identity (flatten routes)) (list not-found-route))
-        rmf (if (= (:memoize-routing options true) true) (memoize route-matches) route-matches)
+        rmf (if (= memoize-routing true) (memoize route-matches) route-matches)
         h (-> (fn [req]
                 (let [route (first (filter #(rmf (:route %) req) allroutes))]
                   (binding [*request* req]
@@ -57,12 +62,12 @@
               wrap-flash)
         ; csrf and auth are added by the user
         ; flash is above to allow accessing the user from flash
-        h (if-let [mw (:middleware options)] (mw h) h)
+        h (if middleware (middleware h) h)
         h (-> h
-              (wrap-session {:store (:session-store options (memory-store))
+              (wrap-session {:store session-store
                              :cookie-attrs {:httponly true}
                              :cookie-name "s"})
-              (wrap-jsonp (:callback-param options "callback"))
+              (wrap-jsonp callback-param)
               wrap-length
               wrap-sec-headers
               wrap-head
@@ -73,7 +78,7 @@
               )]
     (if-env "development"
       (-> h
-          (wrap-file (:static-dir options "static"))
+          (wrap-file static-dir)
           wrap-stacktrace)
       h)))
 
