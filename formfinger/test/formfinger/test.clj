@@ -1,5 +1,5 @@
 (ns formfinger.test
-  (:use formfinger.fields, midje.sweet))
+  (:use formfinger.fields, midje.sweet, clj-time.core))
 
 (facts "about required"
   ((:pred (required)) "s") => true
@@ -52,11 +52,21 @@
 
 (facts "about date-field"
   ((:pred (date-field)) "2011-11-02") => true
-  ((:pred (date-field)) "not-a-date") => false)
+  ((:pred (date-field)) "not-a-date") => false
+  (year ((:pre-hook (date-field)) "2011-11-02")) => 2011
+  ((:view (date-field)) ((:post-hook (date-field)) (date-time 2001 10 02))) => "2001-10-02")
 
 (facts "about time-field"
   ((:pred (time-field)) "10:01")  => true
-  ((:pred (time-field)) "lolwtf") => false)
+  ((:pred (time-field)) "lolwtf") => false
+  (hour ((:pre-hook (time-field)) "14:10")) => 14
+  ((:view (time-field)) ((:post-hook (time-field)) (date-time 2001 10 02 00 42))) => "00:42")
+
+(facts "about date-date-time-field"
+  ((:pred (date-time-field)) "2001-10-02T10:01Z")  => true
+  ((:pred (date-time-field)) "lolwtf") => false
+  (hour ((:pre-hook (date-time-field)) "2010-01-02T14:10Z")) => 14
+  ((:view (date-time-field)) ((:post-hook (date-time-field)) (date-time 2001 10 02 00 42))) => "2001-10-02T00:42Z")
 
 (facts "about number-field"
   ((:pred (number-field)) "1234") => true
