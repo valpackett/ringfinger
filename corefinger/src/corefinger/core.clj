@@ -27,15 +27,25 @@
 (def default-handlers
   (zipmap [:get :put :post :delete :options :trace :connect] (repeat method-na-handler)))
 
+(defn- make-map-handler
+  [handlers]
+  (let [handlers (merge default-handlers handlers)]
+    (fn [req matches] ((get handlers (:request-method req)) req matches))))
+
+(defn nest
+  "Creates an extended Ring handler ([req matches])  from a normal one."
+  [handler] (fn [req matches] (handler req)))
+
 (defn route
-  "Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format and a map of handlers
-  eg. {:get (fn [req matches] {:status 200 :body nil})}
+  "Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format
+  and either a method-to-handler map, eg. {:get (fn [req matches] {:status 200 :body nil})}
+  or a single handler.
   Accepts custom-regexps for finer matching (eg. only numeric ids)"
-  ([url handlers] (route url handlers {}))
-  ([url handlers custom-regexps]
-    (let [handlers (merge default-handlers handlers)]
-      {:route   (route-compile url custom-regexps)
-       :handler (fn [req matches] ((get handlers (:request-method req)) req matches))})))
+  ([url handler] (route url handler {}))
+  ([url handler custom-regexps]
+    {:route   (route-compile url custom-regexps)
+     :handler (if (map? handler) (make-map-handler handler)
+                  handler)}))
 
 (defn app
   "Creates a Ring handler with given options and routes, automatically wrapped with
