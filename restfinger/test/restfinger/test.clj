@@ -71,7 +71,7 @@
   (:body (testapp (header (request :get "/todos/test") "Accept" "application/xml")))
           => "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><state>on</state><body>test</body></response>"
   (:body (testapp (request :get "/hooked/test2.json")))
-          => "{\"onpost\":\"posted\",\"ondata\":\"yo\",\"name\":\"test2\",\"onput\":\"put\"}"
+          => "{\"ondata\":\"yo\",\"onpost\":\"posted\",\"name\":\"test2\",\"onput\":\"put\"}"
   (:body (testapp (request :get "/owned/wassup.json")))
           => "{\"name\":\"wassup\",\"owner\":\"test\"}")
 
