@@ -75,7 +75,7 @@
         h (if middleware (middleware h) h)
         h (-> h
               (wrap-session {:store session-store
-                             :cookie-attrs {:httponly true}
+                             :cookie-attrs {:http-only true}
                              :cookie-name "s"})
               (wrap-jsonp callback-param)
               wrap-length
