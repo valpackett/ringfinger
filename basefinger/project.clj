@@ -7,6 +7,7 @@
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
   :deps [[org.clojure/clojure ~clj-version]
+         [ring/ring-core  ~ring-version]
          [ringfinger/toolfinger ~version]]
   :dev-dependencies [[midje ~midje-version]
                      [lein-midje ~lein-midje-version]
