@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <title>authfinger.core - Ringfinger nil API documentation</title>
+    <link href="static/favicon.png" rel="icon" />
+    <link href="static/favicon.png" rel="shortcut icon" />
+    <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/wiki.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/internal.css" rel="stylesheet" />
+    <style>.menuWrapper{height: 36px;}</style>
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" href="http://www.wikispaces.com/_/2009051601/s/internal_ie.css" type="text/css" />
+    <![endif]-->
+  </head>
+<!--
+This document was auto-generated from the source by the clojure autodoc system.
+To report errors or ask questions about the overall documentation structure, formatting,
+etc., contact Tom Faulhaber (google mail name: tomfaulhaber).
+For errors in the documentation of a particular namespace, contact the author of that
+namespace.
+-->
+  <body>
+    <div id="AllContentContainer">
+      <div id="Header">
+	<a id="Logo" href="index.html"><img alt="Clojure" height="100" width="100" src="static/clojure-icon.gif" /></a>
+	<h1><a title="page header title" id="page-header" href="index.html">Ringfinger API docs</a></h1>
+      </div>
+      <div id="leftcolumn"><div style="text-align: center;"></div>
+<div class="menu">
+  <div class="WikiCustomNav WikiElement wiki">
+    <span class="toc-header"><span id="project-name">Ringfinger</span> <span id="version"></span> API</span><br />
+    <ul>
+      <li><a class="wiki_link" href="index.html">Overview</a></li>
+      <li><a class="wiki_link" href="api-index.html">API Index</a></li>
+    </ul>
+    <div class="NamespaceTOC">
+      <span class="toc-header">Namespaces</span>
+      <ul id="left-sidebar-list">
+        <li><a href="authfinger.core-api.html" class="wiki_link">authfinger.core</a></li><li><a href="authfinger.routes-api.html" class="wiki_link">authfinger.routes</a></li><li><a href="basefinger.core-api.html" class="wiki_link">basefinger.core</a></li><li><a href="basefinger.inmem-api.html" class="wiki_link">basefinger.inmem</a></li><li><a href="basefinger.mongodb-api.html" class="wiki_link">basefinger.mongodb</a></li><li><a href="basefinger.session-api.html" class="wiki_link">basefinger.session</a></li><li><a href="corefinger.core-api.html" class="wiki_link">corefinger.core</a></li><li><a href="corefinger.middleware-api.html" class="wiki_link">corefinger.middleware</a></li><li><a href="fastfinger.actions-api.html" class="wiki_link">fastfinger.actions</a></li><li><a href="fastfinger.hooks-api.html" class="wiki_link">fastfinger.hooks</a></li><li><a href="fastfinger.misc-api.html" class="wiki_link">fastfinger.misc</a></li><li><a href="formfinger.field-helpers-api.html" class="wiki_link">formfinger.field-helpers</a></li><li><a href="formfinger.fields-api.html" class="wiki_link">formfinger.fields</a></li><li><a href="mailfinger.console-api.html" class="wiki_link">mailfinger.console</a></li><li><a href="mailfinger.postmark-api.html" class="wiki_link">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail-api.html" class="wiki_link">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp-api.html" class="wiki_link">mailfinger.smtp</a></li><li><a href="restfinger.core-api.html" class="wiki_link">restfinger.core</a></li><li><a href="restfinger.output-api.html" class="wiki_link">restfinger.output</a></li><li><a href="secfinger-api.html" class="wiki_link">secfinger</a></li><li><a href="toolfinger-api.html" class="wiki_link">toolfinger</a></li>
+      </ul>
+    </div>
+    
+    <a href="http://clojure.org" class="wiki_link">Clojure Home</a>
+  </div>
+</div>
+</div>
+      <div id="rightcolumn">
+	<div id="Content">
+	  <div class="contentBox"><div class="innerContentBox">
+              <div id="content_view" class="wiki wikiPage">
+                <div id="right-sidebar"><div id="toc">
+  <h1 class="nopad">Table of Contents</h1>
+  <div style="margin-left: 1em;" class="toc-section">
+    <a href="#toc0">Overview</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#authfinger.core/get-user">get-user</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#authfinger.core/make-user">make-user</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#authfinger.core/with-salt">with-salt</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#authfinger.core/wrap-auth">wrap-auth</a>
+    </div>
+    <br />
+  </div>
+</div>
+</div>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">authfinger.core</span>
+  - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
+  </h1>
+
+<br />Full namespace name: <span id="long-name">authfinger.core</span>
+<p></p>
+<h2>Overview</h2>
+<pre id="namespace-docstr">Low-level authorization API (creating users, getting users after checking) and the auth middleware.</pre>
+
+
+<br />
+<h2>Public Variables and Functions</h2>
+<div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="authfinger.core/get-user">get-user</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (get-user db coll username password)
+</pre>
+  <pre id="var-docstr">Returns a user from coll in db with given username and password if the password is valid</pre>
+  
+  
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="authfinger.core/make-user">make-user</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (make-user db coll user password)
+</pre>
+  <pre id="var-docstr">Creates a user in coll in db with given fields (:username and whatever you need) and password</pre>
+  
+  
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="authfinger.core/with-salt">with-salt</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (with-salt salt &amp; body)
+</pre>
+  <pre id="var-docstr">Changes the fixed part of the salt used for password hashing.
+Wrap both app call and auth-routes calls (they're usually nested,
+but you're free to (def something (auth-routes {…})), right?).
+And (make|get)-user call if you do them (in tests?)
+Change the salt once to a random value and NEVER change it later
+(or your app's users will seriously hate you)</pre>
+  
+  
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="authfinger.core/wrap-auth">wrap-auth</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (wrap-auth handler)
+       (wrap-auth handler {:keys [db coll], :or {db inmem, coll :ringfinger_auth}})
+</pre>
+  <pre id="var-docstr">Ring middleware that adds :user if there's a user logged in. Supports session/form-based auth and HTTP Basic auth</pre>
+  
+  
+  
+</div>
+
+
+</div>
+              </div>
+            </div>
+          </div>
+	</div>
+	<div id="foot">
+	  <div style="text-align: center;" id="copyright">No copyright info </div>
+	</div>
+      </div>
+      <div id="DesignedBy">Logo &amp; site design by <a title="Visit Tom Hickey's website." href="http://www.tomhickey.com">Tom Hickey</a>.<br />
+      Clojure auto-documentation system by Tom Faulhaber.</div>
+    </div>
+    <!-- /AllContentContainer -->
+  </body>
+
+</html>

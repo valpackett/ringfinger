@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>timesavers.hooks - Ringfinger nil API documentation</title>
+    <title>fastfinger.hooks - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="authfinger.core-api.html" class="wiki_link">authfinger.core</a></li><li><a href="authfinger.routes-api.html" class="wiki_link">authfinger.routes</a></li><li><a href="basefinger.core-api.html" class="wiki_link">basefinger.core</a></li><li><a href="basefinger.inmem-api.html" class="wiki_link">basefinger.inmem</a></li><li><a href="basefinger.mongodb-api.html" class="wiki_link">basefinger.mongodb</a></li><li><a href="basefinger.session-api.html" class="wiki_link">basefinger.session</a></li><li><a href="corefinger.core-api.html" class="wiki_link">corefinger.core</a></li><li><a href="corefinger.middleware-api.html" class="wiki_link">corefinger.middleware</a></li><li><a href="fastfinger.actions-api.html" class="wiki_link">fastfinger.actions</a></li><li><a href="fastfinger.hooks-api.html" class="wiki_link">fastfinger.hooks</a></li><li><a href="fastfinger.misc-api.html" class="wiki_link">fastfinger.misc</a></li><li><a href="formfinger.field-helpers-api.html" class="wiki_link">formfinger.field-helpers</a></li><li><a href="formfinger.fields-api.html" class="wiki_link">formfinger.fields</a></li><li><a href="mailfinger.console-api.html" class="wiki_link">mailfinger.console</a></li><li><a href="mailfinger.postmark-api.html" class="wiki_link">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail-api.html" class="wiki_link">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp-api.html" class="wiki_link">mailfinger.smtp</a></li><li><a href="restfinger.core-api.html" class="wiki_link">restfinger.core</a></li><li><a href="restfinger.output-api.html" class="wiki_link">restfinger.output</a></li><li><a href="secfinger-api.html" class="wiki_link">secfinger</a></li><li><a href="toolfinger-api.html" class="wiki_link">toolfinger</a></li>
       </ul>
     </div>
     
@@ -52,21 +52,21 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.timesavers.hooks/escape-input">escape-input</a>
+      <a href="#fastfinger.hooks/escape-input">escape-input</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.timesavers.hooks/make-slug-for">make-slug-for</a>
+      <a href="#fastfinger.hooks/make-slug-for">make-slug-for</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.timesavers.hooks/safe-html">safe-html</a>
+      <a href="#fastfinger.hooks/safe-html">safe-html</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">timesavers.hooks</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">fastfinger.hooks</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.timesavers.hooks</span>
+<br />Full namespace name: <span id="long-name">fastfinger.hooks</span>
 <p></p>
 <h2>Overview</h2>
 <pre id="namespace-docstr">Ready-to-use hooks for use with ringfinger.resource. Save even more time!</pre>
@@ -77,7 +77,7 @@ namespace.
 <div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.timesavers.hooks/escape-input">escape-input</h2>
+  <h2 id="fastfinger.hooks/escape-input">escape-input</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (escape-input context &amp; fields)
 </pre>
@@ -85,11 +85,11 @@ namespace.
 a given context (:html, :attr, :js, :css or :urlpart)</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj#L39" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/fastfinger/src/fastfinger/hooks.clj#L42" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.timesavers.hooks/make-slug-for">make-slug-for</h2>
+  <h2 id="fastfinger.hooks/make-slug-for">make-slug-for</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (make-slug-for field)
        (make-slug-for field output-field)
@@ -97,14 +97,15 @@ a given context (:html, :attr, :js, :css or :urlpart)</pre>
   <pre id="var-docstr">Returns a hook which makes a slug (URL-friendly name, eg. My Article -&gt; my-article)
 for a given field. Default output-field is field + '_slug'.
 Don't forget that if you use a custom output-field, you need to whitelist it.
-Never returns empty values</pre>
+Never returns empty values (takes a random word if the original's empty).
+Transliterates different scripts (eg. Cyrillic) into Latin</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj#L9" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/fastfinger/src/fastfinger/hooks.clj#L10" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.timesavers.hooks/safe-html">safe-html</h2>
+  <h2 id="fastfinger.hooks/safe-html">safe-html</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (safe-html field)
        (safe-html field moretags)
@@ -115,7 +116,7 @@ attribute to iframes. As a 'side-effect' (not in the programming sense),
 the HTML is always valid</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/ebbb3463da24319150c42a033ac10fb5a609b43d/src/ringfinger/timesavers/hooks.clj#L22" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/fastfinger/src/fastfinger/hooks.clj#L25" id="var-source">Source</a>
 </div>
 
 

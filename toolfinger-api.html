@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>util - Ringfinger nil API documentation</title>
+    <title>toolfinger - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="authfinger.core-api.html" class="wiki_link">authfinger.core</a></li><li><a href="authfinger.routes-api.html" class="wiki_link">authfinger.routes</a></li><li><a href="basefinger.core-api.html" class="wiki_link">basefinger.core</a></li><li><a href="basefinger.inmem-api.html" class="wiki_link">basefinger.inmem</a></li><li><a href="basefinger.mongodb-api.html" class="wiki_link">basefinger.mongodb</a></li><li><a href="basefinger.session-api.html" class="wiki_link">basefinger.session</a></li><li><a href="corefinger.core-api.html" class="wiki_link">corefinger.core</a></li><li><a href="corefinger.middleware-api.html" class="wiki_link">corefinger.middleware</a></li><li><a href="fastfinger.actions-api.html" class="wiki_link">fastfinger.actions</a></li><li><a href="fastfinger.hooks-api.html" class="wiki_link">fastfinger.hooks</a></li><li><a href="fastfinger.misc-api.html" class="wiki_link">fastfinger.misc</a></li><li><a href="formfinger.field-helpers-api.html" class="wiki_link">formfinger.field-helpers</a></li><li><a href="formfinger.fields-api.html" class="wiki_link">formfinger.fields</a></li><li><a href="mailfinger.console-api.html" class="wiki_link">mailfinger.console</a></li><li><a href="mailfinger.postmark-api.html" class="wiki_link">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail-api.html" class="wiki_link">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp-api.html" class="wiki_link">mailfinger.smtp</a></li><li><a href="restfinger.core-api.html" class="wiki_link">restfinger.core</a></li><li><a href="restfinger.output-api.html" class="wiki_link">restfinger.output</a></li><li><a href="secfinger-api.html" class="wiki_link">secfinger</a></li><li><a href="toolfinger-api.html" class="wiki_link">toolfinger</a></li>
       </ul>
     </div>
     
@@ -52,46 +52,48 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/andf">andf</a>
+      <a href="#toolfinger/andf">andf</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/call-or-ret">call-or-ret</a>
+      <a href="#toolfinger/call-or-ret">call-or-ret</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/from-browser?">from-browser?</a>
+      <a href="#toolfinger/from-browser?">from-browser?</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/haz?">haz?</a>
+      <a href="#toolfinger/haz?">haz?</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/is-xhr?">is-xhr?</a>
+      <a href="#toolfinger/is-xhr?">is-xhr?</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/keywordize">keywordize</a>
+      <a href="#toolfinger/keywordize">keywordize</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/nice-count">nice-count</a>
+      <a href="#toolfinger/map-to-querystring">map-to-querystring</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/pack-to-map">pack-to-map</a>
+      <a href="#toolfinger/nice-count">nice-count</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/sort-maps">sort-maps</a>
+      <a href="#toolfinger/pack-to-map">pack-to-map</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/str-drop">str-drop</a>
+      <a href="#toolfinger/sort-maps">sort-maps</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/substring?">substring?</a>
+      <a href="#toolfinger/str-drop">str-drop</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/typeify">typeify</a>
+      <a href="#toolfinger/substring?">substring?</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/typeize">typeize</a>
+      <a href="#toolfinger/typeify">typeify</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.util/zeroify">zeroify</a>
+      <a href="#toolfinger/typeize">typeize</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#toolfinger/zeroify">zeroify</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">util</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">toolfinger</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.util</span>
+<br />Full namespace name: <span id="long-name">toolfinger</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr">Various functions and macros used by Ringfinger.</pre>
+<pre id="namespace-docstr">Various functions and macros used by Ringfinger. Feel free to use them too!</pre>
 
 
 <br />
@@ -99,7 +101,7 @@ namespace.
 <div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/andf">andf</h2>
+  <h2 id="toolfinger/andf">andf</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (andf)
        (andf x)
@@ -108,11 +110,11 @@ namespace.
   <pre id="var-docstr">And function, just like the and macro. For use with apply</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L9" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L8" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/call-or-ret">call-or-ret</h2>
+  <h2 id="toolfinger/call-or-ret">call-or-ret</h2>
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (call-or-ret value &amp; args)
 </pre>
@@ -120,22 +122,22 @@ namespace.
 Otherwise, just returns it.</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L15" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L14" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/from-browser?">from-browser?</h2>
+  <h2 id="toolfinger/from-browser?">from-browser?</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (from-browser? req)
 </pre>
   <pre id="var-docstr">Checks if the request comes from a web browser. Or something pretending to be a web browser, really</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L91" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L101" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/haz?">haz?</h2>
+  <h2 id="toolfinger/haz?">haz?</h2>
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (haz? coll elem)
 </pre>
@@ -143,33 +145,45 @@ Otherwise, just returns it.</pre>
 eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L21" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L20" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/is-xhr?">is-xhr?</h2>
+  <h2 id="toolfinger/is-xhr?">is-xhr?</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (is-xhr? req)
 </pre>
   <pre id="var-docstr">Checks if the request is made by an XMLHttpRequest</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L96" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L106" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/keywordize">keywordize</h2>
+  <h2 id="toolfinger/keywordize">keywordize</h2>
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (keywordize a)
 </pre>
   <pre id="var-docstr">Turns keys in map a into keywords</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L69" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L77" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/nice-count">nice-count</h2>
+  <h2 id="toolfinger/map-to-querystring">map-to-querystring</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (map-to-querystring m)
+</pre>
+  <pre id="var-docstr">Turns a map into a query sting, eg.
+{:abc 123 :def ' '} -&gt; ?abc=123&amp;def=+</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L57" id="var-source">Source</a>
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="toolfinger/nice-count">nice-count</h2>
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (nice-count number noun)
 </pre>
@@ -178,11 +192,11 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
 7 'post' -&gt; 'seven posts', 100500 'article' -&gt; '100500 articles'</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L43" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L42" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/pack-to-map">pack-to-map</h2>
+  <h2 id="toolfinger/pack-to-map">pack-to-map</h2>
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (pack-to-map &amp; values)
 </pre>
@@ -190,22 +204,22 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
 (let [demo 1 test 2] (pack demo test)) -&gt; {:demo 1 :test 2}</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L53" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L52" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/sort-maps">sort-maps</h2>
+  <h2 id="toolfinger/sort-maps">sort-maps</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (sort-maps m sargs)
 </pre>
   <pre id="var-docstr">Sorts a sequence of maps using a map of sort args that maps keys to -1 for desc and 1 for asc order</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L79" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L89" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/str-drop">str-drop</h2>
+  <h2 id="toolfinger/str-drop">str-drop</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (str-drop n s)
 </pre>
@@ -213,44 +227,44 @@ eg. [:a :b] :a -&gt; true, [:a :b] :c -&gt; false</pre>
 greater than the length of s.</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L31" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L30" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/substring?">substring?</h2>
+  <h2 id="toolfinger/substring?">substring?</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (substring? substring s)
 </pre>
   <pre id="var-docstr">Checks if s contains the substring.</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L26" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L25" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/typeify">typeify</h2>
+  <h2 id="toolfinger/typeify">typeify</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (typeify s)
 </pre>
   <pre id="var-docstr">Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles </pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L58" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L66" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/typeize">typeize</h2>
+  <h2 id="toolfinger/typeize">typeize</h2>
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (typeize a)
 </pre>
   <pre id="var-docstr">Maps typeify to values of map a</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L73" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L81" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.util/zeroify">zeroify</h2>
+  <h2 id="toolfinger/zeroify">zeroify</h2>
   <span id="var-type">macro</span><br />
   <pre id="var-usage">Usage: (zeroify n)
 </pre>
@@ -259,7 +273,7 @@ e.g. 1 -&gt; '01', but 10 -&gt; '10'
 Used for dates and times</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/6682a0fac25649effdf5882df945ad0bc933b6a4/src/ringfinger/util.clj#L37" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/toolfinger/src/toolfinger.clj#L36" id="var-source">Source</a>
 </div>
 
 

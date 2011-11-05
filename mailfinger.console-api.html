@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>timesavers.actions - Ringfinger nil API documentation</title>
+    <title>mailfinger.console - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="authfinger.core-api.html" class="wiki_link">authfinger.core</a></li><li><a href="authfinger.routes-api.html" class="wiki_link">authfinger.routes</a></li><li><a href="basefinger.core-api.html" class="wiki_link">basefinger.core</a></li><li><a href="basefinger.inmem-api.html" class="wiki_link">basefinger.inmem</a></li><li><a href="basefinger.mongodb-api.html" class="wiki_link">basefinger.mongodb</a></li><li><a href="basefinger.session-api.html" class="wiki_link">basefinger.session</a></li><li><a href="corefinger.core-api.html" class="wiki_link">corefinger.core</a></li><li><a href="corefinger.middleware-api.html" class="wiki_link">corefinger.middleware</a></li><li><a href="fastfinger.actions-api.html" class="wiki_link">fastfinger.actions</a></li><li><a href="fastfinger.hooks-api.html" class="wiki_link">fastfinger.hooks</a></li><li><a href="fastfinger.misc-api.html" class="wiki_link">fastfinger.misc</a></li><li><a href="formfinger.field-helpers-api.html" class="wiki_link">formfinger.field-helpers</a></li><li><a href="formfinger.fields-api.html" class="wiki_link">formfinger.fields</a></li><li><a href="mailfinger.console-api.html" class="wiki_link">mailfinger.console</a></li><li><a href="mailfinger.postmark-api.html" class="wiki_link">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail-api.html" class="wiki_link">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp-api.html" class="wiki_link">mailfinger.smtp</a></li><li><a href="restfinger.core-api.html" class="wiki_link">restfinger.core</a></li><li><a href="restfinger.output-api.html" class="wiki_link">restfinger.output</a></li><li><a href="secfinger-api.html" class="wiki_link">secfinger</a></li><li><a href="toolfinger-api.html" class="wiki_link">toolfinger</a></li>
       </ul>
     </div>
     
@@ -52,20 +52,20 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.timesavers.actions/make-redir-action">make-redir-action</a>
+      <a href="#mailfinger.console/console">console</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">timesavers.actions</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">mailfinger.console</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.timesavers.actions</span>
+<br />Full namespace name: <span id="long-name">mailfinger.console</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr">Functions for easy creation of actions</pre>
+<pre id="namespace-docstr"></pre>
 
 
 <br />
@@ -73,17 +73,15 @@ namespace.
 <div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.timesavers.actions/make-redir-action">make-redir-action</h2>
+  <h2 id="mailfinger.console/console">console</h2>
   <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (make-redir-action hook flash)
-       (make-redir-action hook flash channel)
+  <pre id="var-usage">Usage: (console from to subject body)
 </pre>
-  <pre id="var-docstr">Makes an action which applies a hook to the entry it's being called on
-and redirects the user to the viewing URL, showing a flash message,
-optionally sending the result to a Lamina channel</pre>
+  <pre id="var-docstr">Mailer function which just prints the 'messages' to the console, for development/testing.
+**NOT a function that should be called to create a mailer, but the mailer itself**</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/4b8e112f51b299f3b6839c20878b5dfc5d65d6be/src/ringfinger/timesavers/actions.clj#L6" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/777b31e7c3c6fb25cccc1f9f74a44beae979c275/mailfinger/src/mailfinger/console.clj#L3" id="var-source">Source</a>
 </div>
 
 

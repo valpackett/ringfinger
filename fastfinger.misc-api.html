@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>output - Ringfinger nil API documentation</title>
+    <title>fastfinger.misc - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="authfinger.core-api.html" class="wiki_link">authfinger.core</a></li><li><a href="authfinger.routes-api.html" class="wiki_link">authfinger.routes</a></li><li><a href="basefinger.core-api.html" class="wiki_link">basefinger.core</a></li><li><a href="basefinger.inmem-api.html" class="wiki_link">basefinger.inmem</a></li><li><a href="basefinger.mongodb-api.html" class="wiki_link">basefinger.mongodb</a></li><li><a href="basefinger.session-api.html" class="wiki_link">basefinger.session</a></li><li><a href="corefinger.core-api.html" class="wiki_link">corefinger.core</a></li><li><a href="corefinger.middleware-api.html" class="wiki_link">corefinger.middleware</a></li><li><a href="fastfinger.actions-api.html" class="wiki_link">fastfinger.actions</a></li><li><a href="fastfinger.hooks-api.html" class="wiki_link">fastfinger.hooks</a></li><li><a href="fastfinger.misc-api.html" class="wiki_link">fastfinger.misc</a></li><li><a href="formfinger.field-helpers-api.html" class="wiki_link">formfinger.field-helpers</a></li><li><a href="formfinger.fields-api.html" class="wiki_link">formfinger.fields</a></li><li><a href="mailfinger.console-api.html" class="wiki_link">mailfinger.console</a></li><li><a href="mailfinger.postmark-api.html" class="wiki_link">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail-api.html" class="wiki_link">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp-api.html" class="wiki_link">mailfinger.smtp</a></li><li><a href="restfinger.core-api.html" class="wiki_link">restfinger.core</a></li><li><a href="restfinger.output-api.html" class="wiki_link">restfinger.output</a></li><li><a href="secfinger-api.html" class="wiki_link">secfinger</a></li><li><a href="toolfinger-api.html" class="wiki_link">toolfinger</a></li>
       </ul>
     </div>
     
@@ -51,24 +51,41 @@ namespace.
   <h1 class="nopad">Table of Contents</h1>
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
-    
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#fastfinger.misc/gravatar">gravatar</a>
+    </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">output</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">fastfinger.misc</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.output</span>
+<br />Full namespace name: <span id="long-name">fastfinger.misc</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr">The output system used by ringfinger.resource.</pre>
+<pre id="namespace-docstr">Useful common functions for web apps</pre>
 
 
 <br />
 <h2>Public Variables and Functions</h2>
-
+<div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="fastfinger.misc/gravatar">gravatar</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (gravatar email)
+       (gravatar email size)
+       (gravatar email size rating)
+       (gravatar email size rating default-pic)
+</pre>
+  <pre id="var-docstr">Given an email, returns a Gravatar URL.
+Automatically uses secure.gravatar.com when inside of an HTTPS request</pre>
+  
+  
+  <a href="https://github.com/myfreeweb/ringfinger/blob/4c0d9472d5bfa5d19035af28210e64828f6d3af3/fastfinger/src/fastfinger/misc.clj#L8" id="var-source">Source</a>
+</div>
 
 
 </div>

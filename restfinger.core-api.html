@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>resource - Ringfinger nil API documentation</title>
+    <title>restfinger.core - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="authfinger.core-api.html" class="wiki_link">authfinger.core</a></li><li><a href="authfinger.routes-api.html" class="wiki_link">authfinger.routes</a></li><li><a href="basefinger.core-api.html" class="wiki_link">basefinger.core</a></li><li><a href="basefinger.inmem-api.html" class="wiki_link">basefinger.inmem</a></li><li><a href="basefinger.mongodb-api.html" class="wiki_link">basefinger.mongodb</a></li><li><a href="basefinger.session-api.html" class="wiki_link">basefinger.session</a></li><li><a href="corefinger.core-api.html" class="wiki_link">corefinger.core</a></li><li><a href="corefinger.middleware-api.html" class="wiki_link">corefinger.middleware</a></li><li><a href="fastfinger.actions-api.html" class="wiki_link">fastfinger.actions</a></li><li><a href="fastfinger.hooks-api.html" class="wiki_link">fastfinger.hooks</a></li><li><a href="fastfinger.misc-api.html" class="wiki_link">fastfinger.misc</a></li><li><a href="formfinger.field-helpers-api.html" class="wiki_link">formfinger.field-helpers</a></li><li><a href="formfinger.fields-api.html" class="wiki_link">formfinger.fields</a></li><li><a href="mailfinger.console-api.html" class="wiki_link">mailfinger.console</a></li><li><a href="mailfinger.postmark-api.html" class="wiki_link">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail-api.html" class="wiki_link">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp-api.html" class="wiki_link">mailfinger.smtp</a></li><li><a href="restfinger.core-api.html" class="wiki_link">restfinger.core</a></li><li><a href="restfinger.output-api.html" class="wiki_link">restfinger.output</a></li><li><a href="secfinger-api.html" class="wiki_link">secfinger</a></li><li><a href="toolfinger-api.html" class="wiki_link">toolfinger</a></li>
       </ul>
     </div>
     
@@ -52,17 +52,17 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.resource/resource">resource</a>
+      <a href="#restfinger.core/resource">resource</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">resource</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">restfinger.core</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.resource</span>
+<br />Full namespace name: <span id="long-name">restfinger.core</span>
 <p></p>
 <h2>Overview</h2>
 <pre id="namespace-docstr">This module saves your time by writing all the Create/Read/Update/Delete
@@ -75,14 +75,15 @@ customization via hooks, actions and channels -- you name it, this module does i
 <div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.resource/resource">resource</h2>
+  <h2 id="restfinger.core/resource">resource</h2>
   <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (resource collname options &amp; fields)
+  <pre id="var-usage">Usage: (resource collname {:keys [db pk owner-field default-dboptions url-prefix whitelist actions views forbidden-methods flash channels hooks], :or {flash nil, actions [], db nil, pk nil, whitelist nil, forbidden-methods [], owner-field nil, url-prefix /, hooks {}, views {:index default-index, :get default-get, :not-found default-not-found}, default-dboptions {}, channels {}}} &amp; fields)
 </pre>
-  <pre id="var-docstr">Creates a list of two routes (/url-prefix+collname and /url-prefix+collname/pk) for
-RESTful Create/Read/Update/Delete of entries in collname.
+  <pre id="var-docstr">Creates a list of two routes (/url-prefix+collname.format and
+/url-prefix+collname/pk.format) for RESTful Create/Read/Update/Delete
+of entries in collname.
 Also, while in development environment, you can create example data using faker,
-like this: /url-prefix+collname/_insert_fakes?count=100 (the default count is 5).
+like this: /url-prefix+collname.format/_create_fakes?count=100 (the default count is 5).
 Accepted options:
  :db -- database (required!)
  :pk -- primary key (required!)
@@ -105,7 +106,7 @@ Accepted options:
              on resource entries, called by visiting /url-prefix+collname/pk?_action=action</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/bd415a251d84dd6c4a57cccf58e1b17cd9fbd58e/src/ringfinger/resource.clj#L23" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/e9137bdcbbfbd6e3d21795468d953c1344f7bdf1/restfinger/src/restfinger/core.clj#L25" id="var-source">Source</a>
 </div>
 
 

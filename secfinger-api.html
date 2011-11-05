@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>security - Ringfinger nil API documentation</title>
+    <title>secfinger - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="authfinger.core-api.html" class="wiki_link">authfinger.core</a></li><li><a href="authfinger.routes-api.html" class="wiki_link">authfinger.routes</a></li><li><a href="basefinger.core-api.html" class="wiki_link">basefinger.core</a></li><li><a href="basefinger.inmem-api.html" class="wiki_link">basefinger.inmem</a></li><li><a href="basefinger.mongodb-api.html" class="wiki_link">basefinger.mongodb</a></li><li><a href="basefinger.session-api.html" class="wiki_link">basefinger.session</a></li><li><a href="corefinger.core-api.html" class="wiki_link">corefinger.core</a></li><li><a href="corefinger.middleware-api.html" class="wiki_link">corefinger.middleware</a></li><li><a href="fastfinger.actions-api.html" class="wiki_link">fastfinger.actions</a></li><li><a href="fastfinger.hooks-api.html" class="wiki_link">fastfinger.hooks</a></li><li><a href="fastfinger.misc-api.html" class="wiki_link">fastfinger.misc</a></li><li><a href="formfinger.field-helpers-api.html" class="wiki_link">formfinger.field-helpers</a></li><li><a href="formfinger.fields-api.html" class="wiki_link">formfinger.fields</a></li><li><a href="mailfinger.console-api.html" class="wiki_link">mailfinger.console</a></li><li><a href="mailfinger.postmark-api.html" class="wiki_link">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail-api.html" class="wiki_link">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp-api.html" class="wiki_link">mailfinger.smtp</a></li><li><a href="restfinger.core-api.html" class="wiki_link">restfinger.core</a></li><li><a href="restfinger.output-api.html" class="wiki_link">restfinger.output</a></li><li><a href="secfinger-api.html" class="wiki_link">secfinger</a></li><li><a href="toolfinger-api.html" class="wiki_link">toolfinger</a></li>
       </ul>
     </div>
     
@@ -52,26 +52,26 @@ namespace.
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.security/secure-rand">secure-rand</a>
+      <a href="#secfinger/secure-rand">secure-rand</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.security/wrap-csrf">wrap-csrf</a>
+      <a href="#secfinger/wrap-csrf">wrap-csrf</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.security/wrap-refcheck">wrap-refcheck</a>
+      <a href="#secfinger/wrap-refcheck">wrap-refcheck</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.security/wrap-sec-headers">wrap-sec-headers</a>
+      <a href="#secfinger/wrap-sec-headers">wrap-sec-headers</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">security</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">secfinger</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.security</span>
+<br />Full namespace name: <span id="long-name">secfinger</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr">Some security-related Ring middleware used by ringfinger.core and other related functions.</pre>
+<pre id="namespace-docstr">Some security-related Ring middleware and other related functions.</pre>
 
 
 <br />
@@ -79,7 +79,7 @@ namespace.
 <div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.security/secure-rand">secure-rand</h2>
+  <h2 id="secfinger/secure-rand">secure-rand</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (secure-rand)
        (secure-rand b)
@@ -87,40 +87,40 @@ namespace.
   <pre id="var-docstr">Secure random (SHA1PRNG) Base64-encoded string generator</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L8" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/cc6d390a5f7b0ea34d342db5b1176102d1dadab9/secfinger/src/secfinger.clj#L8" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.security/wrap-csrf">wrap-csrf</h2>
+  <h2 id="secfinger/wrap-csrf">wrap-csrf</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (wrap-csrf handler)
 </pre>
   <pre id="var-docstr">CSRF protection middleware for Ring</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L16" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/cc6d390a5f7b0ea34d342db5b1176102d1dadab9/secfinger/src/secfinger.clj#L16" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.security/wrap-refcheck">wrap-refcheck</h2>
+  <h2 id="secfinger/wrap-refcheck">wrap-refcheck</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (wrap-refcheck handler)
 </pre>
   <pre id="var-docstr">Referer checking middleware for Ring</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L30" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/cc6d390a5f7b0ea34d342db5b1176102d1dadab9/secfinger/src/secfinger.clj#L33" id="var-source">Source</a>
 </div><div id="var-entry">
   <br />
   <hr />
-  <h2 id="ringfinger.security/wrap-sec-headers">wrap-sec-headers</h2>
+  <h2 id="secfinger/wrap-sec-headers">wrap-sec-headers</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (wrap-sec-headers handler)
 </pre>
   <pre id="var-docstr">Middleware for Ring which adds some headers for security</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/9bed11c3cbcf981544632b62f96d65baab5b7544/src/ringfinger/security.clj#L44" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/cc6d390a5f7b0ea34d342db5b1176102d1dadab9/secfinger/src/secfinger.clj#L47" id="var-source">Source</a>
 </div>
 
 

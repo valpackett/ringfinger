@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>db - Ringfinger nil API documentation</title>
+    <title>basefinger.inmem - Ringfinger nil API documentation</title>
     <link href="static/favicon.png" rel="icon" />
     <link href="static/favicon.png" rel="shortcut icon" />
     <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
@@ -35,7 +35,7 @@ namespace.
     <div class="NamespaceTOC">
       <span class="toc-header">Namespaces</span>
       <ul id="left-sidebar-list">
-        <li><a href="auth-api.html" class="wiki_link">auth</a></li><li><a href="auth-routes-api.html" class="wiki_link">auth-routes</a></li><li><a href="core-api.html" class="wiki_link">core</a></li><li><a href="db-api.html" class="wiki_link">db</a></li><li><a href="email-api.html" class="wiki_link">email</a></li><li><a href="field-helpers-api.html" class="wiki_link">field-helpers</a></li><li><a href="fields-api.html" class="wiki_link">fields</a></li><li><a href="output-api.html" class="wiki_link">output</a></li><li><a href="resource-api.html" class="wiki_link">resource</a></li><li><a href="security-api.html" class="wiki_link">security</a></li><li><a href="session-api.html" class="wiki_link">session</a></li><li><a href="timesavers.actions-api.html" class="wiki_link">timesavers.actions</a></li><li><a href="timesavers.hooks-api.html" class="wiki_link">timesavers.hooks</a></li><li><a href="util-api.html" class="wiki_link">util</a></li>
+        <li><a href="authfinger.core-api.html" class="wiki_link">authfinger.core</a></li><li><a href="authfinger.routes-api.html" class="wiki_link">authfinger.routes</a></li><li><a href="basefinger.core-api.html" class="wiki_link">basefinger.core</a></li><li><a href="basefinger.inmem-api.html" class="wiki_link">basefinger.inmem</a></li><li><a href="basefinger.mongodb-api.html" class="wiki_link">basefinger.mongodb</a></li><li><a href="basefinger.session-api.html" class="wiki_link">basefinger.session</a></li><li><a href="corefinger.core-api.html" class="wiki_link">corefinger.core</a></li><li><a href="corefinger.middleware-api.html" class="wiki_link">corefinger.middleware</a></li><li><a href="fastfinger.actions-api.html" class="wiki_link">fastfinger.actions</a></li><li><a href="fastfinger.hooks-api.html" class="wiki_link">fastfinger.hooks</a></li><li><a href="fastfinger.misc-api.html" class="wiki_link">fastfinger.misc</a></li><li><a href="formfinger.field-helpers-api.html" class="wiki_link">formfinger.field-helpers</a></li><li><a href="formfinger.fields-api.html" class="wiki_link">formfinger.fields</a></li><li><a href="mailfinger.console-api.html" class="wiki_link">mailfinger.console</a></li><li><a href="mailfinger.postmark-api.html" class="wiki_link">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail-api.html" class="wiki_link">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp-api.html" class="wiki_link">mailfinger.smtp</a></li><li><a href="restfinger.core-api.html" class="wiki_link">restfinger.core</a></li><li><a href="restfinger.output-api.html" class="wiki_link">restfinger.output</a></li><li><a href="secfinger-api.html" class="wiki_link">secfinger</a></li><li><a href="toolfinger-api.html" class="wiki_link">toolfinger</a></li>
       </ul>
     </div>
     
@@ -51,82 +51,49 @@ namespace.
   <h1 class="nopad">Table of Contents</h1>
   <div style="margin-left: 1em;" class="toc-section">
     <a href="#toc0">Overview</a>
-    
-    <br />
-  </div><div style="margin-left: 1em;" class="toc-section">
-    <a href="#db.inmem">db.inmem</a>
     <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.db.inmem/inmem">inmem</a>
+      <a href="#basefinger.inmem/inmem">inmem</a>
     </div><div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.db.inmem/reset-inmem-db">reset-inmem-db</a>
-    </div>
-    <br />
-  </div><div style="margin-left: 1em;" class="toc-section">
-    <a href="#db.mongodb">db.mongodb</a>
-    <div style="margin-left: 1em;" class="toc-entry">
-      <a href="#ringfinger.db.mongodb/mongodb">mongodb</a>
+      <a href="#basefinger.inmem/reset-inmem-db">reset-inmem-db</a>
     </div>
     <br />
   </div>
 </div>
 </div>
-                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">db</span>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">basefinger.inmem</span>
   - <span id="header-project">Ringfinger</span> <span id="header-version"></span> (<span id="header-status"></span>)
   </h1>
 
-<br />Full namespace name: <span id="long-name">ringfinger.db</span>
+<br />Full namespace name: <span id="long-name">basefinger.inmem</span>
 <p></p>
 <h2>Overview</h2>
-<pre id="namespace-docstr">Document-oriented database abstraction used by ringfinger.resource.</pre>
-
-
-<br />
-<h2>Public Variables and Functions</h2>
-
-<h2 id="namespace-name">db.inmem</h2>
 <pre id="namespace-docstr"></pre>
 
 
 <br />
+<h2>Public Variables and Functions</h2>
 <div id="var-entry">
+  <br />
   <hr />
-  <h2 id="ringfinger.db.inmem/inmem">inmem</h2>
+  <h2 id="basefinger.inmem/inmem">inmem</h2>
   <span id="var-type">var</span><br />
   <pre id="var-usage"></pre>
   <pre id="var-docstr">In-memory data storage FOR TESTING USE ONLY.
 Or for storing temporary data like sessions.</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/da5ac7557eb3fda1870cdc5c6b6e08d0778f6e4b/src/ringfinger/db/inmem.clj#L6" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/2b271874c2cf6f97a7ead46853656ff6e4f8d78a/basefinger/src/basefinger/inmem.clj#L7" id="var-source">Source</a>
 </div><div id="var-entry">
+  <br />
   <hr />
-  <h2 id="ringfinger.db.inmem/reset-inmem-db">reset-inmem-db</h2>
+  <h2 id="basefinger.inmem/reset-inmem-db">reset-inmem-db</h2>
   <span id="var-type">function</span><br />
   <pre id="var-usage">Usage: (reset-inmem-db)
 </pre>
   <pre id="var-docstr">Erase EVERYTHING from the inmem database</pre>
   
   
-  <a href="https://github.com/myfreeweb/ringfinger/blob/da5ac7557eb3fda1870cdc5c6b6e08d0778f6e4b/src/ringfinger/db/inmem.clj#L36" id="var-source">Source</a>
-</div>
-<h2 id="namespace-name">db.mongodb</h2>
-<pre id="namespace-docstr">MongoDB support. Don't forget to add Congomongo to your deps!</pre>
-
-
-<br />
-<div id="var-entry">
-  <hr />
-  <h2 id="ringfinger.db.mongodb/mongodb">mongodb</h2>
-  <span id="var-type">function</span><br />
-  <pre id="var-usage">Usage: (mongodb db)
-       (mongodb db instances)
-       (mongodb db username password instances)
-</pre>
-  <pre id="var-docstr">Creates a MongoDB data storage object using given db and a list of instances.
-Each instance is a map containing :host and/or :port</pre>
-  
-  
-  <a href="https://github.com/myfreeweb/ringfinger/blob/f64dcd0880b840bb8ddd2cd155a158eb352ec66e/src/ringfinger/db/mongodb.clj#L25" id="var-source">Source</a>
+  <a href="https://github.com/myfreeweb/ringfinger/blob/2b271874c2cf6f97a7ead46853656ff6e4f8d78a/basefinger/src/basefinger/inmem.clj#L41" id="var-source">Source</a>
 </div>
 
 
