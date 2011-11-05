@@ -33,25 +33,23 @@
    :redir-param -- query string parameter for keeping the redirect url, the default is _redirect, you generally don't need to care about this
    :confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is :username), :subject, :mail-template
    :fields -- list of validations, defaults are: requiring username and at least 6 characters password"
-  [options]
-  (let [views    (:views       options auth-demo-views)
-        flash    (:flash       options {:login-success   "Welcome back!"
-                                        :login-invalid   "Wrong username/password."
-                                        :signup-success  "Welcome!"
-                                        :logout          "Good bye!"
-                                        :confirm-success "Welcome!"
-                                        :confirm-fail    "Invalid confirmaton key."})
-        url-base (:url-base    options "/auth/")
-        redir-to (:redir-to    options "/")
-        redir-p  (:redir-param options "_redirect")
-        db       (:db          options inmem)
-        coll     (:coll        options :ringfinger_auth)
-        confirm  (:confirm     options)
-        fields   (:fields      options (list [:username (required)     "Shouldn't be empty"]
-                                             [:password (required)     "Shouldn't be empty"]
-                                             [:password (minlength 6)  "Should be at least 6 characters"]))
-        fieldhtml(html-from-fields fields)
-        valds    (validations-from-fields fields)
+  [{:keys [views flash url-base redir-to redir-p db coll confirm fields]
+    :or {views auth-demo-views
+         flash {:login-success   "Welcome back!"
+                :login-invalid   "Wrong username/password."
+                :signup-success  "Welcome!"
+                :logout          "Good bye!"
+                :confirm-success "Welcome!"
+                :confirm-fail    "Invalid confirmaton key."}
+         url-base "/auth/"
+         redir-to "/" redir-p "redirect"
+         db inmem coll :ringfinger_auth
+         confirm nil
+         fields [[:username (required)    "Shouldn't be empty"]
+                 [:password (required)    "Shouldn't be empty"]
+                 [:password (minlength 6) "Should be at least 6 characters"]]}}]
+  (let [fieldhtml (html-from-fields fields)
+        valds     (validations-from-fields fields)
         getloc   #(get (:query-params %) redir-p redir-to)
         if-not-user (fn [req cb]
                       (if (:user req)
