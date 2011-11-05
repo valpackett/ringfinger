@@ -1,8 +1,7 @@
 (ns corefinger.middleware
   "Common Ring middleware"
   (:use [clojure.data.json :only [read-json]],
-        [clojure.string :only [lower-case]],
-        ))
+        [clojure.string :only [lower-case]]))
 
 (defn wrap-length
   "Ring middleware for adding Content-Length"
@@ -37,9 +36,10 @@
              (:body req)
              (.startsWith (:content-type req) "application/json"))
       (let [jsp (read-json (slurp (:body req)) false)]
-            (handler (-> req
-                         (assoc :form-params jsp)
-                         (assoc :params (merge (:params req) jsp)))))
+        (-> req
+            (assoc :form-params jsp)
+            (assoc :params (merge (:params req) jsp))
+            handler))
       (handler req))))
 
 (defn wrap-method-override
@@ -48,4 +48,4 @@
   (fn [req]
     (let [rm (or (get-in req [:headers "x-http-method-override"])
                  (get-in req [:query-params "_method"]))]
-      (handler (assoc req :request-method (if rm (keyword (lower-case rm)) (:request-method req)))))))
+      (handler (if rm (assoc req :request-method (keyword (lower-case rm))) req)))))
