@@ -5,7 +5,7 @@
         (hiccup core page-helpers)))
 
 (defn p-flash [stuff]
-  (if-let [f (:flash *request*)]
+  (if-let [f (or (:flash stuff) (:flash *request*))]
     [:div.flash f]))
 
 (defn p-csrftoken [stuff]
