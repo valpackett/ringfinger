@@ -88,9 +88,9 @@
         clear-form #(select-keys % whitelist)
         fields-data-pre-hook  (data-pre-hook-from-fields  fields)
         fields-data-post-hook (data-post-hook-from-fields fields)
-        post-hook (comp clear-form fields-data-pre-hook (:data hooks) (:create hooks) fields-data-post-hook)
-        put-hook  (comp clear-form fields-data-pre-hook (:data hooks) (:update hooks) fields-data-post-hook)
-        get-hook  (comp (:read hooks) (get-hook-from-fields fields))
+        post-hook (comp fields-data-post-hook (:data hooks) (:create hooks) fields-data-pre-hook clear-form)
+        put-hook  (comp fields-data-post-hook (:data hooks) (:update hooks) fields-data-pre-hook clear-form)
+        get-hook  (comp (get-hook-from-fields fields) (:read hooks))
         i-validate (fn [req data yep nope]
                      (let [ks (filter #(or (haz? req-fields %) (not (or (= (get data %) "") (nil? (get data %))))) (keys data))
                            result (apply validate (select-keys data ks)
