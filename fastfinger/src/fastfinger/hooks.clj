@@ -18,10 +18,10 @@
       (replace #"(we|they|you)'re" #(str (last %) " are"))
       (replace #"(she|he|it)'s" #(str (last %) " is"))
       (replace "i'm" "i am")
-      (replace "&" "and")
-      (replace "=" "equals")
-      (replace "+" "plus")
-      (replace "-" "minus")))
+      (replace " & " "and")
+      (replace " = " "equals")
+      (replace " + " "plus")
+      (replace " - " "minus")))
 
 (defn make-slug-for
   "Returns a hook which makes a slug (URL-friendly name, eg. My Article -> my-article)
