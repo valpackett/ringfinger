@@ -53,6 +53,7 @@ Restfinger is just a module.
 
 You can nest Ring handlers in apps. Or use "extended Ring handlers", "Ringfinger handlers",
 "Ring+Clout handlers", whatever you call them. With or without method dispatching.
+
 ```clojure
 (ns oldschool.app
   (:use corefinger.core, ring.util.serve))
