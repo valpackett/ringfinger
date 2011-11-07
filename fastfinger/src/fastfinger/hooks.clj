@@ -18,7 +18,7 @@
       (replace #"(we|they|you)'re" #(str (last %) " are"))
       (replace #"(she|he|it)'s" #(str (last %) " is"))
       (replace "i'm" "i am")
-      (replace " & " "and")
+      (replace "&" "and")
       (replace " = " "equals")
       (replace " + " "plus")
       (replace " - " "minus")))
