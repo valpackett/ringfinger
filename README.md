@@ -55,7 +55,7 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
 - pagination (including HTTP Link header for being RESTful)
-- middleware like django-paranoid-sessions
+- middleware like [django-paranoid-sessions](https://github.com/rfk/django-paranoid-sessions)
 - file attachments w/ GridFS support
 - asset system that supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, using attachment storages. kinda like rails 3.1
 - optionally separating create/index and view/edit pages in html - possible to create "create" and "edit" pages manually now, but it should be easy
@@ -65,6 +65,7 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - invite mode for registration
 - i18n
 - [Swagger](http://swagger.wordnik.com) implementation
+- [lazy signup](https://github.com/danfairs/django-lazysignup)
 - automatic javascript model definitions for client-side mvc per resource, using clojurescript
 - fastfinger.subscribers: [Pusher](http://pusher.com/), [Superfeedr](http://superfeedr.com) (after adding atom feeds), webhook
 - fastfinger.actions for polls (change -1/0/+1 per user, like reddit), voting (like [votebox](https://www.dropbox.com/votebox))
@@ -72,4 +73,4 @@ You also can use lower-level auth/database/validation/output/routing APIs if you
 - cloudy packages (ringfinger-aws = S3 + SES + SimpleDB, ringfinger-gae = Blobstore + Mail + Datastore)
 - database and attachment migrations (eg. mongodb + gridfs to simpledb + s3)
 - easy full text search (elasticsearch, lucene): lamina subscriber + route for querying
-- (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus
+- (fun!) external package for outputting data in native formats - python pickle using jython, php serialized array using quercus. or even implement them in clojure
