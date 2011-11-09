@@ -1,11 +1,27 @@
 (ns fastfinger.hooks
   "Ready-to-use hooks for use with ringfinger.resource. Save even more time!"
+  (:refer-clojure :exclude [replace])
   (:use inflections.core,
         faker.lorem,
         net.cgrand.enlive-html,
-        [clojure.string :only [escape]]
+        [clojure.string :only [escape, lower-case, replace]]
         [valip.predicates :as v])
   (:import com.ibm.icu.text.Transliterator))
+
+
+; Inspired by https://github.com/rsl/stringex
+(defn- fix-words [w]
+  (-> w
+      (replace #"\$([0-9]+)\.([0-9]+)" #(str (second %) " dollars " (last %) " cents"))
+      (replace #"\$([0-9]+)" #(str (last %) " dollars"))
+      (replace #"([0-9]+)%" #(str (last %) " percent"))
+      (replace #"(we|they|you)'re" #(str (last %) " are"))
+      (replace #"(she|he|it)'s" #(str (last %) " is"))
+      (replace "i'm" "i am")
+      (replace "&" "and")
+      (replace " = " "equals")
+      (replace " + " "plus")
+      (replace " - " "minus")))
 
 (defn make-slug-for
   "Returns a hook which makes a slug (URL-friendly name, eg. My Article -> my-article)
@@ -19,7 +35,10 @@
          tr (Transliterator/getInstance "Any-Latin")]
      (fn [data]
        (assoc data output-field
-              (let [r (parameterize (. tr transliterate (get data field)))]
+              (let [r (-> (. tr transliterate (get data field))
+                          lower-case
+                          fix-words
+                          parameterize)]
                 (if (= r "") (parameterize (first (take 1 fakes))) r)))))))
 
 (defn safe-html

@@ -5,35 +5,32 @@
         inflections.core,
         (hiccup core page-helpers)))
 
-(defn p-flash [stuff]
+(defn p-flash []
   (if-let [f (:flash *request*)]
     [:div.flash f]))
 
-(defn p-csrftoken [stuff]
+(defn p-csrftoken []
   [:input {:type "hidden" :name "csrftoken" :value (:csrf-token *request*)}])
 
-(defn p-user [stuff]
+(defn p-user []
   [:div.user
    (if-let [u (get-in *request* [:user :username])]
      (str "Logged in as " u ".")
      "Not logged in.")])
 
-(defn default-index [stuff]
-  (let [collname   (:collname stuff)
-        pk         (:pk stuff)
-        fields     (:fieldhtml stuff)
-        fieldnames (keys fields)
-        urlbase    (str (:urlbase stuff) "/")]
+(defn default-index [{:keys [collname pk fieldhtml urlbase newdata errors data actions]}]
+  (let [fieldnames (keys fieldhtml)
+        urlbase    (str urlbase "/")]
     (html5 [:html
       [:head [:title (str collname " / index")]
              [:style default-style]]
       [:body
         [:h1 collname]
-        (p-user stuff)
-        (p-flash stuff)
+        (p-user)
+        (p-flash)
         [:form.res {:method "post" :action ""}
-          (form-fields fields (:newdata stuff) (:errors stuff) [:div] [:div.error] :label)
-          (p-csrftoken stuff)
+          (form-fields fieldhtml newdata errors [:div] [:div.error] :label)
+          (p-csrftoken)
           [:button {:type "submit"} "Add"]]
         [:table
           [:tr (map (fn [a] [:th a]) fieldnames)]
@@ -41,34 +38,30 @@
              (map (fn [a] [:td (get e a)]) fieldnames)
              [:td [:a {:href (str urlbase (get e pk))} "edit"]]
              [:td [:a {:href (str urlbase (get e pk) "?_method=delete")} "delete"]]
-             (map (fn [a] [:td [:a {:href (str urlbase (get e pk) "?_action=" a)} a]]) (keys (:actions stuff)))
-          ]) (:data stuff))]
-       (capitalize (nice-count (count (:data stuff)) "entry")) ". "
+             (map (fn [a] [:td [:a {:href (str urlbase (get e pk) "?_action=" a)} a]]) (keys actions))
+          ]) data)]
+       (capitalize (nice-count (count data) "entry")) ". "
        (if-env "development"
                [:a {:href (str urlbase "_create_fakes")} "Add some example data"] nil)
       ]])))
 
-(defn default-get [stuff]
-  (let [data     (:data stuff)
-        collname (:collname stuff)
-        pk       (:pk stuff)]
-    (html5 [:html
-      [:head [:title (str collname " / " (get data pk))]
-             [:style default-style]]
-      [:body
-        [:h1 [:a {:href (:urlbase stuff)} collname] (str " / " (get data pk))]
-        (p-user stuff)
-        (p-flash stuff)
-        [:form.res {:method "post" :action (str (:urlbase stuff) "/" (get data pk) "?_method=put")}
-          (form-fields (:fieldhtml stuff) data (:errors stuff) [:div] [:div.error] :label)
-          (p-csrftoken stuff)
-          [:button {:type "submit"} "Save"]]]])))
+(defn default-get [{:keys [data collname pk urlbase fieldhtml errors]}]
+  (html5 [:html
+    [:head [:title (str collname " / " (get data pk))]
+           [:style default-style]]
+    [:body
+      [:h1 [:a {:href urlbase} collname] (str " / " (get data pk))]
+      (p-user)
+      (p-flash)
+      [:form.res {:method "post" :action (str urlbase "/" (get data pk) "?_method=put")}
+        (form-fields fieldhtml data errors [:div] [:div.error] :label)
+        (p-csrftoken)
+        [:button {:type "submit"} "Save"]]]]))
 
 (defn default-not-found [stuff]
   (html5 [:html
     [:head [:title (str (:collname stuff) " / not found")]
            [:style default-style]]
     [:body [:h1 "Not found :-("]
-           (p-user stuff)
-           [:div.cb]
-    ]]))
+           (p-user)
+           [:div.cb]]]))
