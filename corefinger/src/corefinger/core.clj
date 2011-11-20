@@ -27,24 +27,28 @@
 (def default-handlers
   (zipmap [:get :put :post :delete :options :trace :connect] (repeat method-na-handler)))
 
-(defn- make-map-handler
+(defn method-dispatch-handler
+  "Creates a single extended Ring handler from a method-handler map,
+  eg. {:get  (fn [req matches] ...)
+       :post (fn [req matches] ...)}"
   [handlers]
   (let [handlers (merge default-handlers handlers)]
     (fn [req matches] ((get handlers (:request-method req)) req matches))))
 
 (defn nest
-  "Creates an extended Ring handler ([req matches])  from a normal one."
+  "Creates an extended Ring handler ([req matches]) from a normal one."
   [handler] (fn [req matches] (handler req)))
 
 (defn route
   "Creates a route accepted by the app function from a URL in Clout (Sinatra-like) format
-  and either a method-to-handler map, eg. {:get (fn [req matches] {:status 200 :body nil})}
-  or a single handler.
+  and an extended Ring handler.
+  You can pass a method-handler map instead of a handler and method-dispatch-handler
+  will be used automatically
   Accepts custom-regexps for finer matching (eg. only numeric ids)"
   ([url handler] (route url handler {}))
   ([url handler custom-regexps]
     {:route   (route-compile url custom-regexps)
-     :handler (if (map? handler) (make-map-handler handler)
+     :handler (if (map? handler) (method-dispatch-handler handler)
                   handler)}))
 
 (defn app
