@@ -91,31 +91,28 @@
         lwrap-process-form (fn [handler] (ewrap-process-form handler valds))]
     (list
       (route (str url-base "login")
-        {:get (-> (fn [req matches]
-                    {:status  200
-                     :aview  :login})
-                  lwrap-render-auth-view
-                  lwrap-if-not-user)
-         :post (-> (fn [req matches form fval]
-                     (let [user (get-user db coll (:username form) (:password form))]
-                       (if (nil? fval)
-                         (if (nil? user)
-                           {:status  400
-                            :aview   :login
-                            :i-flash (:login-invalid flash)
-                            :data    (merge form {:password nil})}
-                           {:status  302
-                            :headers {"Location" (getloc req)}
-                            :cookies {"a" (auth-cookie user)}
-                            :flash   (:login-success flash)
-                            :body    ""})
-                         {:status  400
-                          :aview   :login
-                          :errors  fval
-                          :data    form})))
-                   lwrap-process-form
-                   lwrap-render-auth-view
-                   lwrap-if-not-user)})
+        (-> (method-dispatch-handler
+              {:get  (fn [req matches] {:status 200 :aview :login})
+               :post (-> (fn [req matches form fval]
+                           (let [user (get-user db coll (:username form) (:password form))]
+                             (if (nil? fval)
+                               (if (nil? user)
+                                 {:status  400
+                                  :aview   :login
+                                  :i-flash (:login-invalid flash)
+                                  :data    (merge form {:password nil})}
+                                 {:status  302
+                                  :headers {"Location" (getloc req)}
+                                  :cookies {"a" (auth-cookie user)}
+                                  :flash   (:login-success flash)
+                                  :body    ""})
+                               {:status  400
+                                :aview   :login
+                                :errors  fval
+                                :data    form})))
+                         lwrap-process-form)})
+            lwrap-render-auth-view
+            lwrap-if-not-user))
       (route (str url-base "logout")
         {:get (fn [req matches]
                 {:status  302
@@ -141,34 +138,33 @@
                          :body    ""}))
                     lwrap-if-not-user)}))
       (route (str url-base "signup")
-        {:get  (-> (fn [req matches] {:status 200 :aview :signup})
-                   lwrap-render-auth-view
-                   lwrap-if-not-user)
-         :post (-> (fn [req matches form fval]
-                     (if (nil? fval)
-                       (if confirm
-                          (let [akey (str (UUID/randomUUID))
-                                user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form))]
-                            ((:mailer confirm)
-                             (:from confirm)
-                             (get form (:email-field confirm :username))
-                             (:subject confirm)
-                             ((:mail-template confirm demo-mail-template)
-                                {:data  form
-                                 :url   (str (name (:scheme req)) "://" (get (:headers req) "host") url-base "confirm/" akey "?" redir-p "=" (getloc req))}))
-                            {:status  200
-                             :aview   :confirm
-                             :data    form})
-                           (let [user (make-user db coll {:username (:username form)} (:password form))]
-                             {:status  302
-                              :headers {"Location" (getloc req)}
-                              :cookies {"a" (auth-cookie user)}
-                              :flash   (:signup-success flash)
-                              :body    ""}))
-                       {:status 400
-                        :aview  :signup
-                        :errors fval
-                        :data   form}))
-                   lwrap-process-form
-                   lwrap-render-auth-view
-                   lwrap-if-not-user)}))))
+        (-> (method-dispatch-handler
+              {:get  (fn [req matches] {:status 200 :aview :signup})
+               :post (-> (fn [req matches form fval]
+                           (if (nil? fval)
+                             (if confirm
+                                (let [akey (str (UUID/randomUUID))
+                                      user (make-user db coll {:username (:username form) :_confirm_key akey} (:password form))]
+                                  ((:mailer confirm)
+                                   (:from confirm)
+                                   (get form (:email-field confirm :username))
+                                   (:subject confirm)
+                                   ((:mail-template confirm demo-mail-template)
+                                      {:data  form
+                                       :url   (str (name (:scheme req)) "://" (get (:headers req) "host") url-base "confirm/" akey "?" redir-p "=" (getloc req))}))
+                                  {:status  200
+                                   :aview   :confirm
+                                   :data    form})
+                                 (let [user (make-user db coll {:username (:username form)} (:password form))]
+                                   {:status  302
+                                    :headers {"Location" (getloc req)}
+                                    :cookies {"a" (auth-cookie user)}
+                                    :flash   (:signup-success flash)
+                                    :body    ""}))
+                             {:status 400
+                              :aview  :signup
+                              :errors fval
+                              :data   form}))
+                         lwrap-process-form)})
+              lwrap-render-auth-view
+              lwrap-if-not-user)))))
