@@ -94,6 +94,7 @@ aka, TODO list
 
 ### Someday
 - HTML email support
+- [OpenID](http://code.google.com/p/jopenid/)
 - atom feeds for resources
 - invite mode for registration
 - i18n
