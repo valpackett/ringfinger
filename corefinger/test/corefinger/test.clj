@@ -1,7 +1,7 @@
 (ns corefinger.test
   (:use corefinger.core, midje.sweet, ring.mock.request))
 
-(defapp testapp {:static-dir "src"}
+(defapp testapp {:static-dir "lib"}
   (route "/nested" (nest (fn [req] {:status 200 :headers {} :body "I am a pure Ring handler"})))
   (route "/method"
     {:get (fn [req matches]

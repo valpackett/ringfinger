@@ -36,7 +36,7 @@
   [:name (required) "hey where's the name?"])
 
 (defapp testapp
-  {:static-dir "src"
+  {:static-dir "lib"
    :middleware wrap-auth}
   todos hooked owned forbidden)
 

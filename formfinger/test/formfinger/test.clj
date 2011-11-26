@@ -1,4 +1,5 @@
 (ns formfinger.test
+  (:refer-clojure :exclude [extend])
   (:use formfinger.fields, midje.sweet, clj-time.core))
 
 (facts "about required"
