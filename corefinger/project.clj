@@ -11,7 +11,7 @@
          [ringfinger/secfinger ~version]
          [ring/ring-core  ~ring-version]
          [ring/ring-devel ~ring-version]
-         [clout "1.0.0-RC1"]]
+         [clout "0.4.1"]]
   :dev-dependencies [[midje ~midje-version]
                      [lein-midje ~lein-midje-version]
                      [ring-mock "0.1.1"]])
