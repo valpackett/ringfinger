@@ -4,8 +4,7 @@
         restfinger.core,
         authfinger.core,
         corefinger.core,
-        midje.sweet, ring.mock.request)
-  (:import org.apache.commons.codec.binary.Base64))
+        midje.sweet, ring.mock.request))
 
 (make-user inmem :ringfinger_auth {:username "test"} "demo")
 
@@ -42,7 +41,7 @@
   todos hooked owned forbidden)
 
 (defn authd [req]
-  (header req "Authorization" (str "Basic " (Base64/encodeBase64String (. "test:demo" getBytes)))))
+  (header req "Authorization" "Basic dGVzdDpkZW1v"))
 
 (facts "about creating"
   (testapp (body (request :post "/todos.json")

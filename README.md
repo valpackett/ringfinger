@@ -91,7 +91,6 @@ aka, TODO list
 
 ### Really Important Features
 - custom middleware in restfinger
-- auth middleware test
 - used ids, not just usernames (allow name changes)
 - read-only mode
 - rate limiting (per user)
