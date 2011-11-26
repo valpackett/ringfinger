@@ -38,21 +38,28 @@ Also, there are [API docs](http://myfreeweb.github.com/ringfinger/).
 (serve myapp 8080)
 ```
 
-or something like that. You can do create/read/update/delete operations on the same resource with a browser
-(there are default HTML templates, like in Rails) or something that supports JSON, YAML, CSV or XML.
-Yeah, URLs are the same. The app is an API, and HTML is just another output format.
-The `Accept` HTTP header (or adding `.format` to the URL) is what "separates" the API.
-And insert some example data by visiting `/contacts/_create_fakes` (only in development environment, of course). Nice, eh?
+or something like that. You can do create/read/update/delete operations
+on the same resource with a browser (there are default HTML templates,
+like in Rails) or something that supports JSON, YAML, CSV or XML. Yeah,
+URLs are the same. The app is an API, and HTML is just another output
+format. The `Accept` HTTP header (or adding `.format` to the URL) is
+what "separates" the API. And insert some example data by visiting
+`/contacts/_create_fakes` (only in development environment, of course).
+Nice, eh?
 
-You can customize the behavior via hooks (eg. if you need to automatically add URL-friendly "slugs", as in the example, or automatic timestamps),
-via providing [Lamina](https://github.com/ztellman/lamina) channels and subscribing to them (eg. if you need real-time push)
-or adding custom actions, eg. for voting in a poll.
+You can customize the behavior via hooks (eg. if you need to
+automatically add URL-friendly "slugs", as in the example, or automatic
+timestamps), via providing [Lamina](https://github.com/ztellman/lamina)
+channels and subscribing to them (eg. if you need real-time push) or
+adding custom actions, eg. for voting in a poll.
 
-You also can use lower-level auth/database/validation/output/routing APIs if you can't fit something into these RESTful constraints.
+You also can use lower-level auth/database/validation/output/routing
+APIs if you can't fit something into these RESTful constraints.
 Restfinger is just a module.
 
-You can nest Ring handlers in apps. Or use "extended Ring handlers", "Ringfinger handlers",
-"Ring+Clout handlers", whatever you call them. With or without method dispatching.
+You can nest Ring handlers in apps. Or use "extended Ring handlers",
+"Ringfinger handlers", "Ring+Clout handlers", whatever you call them.
+With or without method dispatching.
 
 ```clojure
 (ns oldschool.app
@@ -83,6 +90,7 @@ There are no long contributor agreements or any other bullshit. It's simple:
 aka, TODO list
 
 ### Really Important Features
+- middleware in restfinger
 - read-only mode
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
@@ -91,6 +99,7 @@ aka, TODO list
 - file attachments w/ GridFS support
 - asset system that supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, using attachment storages. kinda like rails 3.1
 - optionally separating create/index and view/edit pages in html - possible to create "create" and "edit" pages manually now, but it should be easy
+- lein template
 
 ### Someday
 - HTML email support
