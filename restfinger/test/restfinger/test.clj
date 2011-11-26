@@ -72,6 +72,7 @@
           => "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><state>on</state><body>test</body></response>"
   (:body (testapp (request :get "/hooked/test2.json")))
           => "{\"ondata\":\"yo\",\"onpost\":\"posted\",\"name\":\"test2\",\"onput\":\"put\"}"
+  ; read is public by default
   (:body (testapp (request :get "/owned/wassup.json")))
           => "{\"name\":\"wassup\",\"owner\":\"test\"}")
 

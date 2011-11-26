@@ -90,7 +90,9 @@ There are no long contributor agreements or any other bullshit. It's simple:
 aka, TODO list
 
 ### Really Important Features
-- middleware in restfinger
+- custom middleware in restfinger
+- auth middleware test
+- used ids, not just usernames (allow name changes)
 - read-only mode
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)

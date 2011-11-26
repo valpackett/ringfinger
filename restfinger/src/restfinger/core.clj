@@ -36,6 +36,8 @@
    :default-dboptions -- default database options (:query, :sort) for the index page
    :whitelist -- allowed extra fields (not required)
    :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)
+   :public-methods -- if :owner-field is specified, a collection of methods
+                      to allow for everyone, not just the owner. default is [:read]
    :views -- map of HTML views (:index, :get, :not-found)
    :flash -- map of flash messages (:created, :updated, :deleted, :forbidden),
              can be either strings or callables expecting a single arg (the entry)
@@ -49,14 +51,16 @@
    :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])
                on resource entries, called by visiting /url-prefix+collname/pk?_action=action"
   [collname {:keys [db pk owner-field default-dboptions url-prefix whitelist
-                    actions views forbidden-methods flash channels hooks]
+                    actions views forbidden-methods public-methods flash channels hooks]
              :or {db nil pk nil owner-field nil
                   default-dboptions {} url-prefix "/"
                   whitelist nil actions []
                   views {:index default-index
                          :get default-get
                          :not-found default-not-found}
-                  forbidden-methods [] flash nil
+                  forbidden-methods []
+                  public-methods [:read]
+                  flash nil
                   channels {} hooks {}
                   }} & fields]
   (let [coll (keyword collname)
@@ -106,10 +110,10 @@
                                      [:query owner-field] (get-in % [:user :username]))
                           #(or (params-to-dboptions (:query-params %)) default-dboptions))
         if-allowed  (if owner-field
-                      (fn [req entry yep]
-                        (if (and (= (get-in req [:user :username]) (get entry owner-field))
-                                    (not (= nil (get entry owner-field))))
-                          yep
+                      (fn [req entry method yep]
+                        (if (or (haz? public-methods method)
+                                (= (get-in req [:user :username]) (get entry owner-field)))
+                          (yep)
                           (if (from-browser? req)
                             {:status  302
                              :headers {"Location" urlbase}
@@ -118,7 +122,7 @@
                             {:status  403
                              :headers {"Content-Type" "text/plain"}
                              :body    "Forbidden"})))
-                       (fn [req entry yep] yep))
+                       (fn [req entry method yep] (yep)))
         process-new  (if owner-field
                        ; [req form]
                        ; adds creator's username if there's an owner-field
@@ -127,7 +131,10 @@
         ewrap-forbidden #(if (not (haz? forbidden-methods %2)) %1 method-na-handler)
         ewrap-instance  #(fn [req matches]
                            (if-let [inst (get-one db coll {:query {pk (typeify (:pk matches))}})]
-                             (if-allowed req inst (% req matches inst))
+                             (if-allowed req inst
+                                         (let [method (:request-method req)]
+                                           (case method :get :read :put :update method))
+                                         (fn [] (% (assoc req :inst true) matches inst)))
                              (respond req matches 404 {} {:req req} {"html" html-not-found} "html")))
         ]
      (list
@@ -170,15 +177,15 @@
        (route (str urlbase "/:pk:format")
          (-> (fn [req matches inst]
                ((method-dispatch-handler
-                 {:get (fn [req matches]
-                         (if-let [action (get actions (get-in req [:query-params "_action"] ""))]
-                           (action req matches inst default-data)
-                           (ewrap-forbidden
-                             (respond req matches 200 {}
-                                      {:data (get-hook inst)
-                                       :req req}
-                                      {"html" html-get}
-                                    "html") :read)))
+                 {:get (-> (fn [req matches]
+                             (if-let [action (get actions (get-in req [:query-params "_action"] ""))]
+                               (action req matches inst default-data)
+                               (respond req matches 200 {}
+                                        {:data (get-hook inst)
+                                         :req req}
+                                        {"html" html-get}
+                                      "html")))
+                           (ewrap-forbidden :read))
                  :put (-> (fn [req matches]
                             (let [form (keywordize (:form-params req))
                                   diff (put-hook (merge default-entry form))
