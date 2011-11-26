@@ -10,7 +10,7 @@
          [ringfinger/toolfinger ~version]
          [ringfinger/basefinger ~version]
          [valip "0.2.0"]
-         [hiccup "0.3.6"]
+         [hiccup "0.3.7"]
          [clj-time "0.3.0"]
          [faker "0.2.2"]
          [com.ibm.icu/icu4j "4.8.1.1"]]
