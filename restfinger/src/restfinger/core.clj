@@ -28,6 +28,7 @@
    :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)
    :public-methods -- if :owner-field is specified, a collection of methods
                       to allow for everyone, not just the owner. default is [:read]
+   :default-format -- 'html' by default, change to 'json' if you don't want html at all
    :views -- map of HTML views (:index, :get, :not-found)
    :flash -- map of flash messages (:created, :updated, :deleted, :forbidden),
              can be either strings or callables expecting a single arg (the entry)
@@ -40,11 +41,12 @@
                 enqueue long-running jobs, index changes with a search engine, etc.
    :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])
                on resource entries, called by visiting /url-prefix+collname/pk?_action=action"
-  [collname {:keys [db pk owner-field default-dboptions url-prefix whitelist
+  [collname {:keys [db pk owner-field default-dboptions url-prefix whitelist default-format
                     actions views forbidden-methods public-methods flash channels hooks]
              :or {db nil pk nil owner-field nil
                   default-dboptions {} url-prefix "/"
                   whitelist nil actions []
+                  default-format "html"
                   views {:index default-index
                          :get default-get
                          :not-found default-not-found}
@@ -103,7 +105,7 @@
                   (-> (filter identity
                               [(get-in req [:headers "accept"])
                                (:format matches)
-                               "html"])
+                               default-format])
                       first
                       (getoutput {"html" view})
                       (render status headers data)))
