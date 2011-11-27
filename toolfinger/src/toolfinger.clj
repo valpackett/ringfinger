@@ -11,6 +11,17 @@
   ([x & next]
     (if x (apply andf next) x)))
 
+(defn arities
+  "Returns the arities of a function" [f]
+  ; Stolen from https://groups.google.com/group/clojure/browse_thread/thread/d9953ada48068d78/1823e56ffba50dbb
+  (let [methods      (.getDeclaredMethods (class f))
+        count-params (fn [m] (map #(count (.getParameterTypes %))
+                                  (filter #(= m (.getName %)) methods)))
+        invokes      (count-params "invoke")
+        do-invokes   (map dec (count-params "doInvoke"))
+        arities      (sort (distinct (concat invokes do-invokes)))]
+    (if (seq do-invokes) (concat arities [:more]) arities)))
+
 (defmacro call-or-ret
   "If value is a callable, calls it with args and returns the result.
   Otherwise, just returns it."

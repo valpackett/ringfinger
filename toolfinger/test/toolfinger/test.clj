@@ -1,6 +1,8 @@
 (ns toolfinger.test
   (:use toolfinger, midje.sweet))
 
+(fact (arities (fn ([a]) ([b c]) ([d e & f]))) => '(1 2 :more))
+
 (facts "about call-or-ret"
   (call-or-ret #(str %) 1) => "1"
   (call-or-ret "string" 1) => "string")
