@@ -83,6 +83,7 @@
          fields [[:username (required)    "Shouldn't be empty"]
                  [:password (required)    "Shouldn't be empty"]
                  [:password (minlength 6) "Should be at least 6 characters"]]}}]
+  (if confirm (assert (haz? (arities (:mailer confirm)) 4)))
   (let [fieldhtml (html-from-fields fields)
         valds (validations-from-fields fields)
         getloc #(get (:query-params %) redir-p redir-to)
