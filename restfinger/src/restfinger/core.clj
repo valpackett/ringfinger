@@ -56,6 +56,8 @@
                   flash nil
                   middleware {} channels {} hooks {}
                   }} & fields]
+  {:pre [(not (nil? db))
+         (not (nil? pk))]}
   (let [coll (keyword collname)
         urlbase (str url-prefix collname)
         fieldhtml (html-from-fields fields)
@@ -75,7 +77,10 @@
         s-channels [:create :update :delete]
         channels (zipmap s-channels
                    (map #(let [c (get channels %)]
-                           (if c (fn [msg] (enqueue c msg)) (fn [msg]))) s-channels))
+                           (if c
+                             (do (assert (= (class c) lamina.core.channel.Channel))
+                                 (fn [msg] (enqueue c msg)))
+                             (fn [msg]))) s-channels))
         flash (or flash {:created #(str "Created: " (get % pk))
                          :updated #(str "Saved: "   (get % pk))
                          :deleted #(str "Deleted: " (get % pk))
@@ -142,6 +147,11 @@
                          (handler req matches form
                             (apply validate (select-keys data ks) (filter #(haz? ks (first %)) valds))))))
         ]
+     ; FIXME: on Clojure 1.3 we can add a custom message
+     (with-out-str ; asserts don't work without doing something such as printing!!
+       (prn (map #(assert (haz? (arities %) 1)) (vals hooks)))
+       (prn (map #(assert (haz? (arities (% (fn [r m] {}))) 2)) (vals middleware)))
+       (prn (map #(assert (haz? (arities %) 4)) (vals actions))))
      (list
        (route (str urlbase ":format")
          {:get (-> (fn [req matches]

@@ -94,7 +94,7 @@
   (:status (testapp (request :delete "/forbidden/test.json"))) => 405
   (get-one inmem :todos {:body "test"}) => nil)
 
-(fact "about middleware"
+(facts "about middleware"
   (:status (testapp (body (request :post "/tea.json") {:name "Lipton"}))) => 418) ; I'm a Teapot
 
 (reset-inmem-db)
