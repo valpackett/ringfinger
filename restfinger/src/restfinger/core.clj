@@ -32,6 +32,7 @@
    :views -- map of HTML views (:index, :get, :not-found)
    :flash -- map of flash messages (:created, :updated, :deleted, :forbidden),
              can be either strings or callables expecting a single arg (the entry)
+   :middleware -- map of extended middleware (:all, :index, :create, :read, :update, :delete)
    :hooks -- map of hooks (:data (on both create and update), :create, :update, :view), must be callables expecting
              the entry and returning it (with modifications you want). Hooks receive data with correct
              types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time
@@ -42,7 +43,7 @@
    :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])
                on resource entries, called by visiting /url-prefix+collname/pk?_action=action"
   [collname {:keys [db pk owner-field default-dboptions url-prefix whitelist default-format
-                    actions views forbidden-methods public-methods flash channels hooks]
+                    middleware actions views forbidden-methods public-methods flash channels hooks]
              :or {db nil pk nil owner-field nil
                   default-dboptions {} url-prefix "/"
                   whitelist nil actions []
@@ -53,7 +54,7 @@
                   forbidden-methods []
                   public-methods [:read]
                   flash nil
-                  channels {} hooks {}
+                  middleware {} channels {} hooks {}
                   }} & fields]
   (let [coll (keyword collname)
         urlbase (str url-prefix collname)
@@ -80,6 +81,8 @@
                          :deleted #(str "Deleted: " (get % pk))
                          :forbidden "Forbidden."})
         hooks (merge (zipmap [:data :create :update :read] (repeat identity)) hooks)
+        middleware (merge (zipmap [:all :index :create :read :update :delete]
+                                  (repeat #(fn [req matches] (% req matches)))) middleware)
         ; --- functions ---
         clear-form #(select-keys % whitelist)
         fields-data-pre-hook  (data-pre-hook-from-fields  fields)
@@ -146,6 +149,8 @@
                            {:req  req
                             :data (map get-hook (get-many db coll (i-get-dboptions req)))}
                            html-index))
+                   ((:index middleware))
+                   ((:all middleware))
                    (ewrap-forbidden :index))
           :post (-> (fn [req matches form errors]
                       (if errors
@@ -157,6 +162,8 @@
                             (create db coll entry)
                             (i-redirect req matches entry (:created flash) (if (from-browser? req) 302 201)))))
                     (ewrap-form true)
+                    ((:create middleware))
+                    ((:all middleware))
                     (ewrap-forbidden :create))
           } regexps)
        (if-env "development"
@@ -179,6 +186,7 @@
                                         {:data (get-hook inst)
                                          :req req}
                                         html-get)))
+                           ((:read middleware))
                            (ewrap-forbidden :read))
                  :put (-> (fn [req matches form errors]
                             (if errors
@@ -190,6 +198,7 @@
                                 (update db coll inst diff)
                                 (i-redirect req matches merged (:updated flash) 302))))
                             (ewrap-form false)
+                            ((:update middleware))
                             (ewrap-forbidden :update))
                    :delete (-> (fn [req matches]
                                  ((:delete channels) inst)
@@ -198,9 +207,11 @@
                                   :headers {"Location" urlbase}
                                   :flash   (call-or-ret (:deleted flash) inst)
                                   :body    nil})
+                               ((:delete middleware))
                                (ewrap-forbidden :delete))
                    }) req matches))
-               ewrap-instance) regexps))))
+               ewrap-instance
+               ((:all middleware))) regexps))))
 
 (defmacro defresource [nname options & fields]
   ; dirty magic

@@ -90,7 +90,6 @@ There are no long contributor agreements or any other bullshit. It's simple:
 aka, TODO list
 
 ### Really Important Features
-- custom middleware in restfinger
 - used ids, not just usernames (allow name changes)
 - read-only mode
 - rate limiting (per user)

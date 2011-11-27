@@ -35,10 +35,16 @@
    :owner-field :owner}
   [:name (required) "hey where's the name?"])
 
+(defresource tea
+  {:db inmem
+   :pk :name
+   :middleware {:create #(fn [req matches] (assoc (% req matches) :status 418))}}
+  [:name (required) ""])
+
 (defapp testapp
   {:static-dir "lib"
    :middleware wrap-auth}
-  todos hooked owned forbidden)
+  todos hooked forbidden owned tea)
 
 (defn authd [req]
   (header req "Authorization" "Basic dGVzdDpkZW1v"))
@@ -87,5 +93,8 @@
   (:status (testapp (body (request :post "/forbidden.json") {:name "test"}))) => 201
   (:status (testapp (request :delete "/forbidden/test.json"))) => 405
   (get-one inmem :todos {:body "test"}) => nil)
+
+(fact "about middleware"
+  (:status (testapp (body (request :post "/tea.json") {:name "Lipton"}))) => 418) ; I'm a Teapot
 
 (reset-inmem-db)
