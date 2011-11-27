@@ -87,11 +87,6 @@
         post-hook (comp fields-data-post-hook (:data hooks) (:create hooks) fields-data-pre-hook clear-form)
         put-hook  (comp fields-data-post-hook (:data hooks) (:update hooks) fields-data-pre-hook clear-form)
         get-hook  (comp (get-hook-from-fields fields) (:read hooks))
-        i-validate (fn [req data yep nope]
-                     (let [ks (filter #(or (haz? req-fields %) (not (or (= (get data %) "") (nil? (get data %))))) (keys data))
-                           result (apply validate (select-keys data ks)
-                                         (filter #(haz? ks (first %)) valds))]
-                       (if (= result nil) (yep) (nope result))))
         i-redirect (fn [req matches form flash status]
                      {:status  status
                       :headers {"Location" (str urlbase "/" (get form pk) (dotformat matches))}
@@ -136,6 +131,13 @@
                                            (case method :get :read :put :update method))
                                          (fn [] (% (assoc req :inst true) matches inst)))
                              (respond req matches 404 {} {:req req} html-not-found)))
+        ewrap-form (fn [handler use-blank]
+                     (fn [req matches]
+                       (let [form (keywordize (:form-params req))
+                             data (if use-blank (merge blank-entry form) form)
+                             ks (filter #(or (haz? req-fields %) (not (or (= (get data %) "") (nil? (get data %))))) (keys data))]
+                         (handler req matches form
+                            (apply validate (select-keys data ks) (filter #(haz? ks (first %)) valds))))))
         ]
      (list
        (route (str urlbase ":format")
@@ -144,22 +146,17 @@
                            {:req  req
                             :data (map get-hook (get-many db coll (i-get-dboptions req)))}
                            html-index))
-                    (ewrap-forbidden :index))
-          :post (-> (fn [req matches]
-                      (let [form  (keywordize (:form-params req))
-                            entry (process-new req form)]
-                        (i-validate req (merge blank-entry form)
-                          (fn []
+                   (ewrap-forbidden :index))
+          :post (-> (fn [req matches form errors]
+                      (if errors
+                        (respond req matches 400 {}
+                                 {:data (map get-hook (get-many db coll (i-get-dboptions req)))
+                                  :newdata form :req req :errors errors} html-index)
+                        (let [entry (process-new req form)]
                             ((:create channels) entry)
                             (create db coll entry)
-                            (i-redirect req matches entry (:created flash) (if (from-browser? req) 302 201)))
-                          (fn [errors]
-                            (respond req matches 400 {}
-                                     {:data (map get-hook (get-many db coll (i-get-dboptions req)))
-                                      :newdata form
-                                      :req req
-                                      :errors errors}
-                                     html-index)))))
+                            (i-redirect req matches entry (:created flash) (if (from-browser? req) 302 201)))))
+                    (ewrap-form true)
                     (ewrap-forbidden :create))
           } regexps)
        (if-env "development"
@@ -183,21 +180,16 @@
                                          :req req}
                                         html-get)))
                            (ewrap-forbidden :read))
-                 :put (-> (fn [req matches]
-                            (let [form (keywordize (:form-params req))
-                                  diff (put-hook (merge default-entry form))
-                                  merged (merge inst diff)]
-                              (i-validate req form
-                                  (fn []
-                                    ((:update channels) merged)
-                                    (update db coll inst diff)
-                                    (i-redirect req matches merged (:updated flash) 302))
-                                  (fn [errors]
-                                    (respond req matches 400 {}
-                                             {:data (merge inst form) ; with form! so users can correct errors
-                                              :req req
-                                              :errors errors}
-                                             html-get)))))
+                 :put (-> (fn [req matches form errors]
+                            (if errors
+                              (respond req matches 400 {}
+                                       {:data (merge inst form) :req req :errors errors} html-get)
+                              (let [diff (put-hook (merge default-entry form))
+                                    merged (merge inst diff)]
+                                ((:update channels) merged)
+                                (update db coll inst diff)
+                                (i-redirect req matches merged (:updated flash) 302))))
+                            (ewrap-form false)
                             (ewrap-forbidden :update))
                    :delete (-> (fn [req matches]
                                  ((:delete channels) inst)
