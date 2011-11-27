@@ -12,16 +12,6 @@
 
 (def regexps {:format #"\.?[a-zA-Z]*"})
 
-(defmacro respond [req matches status headers data custom default]
-  `(render
-     (getoutput
-       (first
-         (filter identity
-            [(get-in ~req [:headers "accept"]) ; must be lowercase!
-             (:format ~matches)
-             ~default])) ~custom)
-   ~status ~headers ~data))
-
 (defn resource
   "Creates a list of two routes (/url-prefix+collname.format and
   /url-prefix+collname/pk.format) for RESTful Create/Read/Update/Delete
@@ -109,6 +99,14 @@
                           #(assoc-in (or (params-to-dboptions (:query-params %)) default-dboptions)
                                      [:query owner-field] (get-in % [:user :username]))
                           #(or (params-to-dboptions (:query-params %)) default-dboptions))
+        respond (fn [req matches status headers data view]
+                  (-> (filter identity
+                              [(get-in req [:headers "accept"])
+                               (:format matches)
+                               "html"])
+                      first
+                      (getoutput {"html" view})
+                      (render status headers data)))
         if-allowed  (if owner-field
                       (fn [req entry method yep]
                         (if (or (haz? public-methods method)
@@ -135,7 +133,7 @@
                                          (let [method (:request-method req)]
                                            (case method :get :read :put :update method))
                                          (fn [] (% (assoc req :inst true) matches inst)))
-                             (respond req matches 404 {} {:req req} {"html" html-not-found} "html")))
+                             (respond req matches 404 {} {:req req} html-not-found)))
         ]
      (list
        (route (str urlbase ":format")
@@ -143,8 +141,7 @@
                      (respond req matches 200 {"Link" (str "<" urlbase "/{" (name pk) "}.{format}>; rel=\"entry\"")}
                            {:req  req
                             :data (map get-hook (get-many db coll (i-get-dboptions req)))}
-                           {"html" html-index}
-                           "html"))
+                           html-index))
                     (ewrap-forbidden :index))
           :post (-> (fn [req matches]
                       (let [form  (keywordize (:form-params req))
@@ -160,8 +157,7 @@
                                       :newdata form
                                       :req req
                                       :errors errors}
-                                     {"html" html-index}
-                                     "html")))))
+                                     html-index)))))
                     (ewrap-forbidden :create))
           } regexps)
        (if-env "development"
@@ -183,8 +179,7 @@
                                (respond req matches 200 {}
                                         {:data (get-hook inst)
                                          :req req}
-                                        {"html" html-get}
-                                      "html")))
+                                        html-get)))
                            (ewrap-forbidden :read))
                  :put (-> (fn [req matches]
                             (let [form (keywordize (:form-params req))
@@ -200,8 +195,7 @@
                                              {:data (merge inst form) ; with form! so users can correct errors
                                               :req req
                                               :errors errors}
-                                             {"html" html-get}
-                                             "html")))))
+                                             html-get)))))
                             (ewrap-forbidden :update))
                    :delete (-> (fn [req matches]
                                  ((:delete channels) inst)
