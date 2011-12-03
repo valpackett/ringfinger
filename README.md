@@ -1,4 +1,4 @@
-# ringfinger [![Build Status](https://secure.travis-ci.org/myfreeweb/ringfinger.png)](http://travis-ci.org/)
+# ringfinger [![Build Status](https://secure.travis-ci.org/myfreeweb/ringfinger.png)](http://travis-ci.org/) [![Maintained Status](http://stillmaintained.com/myfreeweb/ringfinger.png)](http://stillmaintained.com/myfreeweb/ringfinger)
 Modern web app framework for [Clojure](http://clojure.org)/[Ring](https://github.com/mmcgrana/ring).  
 Designed for the age of NoSQL, HTML5, REST, JSON, VPS, (sadly) CSRF, XSS and other acronyms.  
 Modular. Simple. Fast. Secure. Named after a great Nine Inch Nails song.
