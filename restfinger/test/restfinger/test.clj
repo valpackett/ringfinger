@@ -32,6 +32,7 @@
 (defresource owned
   {:db inmem
    :pk :name
+   :hooks {:read (make-username-hook {:owner-field :owner})}
    :owner-field :owner}
   [:name (required) "hey where's the name?"])
 

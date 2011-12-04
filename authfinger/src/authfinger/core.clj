@@ -75,3 +75,12 @@
                           nil))
            (assoc :auth-type auth-type)
            handler)))))
+
+(defn make-username-hook
+  "Returns a restfinger hook which changes returned owner-field value
+  from the user id to the value of *login-field*
+  Options: :db, :coll (the ones you use with wrap-auth and auth-routes)
+  and owner-field"
+  [{:keys [db coll owner-field] :or {db inmem coll :ringfinger_auth owner-field :owner}}]
+  (fn [data]
+    (assoc data owner-field (*login-field* (get-one db coll {:query {:id (owner-field data)}})))))
