@@ -5,7 +5,8 @@
         secfinger,
         [clojure.string :only [split]])
   (:import org.apache.commons.codec.digest.DigestUtils,
-           org.apache.commons.codec.binary.Base64))
+           org.apache.commons.codec.binary.Base64,
+           java.util.UUID))
 
 (def ^:dynamic *fixed-salt-part* "186c47add4608abb4c198ef1eac07e41")
 (def ^:dynamic *login-field* :username)
@@ -38,7 +39,7 @@
   login field value and password if the password is valid"
   [db coll login password]
   (let [user (get-one db coll {:query {*login-field* login}})]
-    (if (= (:password_hash user) (DigestUtils/sha256Hex (str (:password_salt user) *fixed-salt-part* password)))
+    (if (= (:hash user) (DigestUtils/sha256Hex (str (:salt user) *fixed-salt-part* password)))
       (if (nil? (:_confirm_key user)) user nil)
       nil)))
 
@@ -50,9 +51,9 @@
   (let [salt (secure-rand)]
     (create db coll
       (merge user
-        {:auth_token    (secure-rand 64)
-         :password_salt salt
-         :password_hash (DigestUtils/sha256Hex (str salt *fixed-salt-part* password))}))))
+        {:token (secure-rand 64)
+         :salt  salt
+         :hash  (DigestUtils/sha256Hex (str salt *fixed-salt-part* password))}))))
 
 (defn wrap-auth
   "Ring middleware that adds :user if there's a user logged in. Supports session/form-based auth and HTTP Basic auth"
@@ -66,7 +67,7 @@
                            :else nil)]
        (-> req
            (assoc :user (case auth-type
-                          :form (let [user (get-one db coll {:query {:auth_token cookie-token}})]
+                          :form (let [user (get-one db coll {:query {:token cookie-token}})]
                                   (if (nil? (:_confirm_key user)) user nil))
                           :basic (let [cr (split (new String (Base64/decodeBase64 (str-drop 6 auth-hdr))) #":")]
                                    (get-user db coll (first cr) (second cr)))

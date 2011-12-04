@@ -21,7 +21,7 @@
                           {}))))))
 
 (defn auth-cookie [user]
-  {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :http-only true :value (:auth_token user)})
+  {:expires "Sun, 16-Dec-2029 03:24:16 GMT" :path "/" :http-only true :value (:token user)})
 
 (defn ewrap-if-not-user
   [handler redir-p redir-to]
