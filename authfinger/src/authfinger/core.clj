@@ -8,6 +8,7 @@
            org.apache.commons.codec.binary.Base64))
 
 (def ^:dynamic *fixed-salt-part* "186c47add4608abb4c198ef1eac07e41")
+(def ^:dynamic *login-field* :username)
 
 (defmacro with-salt
   "Changes the fixed part of the salt used for password hashing.
@@ -23,16 +24,28 @@
        (binding [*fixed-salt-part* s#]
          ~@body))))
 
+(defmacro with-login-field
+  "Changes the field used for logging in, default is :username"
+  [login-field & body]
+  `(do
+     (let [l# ~login-field]
+       (assert (keyword? l#))
+       (binding [*login-field* l#]
+         ~@body))))
+
 (defn get-user
-  "Returns a user from coll in db with given username and password if the password is valid"
-  [db coll username password]
-  (let [user (get-one db coll {:query {:username username}})]
+  "Returns a user from coll in db with given
+  login field value and password if the password is valid"
+  [db coll login password]
+  (let [user (get-one db coll {:query {*login-field* login}})]
     (if (= (:password_hash user) (DigestUtils/sha256Hex (str (:password_salt user) *fixed-salt-part* password)))
       (if (nil? (:_confirm_key user)) user nil)
       nil)))
 
 (defn make-user
-  "Creates a user in coll in db with given fields (:username and whatever you need) and password"
+  "Creates a user in coll in db with given fields
+  (the one specified by *login-field*, :username by default
+  and whatever you need) and password"
   [db coll user password]
   (let [salt (secure-rand)]
     (create db coll
