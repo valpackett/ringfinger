@@ -22,7 +22,7 @@
    :db -- database (required!)
    :pk -- primary key (required!)
    :url-prefix -- a part of the URL before the collname, default is /
-   :owner-field -- if you want entries to be owned by users, name of the field which should hold usernames
+   :owner-field -- if you want entries to be owned by users, name of the field which should hold user ids
    :default-dboptions -- default database options (:query, :sort) for the index page
    :whitelist -- allowed extra fields (not required)
    :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)
@@ -102,7 +102,7 @@
                       :body    ""})
         i-get-dboptions (if owner-field
                           #(assoc-in (or (params-to-dboptions (:query-params %)) default-dboptions)
-                                     [:query owner-field] (get-in % [:user :username]))
+                                     [:query owner-field] (get-in % [:user :id]))
                           #(or (params-to-dboptions (:query-params %)) default-dboptions))
         respond (fn [req matches status headers data view]
                   (-> (filter identity
@@ -115,7 +115,7 @@
         if-allowed  (if owner-field
                       (fn [req entry method yep]
                         (if (or (haz? public-methods method)
-                                (= (get-in req [:user :username]) (get entry owner-field)))
+                                (= (get-in req [:user :id]) (get entry owner-field)))
                           (yep)
                           (if (from-browser? req)
                             {:status  302
@@ -128,8 +128,8 @@
                        (fn [req entry method yep] (yep)))
         process-new  (if owner-field
                        ; [req form]
-                       ; adds creator's username if there's an owner-field
-                       #(assoc (post-hook %2) owner-field (get-in %1 [:user :username]))
+                       ; adds creator's id if there's an owner-field
+                       #(assoc (post-hook %2) owner-field (get-in %1 [:user :id]))
                        #(post-hook %2))
         ewrap-forbidden #(if (not (haz? forbidden-methods %2)) %1 method-na-handler)
         ewrap-instance  #(fn [req matches]
