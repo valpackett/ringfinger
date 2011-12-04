@@ -52,6 +52,7 @@
     (create db coll
       (merge user
         {:token (secure-rand 64)
+         :id    (str (UUID/randomUUID))
          :salt  salt
          :hash  (DigestUtils/sha256Hex (str salt *fixed-salt-part* password))}))))
 
