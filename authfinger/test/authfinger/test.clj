@@ -19,7 +19,7 @@
   (let [usr (get-user inmem :ringfinger_auth "test" "demo")]
     (facts "about reading user info"
       (:username usr) => "test"
-      (:password_hash usr) => (DigestUtils/sha256Hex (str (:password_salt usr) "saltdemo")))))
+      (:hash usr) => (DigestUtils/sha256Hex (str (:salt usr) "saltdemo")))))
 
 (binding [*request* (header (request :post "/auth/login") "Referer" "http://localhost/demo")]
   (fact
