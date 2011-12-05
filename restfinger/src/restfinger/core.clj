@@ -148,14 +148,16 @@
         parse-int #(if (string? %) (Integer/parseInt %) nil)
         ewrap-pagination (if per-page-default
                            #(fn [req matches]
-                              (let [page (or (parse-int (get (:query-params req) "page")) 1)
-                                    per-page (or (parse-int (get (:query-params req) "per_page")) per-page-default)]
+                              (let [fmt (fn [rel page] (format "<%s%s>; rel=\"%s\"" (:uri req) (alter-query-params req {"page" page}) rel))
+                                    page (or (parse-int (get (:query-params req) "page")) 1)
+                                    per-page (or (parse-int (get (:query-params req) "per_page")) per-page-default)
+                                    last-page (int (Math/ceil (/ (get-count db coll (i-get-dboptions req true)) per-page)))]
                                 (assoc-in
                                   (% (merge req (pack-to-map page per-page)) matches)
                                   [:headers "Link"]
-                                  (format "<%s%s>; rel=\"next\", <%s%s>; rel=\"last\""
-                                    (:uri req) (alter-query-params req {"page" (+ 1 page)})
-                                    (:uri req) (alter-query-params req {"page" (int (Math/ceil (/ (get-count db coll (i-get-dboptions req true)) per-page)))})))))
+                                  (apply str (interpose ", " (concat
+                                    (if (= page 1) [] [(fmt "first" 1) (fmt "prev" (- page 1))])
+                                    (if (= page last-page) [] [(fmt "next" (+ page 1)) (fmt "last" last-page)])))))))
                            #(fn [req matches] (% req matches)))
         ewrap-forbidden #(if (not (haz? forbidden-methods %2)) %1 method-na-handler)
         ewrap-instance  #(fn [req matches]

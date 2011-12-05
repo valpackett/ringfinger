@@ -102,7 +102,11 @@
 (testapp (request :get "/todos/_create_fakes?count=50"))
 
 (facts "about pagination"
-  (:headers (testapp (request :get "/todos.json")))
-   => (contains {"Link" "</todos.json?page=2>; rel=\"next\", </todos.json?page=3>; rel=\"last\""}))
+  (get (:headers (testapp (request :get "/todos.json"))) "Link")
+   => "</todos.json?page=2>; rel=\"next\", </todos.json?page=3>; rel=\"last\""
+  (get (:headers (testapp (request :get "/todos.json?page=2"))) "Link")
+   => "</todos.json?page=1>; rel=\"first\", </todos.json?page=1>; rel=\"prev\", </todos.json?page=3>; rel=\"next\", </todos.json?page=3>; rel=\"last\""
+  (get (:headers (testapp (request :get "/todos.json?page=3"))) "Link")
+   => "</todos.json?page=1>; rel=\"first\", </todos.json?page=2>; rel=\"prev\"")
 
 (reset-inmem-db)
