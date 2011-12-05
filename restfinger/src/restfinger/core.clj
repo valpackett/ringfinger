@@ -41,9 +41,11 @@
                 to these channels so you could, for example, push updates to clients in real time,
                 enqueue long-running jobs, index changes with a search engine, etc.
    :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])
-               on resource entries, called by visiting /url-prefix+collname/pk?_action=action"
+               on resource entries, called by visiting /url-prefix+collname/pk?_action=action
+   :per-page-default -- default amount of entried per page, set to nil to disable pagination"
   [collname {:keys [db pk owner-field default-dboptions url-prefix whitelist default-format
-                    middleware actions views forbidden-methods public-methods flash channels hooks]
+                    middleware actions views forbidden-methods public-methods flash channels hooks
+                    per-page-default]
              :or {db nil pk nil owner-field nil
                   default-dboptions {} url-prefix "/"
                   whitelist nil actions []
@@ -55,6 +57,7 @@
                   public-methods [:read]
                   flash nil
                   middleware {} channels {} hooks {}
+                  per-page-default 20
                   }} & fields]
   {:pre [(not (nil? db))
          (not (nil? pk))]}
@@ -100,10 +103,21 @@
                       :headers {"Location" (str urlbase "/" (get form pk) (dotformat matches))}
                       :flash   (call-or-ret flash form)
                       :body    ""})
-        i-get-dboptions (if owner-field
-                          #(assoc-in (or (params-to-dboptions (:query-params %)) default-dboptions)
-                                     [:query owner-field] (get-in % [:user :id]))
-                          #(or (params-to-dboptions (:query-params %)) default-dboptions))
+        i-get-dboptions (let [base (fn [req] (or (params-to-dboptions (:query-params req)) default-dboptions))
+                              ownd (if owner-field
+                                     (fn [req] (assoc-in (base req) [:query owner-field] (get-in req [:user :id])))
+                                     base)
+                              pagd (if per-page-default
+                                     (fn
+                                       ([req]
+                                         (if-let [per-page (:per-page req)]
+                                           (-> (ownd req)
+                                               (assoc :limit per-page)
+                                               (assoc :skip (* per-page (- (:page req) 1))))
+                                           (ownd req)))
+                                       ([req skip-limit] (ownd req)))
+                                     ownd)]
+                          pagd)
         respond (fn [req matches status headers data view]
                   (-> (filter identity
                               [(get-in req [:headers "accept"])
@@ -131,6 +145,18 @@
                        ; adds creator's id if there's an owner-field
                        #(assoc (post-hook %2) owner-field (get-in %1 [:user :id]))
                        #(post-hook %2))
+        parse-int #(if (string? %) (Integer/parseInt %) nil)
+        ewrap-pagination (if per-page-default
+                           #(fn [req matches]
+                              (let [page (or (parse-int (get (:query-params req) "page")) 1)
+                                    per-page (or (parse-int (get (:query-params req) "per_page")) per-page-default)]
+                                (assoc-in
+                                  (% (merge req (pack-to-map page per-page)) matches)
+                                  [:headers "Link"]
+                                  (format "<%s%s>; rel=\"next\", <%s%s>; rel=\"last\""
+                                    (:uri req) (alter-query-params req {"page" (+ 1 page)})
+                                    (:uri req) (alter-query-params req {"page" (int (Math/ceil (/ (get-count db coll (i-get-dboptions req true)) per-page)))})))))
+                           #(fn [req matches] (% req matches)))
         ewrap-forbidden #(if (not (haz? forbidden-methods %2)) %1 method-na-handler)
         ewrap-instance  #(fn [req matches]
                            (if-let [inst (get-one db coll {:query {pk (typeify (:pk matches))}})]
@@ -155,22 +181,23 @@
      (list
        (route (str urlbase ":format")
          {:get (-> (fn [req matches]
-                     (respond req matches 200 {"Link" (str "<" urlbase "/{" (name pk) "}.{format}>; rel=\"entry\"")}
-                           {:req  req
-                            :data (map get-hook (get-many db coll (i-get-dboptions req)))}
-                           html-index))
+                     (respond req matches 200 {}
+                        {:req  req
+                         :data (map get-hook (get-many db coll (i-get-dboptions req)))}
+                        html-index))
                    ((:index middleware))
                    ((:all middleware))
+                   (ewrap-pagination)
                    (ewrap-forbidden :index))
           :post (-> (fn [req matches form errors]
                       (if errors
                         (respond req matches 400 {}
-                                 {:data (map get-hook (get-many db coll (i-get-dboptions req)))
-                                  :newdata form :req req :errors errors} html-index)
+                           {:data (map get-hook (get-many db coll (i-get-dboptions req)))
+                            :newdata form :req req :errors errors} html-index)
                         (let [entry (process-new req form)]
-                            ((:create channels) entry)
-                            (create db coll entry)
-                            (i-redirect req matches entry (:created flash) (if (from-browser? req) 302 201)))))
+                          ((:create channels) entry)
+                          (create db coll entry)
+                          (i-redirect req matches entry (:created flash) (if (from-browser? req) 302 201)))))
                     (ewrap-form true)
                     ((:create middleware))
                     ((:all middleware))
@@ -193,15 +220,15 @@
                              (if-let [action (get actions (get-in req [:query-params "_action"] ""))]
                                (action req matches inst default-data)
                                (respond req matches 200 {}
-                                        {:data (get-hook inst)
-                                         :req req}
-                                        html-get)))
+                                  {:data (get-hook inst)
+                                   :req req}
+                                  html-get)))
                            ((:read middleware))
                            (ewrap-forbidden :read))
                  :put (-> (fn [req matches form errors]
                             (if errors
                               (respond req matches 400 {}
-                                       {:data (merge inst form) :req req :errors errors} html-get)
+                                 {:data (merge inst form) :req req :errors errors} html-get)
                               (let [diff (put-hook (merge default-entry form))
                                     merged (merge inst diff)]
                                 ((:update channels) merged)

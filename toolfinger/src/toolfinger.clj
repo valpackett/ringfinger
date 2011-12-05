@@ -74,6 +74,9 @@
           "="
           (java.net.URLEncoder/encode (str (val %)) "UTF-8")) ~m)))))
 
+(defn alter-query-params
+  [req m] (map-to-querystring (merge (:query-params req) m)))
+
 (defn typeify
   "Normalizes the type of s. If it's a string 'true', returns true, if 'false' -- false, also recognizes integers and doubles "
   [s]

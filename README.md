@@ -92,11 +92,11 @@ There are no long contributor agreements or whatever. It's simple:
 aka, TODO list
 
 ### Really Important Features
-- authfinger: user ids, not just usernames (allow name changes), invites, password recovery
+- authfinger: invites, password recovery
 - read-only mode
 - rate limiting (per user)
 - queries in url prefixes (eg. :username prefix to allow :username/collname/:pk with the same pk values)
-- pagination (including HTTP Link header for being RESTful)
+- pagination html helper
 - file attachments w/ GridFS support
 - asset system that supports preprocessors, css sprite making & completely dynamic in dev mode & uploads to clouds for production with a lein task, using attachment storages. kinda like rails 3.1
 - optionally separating create/index and view/edit pages in html - possible to create "create" and "edit" pages manually now, but it should be easy

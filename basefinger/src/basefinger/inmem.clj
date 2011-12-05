@@ -28,6 +28,8 @@
                          (if l (take l b) b))) (:sort options)))
   (get-one [self coll options]
     (first (get-many self coll options)))
+  (get-count [self coll options]
+    (count (get-many self coll options)))
   (update  [self coll entry data]
     (dosync
       (ref-set base (assoc @base coll (replace {entry (merge entry data)} (get @base coll))))))

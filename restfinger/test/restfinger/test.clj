@@ -11,6 +11,7 @@
 (defresource todos
   {:db inmem
    :pk :body
+   :per-page-default 20
    :whitelist [:state]}
   [:body (required) "should be present"])
 
@@ -97,5 +98,11 @@
 
 (facts "about middleware"
   (:status (testapp (body (request :post "/tea.json") {:name "Lipton"}))) => 418) ; I'm a Teapot
+
+(testapp (request :get "/todos/_create_fakes?count=50"))
+
+(facts "about pagination"
+  (:headers (testapp (request :get "/todos.json")))
+   => (contains {"Link" "</todos.json?page=2>; rel=\"next\", </todos.json?page=3>; rel=\"last\""}))
 
 (reset-inmem-db)

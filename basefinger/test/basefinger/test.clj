@@ -27,4 +27,7 @@
   (get-many inmem :q {:sort {:b -1}}) => '({:a 1 :b 4} {:a 1 :b 3} {:a 1 :b 2} {:a 1 :b 1})
   (get-many inmem :q {:skip 1 :limit 2 :sort {:b 1}}) => '({:a 1 :b 2} {:a 1 :b 3}))
 
+(facts "about counting"
+  (get-count inmem :q {}) => 4)
+
 (reset-inmem-db)

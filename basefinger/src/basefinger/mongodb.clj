@@ -15,6 +15,8 @@
                                  :sort  (:sort  options))))
   (get-one [self coll options]
     (get-many self coll (assoc options :one? true)))
+  (get-count [self coll options]
+    (get-many self coll (assoc options :count? true)))
   (update [self coll entry data]
     (with-mongo conn (update! coll entry data)))
   (modify [self coll entry modifiers]

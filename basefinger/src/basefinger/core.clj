@@ -8,6 +8,7 @@
   (create-many [self coll data])
   (get-many    [self coll options])
   (get-one     [self coll options])
+  (get-count   [self coll options])
   (update      [self coll entry data])
   (modify      [self coll entry modifiers])
   (delete      [self coll entry]))
@@ -59,8 +60,8 @@
 ; yeah, that's a mess, but a really fast mess!
 
 (defn params-to-dboptions
-;  "Turns ring query-params into db options
-;  eg. {'query_field_ne' 3, 'sort_field' -1}
-;  becomes {:query {:field {:$ne 3}}, :sort {:field -1}}"
+  "Turns ring query-params into db options
+  eg. {'query_field_ne' 3, 'sort_field' -1}
+  becomes {:query {:field {:$ne 3}}, :sort {:field -1}}"
   ([qp] (if (empty? qp) nil (apply merge (map params-to-dboptions (keys qp) (vals qp)))))
   ([q v] (if (substring? "_" q) (param-to-dboptions (flatten (list (split q #"_") (typeify v)))) nil)))
