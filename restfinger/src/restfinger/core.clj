@@ -118,14 +118,14 @@
                                        ([req skip-limit] (ownd req)))
                                      ownd)]
                           pagd)
-        respond (fn [req matches status headers data view]
+        respond (fn [req matches status data view]
                   (-> (filter identity
                               [(get-in req [:headers "accept"])
                                (:format matches)
                                default-format])
                       first
                       (getoutput {"html" view})
-                      (render status headers data)))
+                      (render status data)))
         if-allowed  (if owner-field
                       (fn [req entry method yep]
                         (if (or (haz? public-methods method)
@@ -166,7 +166,7 @@
                                          (let [method (:request-method req)]
                                            (case method :get :read :put :update method))
                                          (fn [] (% (assoc req :inst true) matches inst)))
-                             (respond req matches 404 {} {:req req} html-not-found)))
+                             (respond req matches 404 {:req req} html-not-found)))
         ewrap-form (fn [handler use-blank]
                      (fn [req matches]
                        (let [form (keywordize (:form-params req))
@@ -183,7 +183,7 @@
      (list
        (route (str urlbase ":format")
          {:get (-> (fn [req matches]
-                     (respond req matches 200 {}
+                     (respond req matches 200
                         {:req  req
                          :data (map get-hook (get-many db coll (i-get-dboptions req)))}
                         html-index))
@@ -193,7 +193,7 @@
                    (ewrap-forbidden :index))
           :post (-> (fn [req matches form errors]
                       (if errors
-                        (respond req matches 400 {}
+                        (respond req matches 400
                            {:data (map get-hook (get-many db coll (i-get-dboptions req)))
                             :newdata form :req req :errors errors} html-index)
                         (let [entry (process-new req form)]
@@ -221,7 +221,7 @@
                  {:get (-> (fn [req matches]
                              (if-let [action (get actions (get-in req [:query-params "_action"] ""))]
                                (action req matches inst default-data)
-                               (respond req matches 200 {}
+                               (respond req matches 200
                                   {:data (get-hook inst)
                                    :req req}
                                   html-get)))
@@ -229,7 +229,7 @@
                            (ewrap-forbidden :read))
                  :put (-> (fn [req matches form errors]
                             (if errors
-                              (respond req matches 400 {}
+                              (respond req matches 400
                                  {:data (merge inst form) :req req :errors errors} html-get)
                               (let [diff (put-hook (merge default-entry form))
                                     merged (merge inst diff)]
