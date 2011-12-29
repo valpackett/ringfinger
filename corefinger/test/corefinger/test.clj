@@ -2,6 +2,8 @@
   (:use corefinger.core, midje.sweet, ring.mock.request))
 
 (defapp testapp {:static-dir "lib"}
+  (list (route "/listed" (nest (fn [req] {:status 200 :headers {} :body "I am a listed Ring handler"}))))
+  {:routes (route "/mapped" (nest (fn [req] {:status 200 :headers {} :body "I am a mapped Ring handler"})))}
   (route "/nested" (nest (fn [req] {:status 200 :headers {} :body "I am a pure Ring handler"})))
   (route "/method"
     {:get (fn [req matches]
@@ -21,6 +23,8 @@
        :headers (contains {"Content-Length" "9"
                            "Content-Type" "text/plain"})
        :body    "Yo: hello"})
+  (:status (testapp (request :get "/listed"))) => 200
+  (:status (testapp (request :get "/mapped"))) => 200
   (:status (testapp (request :get "/nested"))) => 200
   (:status (testapp (request :post "/test/hello"))) => 405
   (:body   (testapp (header (request :delete "/method") "X-HTTP-Method-Override" "GET"))) => "{\"method\":\"get\"}"

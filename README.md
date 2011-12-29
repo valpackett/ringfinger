@@ -105,7 +105,7 @@ aka, TODO list
 ### Someday
 - middleware like [django-paranoid-sessions](https://github.com/rfk/django-paranoid-sessions)
 - HTML email support
-- [OpenID](http://code.google.com/p/jopenid/)
+- [OpenID](http://code.google.com/p/jopenid/), [BrowserID](https://github.com/mozilla/browserid/wiki/How-to-Use-BrowserID-on-Your-Site), OAuth
 - atom feeds for resources
 - i18n
 - Sitemap and [Swagger](http://swagger.wordnik.com) implementation

@@ -182,7 +182,7 @@
        (prn (map #(assert (haz? (arities %) 1)) (vals hooks)))
        (prn (map #(assert (haz? (arities (% (fn [r m] {}))) 2)) (vals middleware)))
        (prn (map #(assert (haz? (arities %) 4)) (vals actions))))
-     (list
+     (merge (pack-to-map db pk coll channels urlbase) {:routes (list
        (route (str urlbase ":format")
          {:get (-> (fn [req matches]
                      (respond req matches 200
@@ -252,7 +252,7 @@
                                (ewrap-forbidden :delete))
                    }) req matches))
                ewrap-instance
-               ((:all middleware))) regexps))))
+               ((:all middleware))) regexps))})))
 
 (defmacro defresource [nname options & fields]
   ; dirty magic

@@ -67,7 +67,13 @@
          static-dir "static"
          callback-param "callback"
          memoize-routing false}} & routes]
-  (let [allroutes (concat (filter identity (flatten routes)) (list not-found-route))
+  (let [allroutes (concat
+                    (->> routes
+                         flatten
+                         (map #(if-let [r (:routes %)] r %))
+                         flatten
+                         (filter identity))
+                    (list not-found-route))
         rmf (if (= memoize-routing true) (memoize route-matches) route-matches)
         h (-> (fn [req]
                 (let [route (first (filter #(rmf (:route %) req) allroutes))]
