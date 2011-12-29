@@ -23,6 +23,7 @@
    :pk -- primary key (required!)
    :url-prefix -- a part of the URL before the collname, default is /
    :owner-field -- if you want entries to be owned by users, name of the field which should hold user ids
+   :owner-only -- if you want entries to be private
    :default-dboptions -- default database options (:query, :sort) for the index page
    :whitelist -- allowed extra fields (not required)
    :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)
@@ -45,7 +46,7 @@
    :per-page-default -- default amount of entried per page, set to nil to disable pagination"
   [collname {:keys [db pk owner-field default-dboptions url-prefix whitelist default-format
                     middleware actions views forbidden-methods public-methods flash channels hooks
-                    per-page-default]
+                    per-page-default owner-only]
              :or {db nil pk nil owner-field nil
                   default-dboptions {} url-prefix "/"
                   whitelist nil actions []
@@ -58,6 +59,7 @@
                   flash nil
                   middleware {} channels {} hooks {}
                   per-page-default 20
+                  owner-only false
                   }} & fields]
   {:pre [(not (nil? db))
          (not (nil? pk))]}
@@ -104,7 +106,7 @@
                       :flash   (call-or-ret flash form)
                       :body    ""})
         i-get-dboptions (let [base (fn [req] (or (params-to-dboptions (:query-params req)) default-dboptions))
-                              ownd (if owner-field
+                              ownd (if (and owner-field owner-only)
                                      (fn [req] (assoc-in (base req) [:query owner-field] (get-in req [:user :id])))
                                      base)
                               pagd (if per-page-default
