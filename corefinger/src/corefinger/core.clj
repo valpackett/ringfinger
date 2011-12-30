@@ -60,13 +60,16 @@
    :session-store -- SessionStore for session middleware
    :static-dir -- directory with static files for serving them in development
    :callback-param -- parameter for JSONP callbacks, default is 'callback'
-   :memoize-routing -- whether to memoize (cache) route matching, gives better performance by using more memory, disabled by default"
-  [{:keys [middleware session-store static-dir callback-param memoize-routing]
+   :memoize-routing -- whether to memoize (cache) route matching, gives better
+                       performance by using more memory, disabled by default
+   :log -- settings for wrap-logging, use nil to disable logging at all"
+  [{:keys [middleware session-store static-dir callback-param memoize-routing log]
     :or {middleware nil
          session-store (memory-store)
          static-dir "static"
          callback-param "callback"
-         memoize-routing false}} & routes]
+         memoize-routing false
+         log {}}} & routes]
   (let [allroutes (concat
                     (->> routes
                          flatten
@@ -94,8 +97,8 @@
               wrap-refcheck
               wrap-method-override
               wrap-json-params
-              wrap-params
-              )]
+              wrap-params)
+        h (if log (wrap-logging h log) h)]
     (if-env "development"
       (-> h
           (wrap-file static-dir)

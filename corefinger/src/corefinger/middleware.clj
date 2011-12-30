@@ -1,6 +1,7 @@
 (ns corefinger.middleware
   "Common Ring middleware"
-  (:use [clojure.data.json :only [read-json]],
+  (:use toolfinger
+        [clojure.data.json :only [read-json json-str]],
         [clojure.string :only [lower-case]]))
 
 (defn wrap-length
@@ -49,3 +50,32 @@
     (let [rm (or (get-in req [:headers "x-http-method-override"])
                  (get-in req [:query-params "_method"]))]
       (handler (if rm (assoc req :request-method (keyword (lower-case rm))) req)))))
+
+(defn wrap-logging
+  "Ring middleware for request logging.
+   Why JSON: http://journal.paul.querna.org/articles/2011/12/26/log-for-machines-in-json/
+   Options:
+    :output -- :stdout, :stderr, a string (file path) or a function (for log systems)
+               :stdout is default
+    :status-filter -- a collection of status codes to log responses with or a predicate
+                      (eg. #(> % 399)). nil is default
+    :keys-filter -- which keys of (merge req res) to log"
+  [handler {:keys [output status-filter keys-filter]
+            :or {output :stdout
+                 status-filter nil
+                 keys-filter [:status :uri :remote-addr :request-method]}}]
+  (fn [req]
+    (let [res (handler req)
+          status-filter (cond
+                          (nil? status-filter) (fn [s] true)
+                          (coll? status-filter) #(haz? status-filter %)
+                          (fn? status-filter) status-filter)
+          logger (cond
+                   (= output :stdout) println
+                   (= output :stderr) #(binding [*out* *err*]
+                                         (println %))
+                   (string? output) #(spit output (str % "\n") :append true)
+                   (fn? output) output)
+          entry (json-str (select-keys (merge req res) keys-filter))]
+      (if (status-filter (:status res)) (logger entry))
+      res)))
