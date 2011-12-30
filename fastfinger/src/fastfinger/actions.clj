@@ -12,7 +12,7 @@
   ([hook flash channel]
    (fn [req matches entry default-data]
      (let [result (hook entry)]
-       (update (:db default-data) (:coll default-data) entry result)
+       (update (:db default-data) (:coll default-data) entry result false)
        (if channel (enqueue channel result))
        {:status  302
         :headers {"Location" (str (:urlbase default-data) "/" (get result (:pk default-data) (dotformat matches)))}
