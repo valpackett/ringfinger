@@ -142,11 +142,14 @@
                              :headers {"Content-Type" "text/plain"}
                              :body    "Forbidden"})))
                        (fn [req entry method yep] (yep)))
-        process-new  (if owner-field
-                       ; [req form]
-                       ; adds creator's id if there's an owner-field
-                       #(assoc (post-hook %2) owner-field (get-in %1 [:user :id]))
-                       #(post-hook %2))
+        make-processor (fn [hook]
+                         (if owner-field
+                         ; [req form]
+                         ; adds creator's id if there's an owner-field
+                           #(assoc (hook %2) owner-field (get-in %1 [:user :id]))
+                           #(hook %2)))
+        process-new (make-processor post-hook)
+        process-replace (make-processor put-hook)
         parse-int #(if (string? %) (Integer/parseInt %) nil)
         ewrap-pagination (if per-page-default
                            #(fn [req matches]
@@ -233,7 +236,7 @@
                              (if errors
                                (respond req matches 400
                                   {:data form :req req :errors errors} html-get)
-                               (let [form (put-hook form)]
+                               (let [form (process-replace req form)]
                                  ((:update channels) form)
                                  (update db coll inst form true)
                                  (i-redirect req matches form (:updated flash) 302))))
