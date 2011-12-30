@@ -15,6 +15,12 @@
    :whitelist [:state]}
   [:body (required) "should be present"])
 
+(defresource dotos
+  {:db inmem
+   :pk :body
+   :whitelist [:state]}
+  [:body (required) "should be present"])
+
 (defresource hooked
   {:db inmem
    :pk :name
@@ -46,7 +52,7 @@
 (defapp testapp
   {:static-dir "lib"
    :middleware wrap-auth}
-  todos hooked forbidden owned tea)
+  todos dotos hooked forbidden owned tea)
 
 (defn authd [req]
   (header req "Authorization" "Basic dGVzdDpkZW1v"))
@@ -66,12 +72,17 @@
   (:status (testapp (body (authd (request :post "/owned.json")) {:name "sup"}))) => 201)
 
 (facts "about updating"
-  (testapp (body (request :put "/todos/test.json")
+  ; put
+  (testapp (body (request :post "/dotos.json") {:body "ass" :state "2"}))
+  (testapp (body (request :put "/dotos/ass.json") {:body "ass"}))
+  (:body (testapp (request :get "/dotos/ass.json"))) => "{\"body\":\"ass\"}"
+  ; patch
+  (testapp (body (request :patch "/todos/test.json")
                  {:body  "test" :state "on"}))
        => (contains {:status 302 :headers (contains {"Location" "/todos/test.json"})})
-  (:status (testapp (body (request :put "/hooked/test.json") {:name "test2"}))) => 302
-  (:status (testapp (body (request :put "/owned/sup.json") {:name "hacked"})))  => 403
-  (:status (testapp (body (authd (request :put "/owned/sup.json")) {:name "wassup"}))) => 302)
+  (:status (testapp (body (request :patch "/hooked/test.json") {:name "test2"}))) => 302
+  (:status (testapp (body (request :patch "/owned/sup.json") {:name "hacked"})))  => 403
+  (:status (testapp (body (authd (request :patch "/owned/sup.json")) {:name "wassup"}))) => 302)
 
 (facts "about reading"
   (:body (testapp (request :get "/todos/test.json"))) => "{\"state\":\"on\",\"body\":\"test\"}"

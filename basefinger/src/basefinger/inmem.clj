@@ -30,9 +30,9 @@
     (first (get-many self coll options)))
   (get-count [self coll options]
     (count (get-many self coll options)))
-  (update  [self coll entry data]
+  (update  [self coll entry data replace?]
     (dosync
-      (ref-set base (assoc @base coll (replace {entry (merge entry data)} (get @base coll))))))
+      (ref-set base (assoc @base coll (replace {entry (if replace? data (merge entry data))} (get @base coll))))))
   (modify [self coll entry modifiers]
     (dosync
       (ref-set base (assoc @base coll (replace {entry (apply-modifications entry modifiers)} (get @base coll))))))

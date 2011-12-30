@@ -229,18 +229,29 @@
                                   html-get)))
                            ((:read middleware))
                            (ewrap-forbidden :read))
-                 :put (-> (fn [req matches form errors]
-                            (if errors
-                              (respond req matches 400
-                                 {:data (merge inst form) :req req :errors errors} html-get)
-                              (let [diff (put-hook (merge default-entry form))
-                                    merged (merge inst diff)]
-                                ((:update channels) merged)
-                                (update db coll inst diff)
-                                (i-redirect req matches merged (:updated flash) 302))))
-                            (ewrap-form false)
-                            ((:update middleware))
-                            (ewrap-forbidden :update))
+                  :put (-> (fn [req matches form errors]
+                             (if errors
+                               (respond req matches 400
+                                  {:data form :req req :errors errors} html-get)
+                               (let [form (put-hook form)]
+                                 ((:update channels) form)
+                                 (update db coll inst form true)
+                                 (i-redirect req matches form (:updated flash) 302))))
+                             (ewrap-form false)
+                             ((:update middleware))
+                             (ewrap-forbidden :update))
+                  :patch (-> (fn [req matches form errors]
+                                (if errors
+                                  (respond req matches 400
+                                     {:data (merge inst form) :req req :errors errors} html-get)
+                                  (let [diff (put-hook (merge default-entry form))
+                                        merged (merge inst diff)]
+                                    ((:update channels) merged)
+                                    (update db coll inst diff false)
+                                    (i-redirect req matches merged (:updated flash) 302))))
+                                (ewrap-form false)
+                                ((:update middleware))
+                                (ewrap-forbidden :update))
                    :delete (-> (fn [req matches]
                                  ((:delete channels) inst)
                                  (delete db coll inst)

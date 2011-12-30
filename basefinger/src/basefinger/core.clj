@@ -9,7 +9,7 @@
   (get-many    [self coll options])
   (get-one     [self coll options])
   (get-count   [self coll options])
-  (update      [self coll entry data])
+  (update      [self coll entry data replace?])
   (modify      [self coll entry modifiers])
   (delete      [self coll entry]))
 

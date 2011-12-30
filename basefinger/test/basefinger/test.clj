@@ -6,7 +6,8 @@
 (facts "about CRUD"
   (create  inmem :test {:key "value"}) => {:key "value"}
   (get-one inmem :test {:query {:key "value"}}) => {:key "value"}
-  (update  inmem :test (get-one inmem :test {:query {:key "value"}}) {:key "updated"}) => {:test [{:key "updated"}]}
+  (update  inmem :test (get-one inmem :test {:query {:key "value"}}) {:key "updated" :add "1"} false) => {:test [{:add "1" :key "updated"}]}
+  (update  inmem :test (get-one inmem :test {:query {:key "updated"}}) {:key "updated"} true) => {:test [{:key "updated"}]}
   (delete  inmem :test (get-one inmem :test {:query {:key "updated"}})) => {:test []})
 
 (create inmem :atm {:num 1})
