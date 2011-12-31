@@ -1,7 +1,7 @@
 (ns corefinger.test
   (:use corefinger.core, midje.sweet, ring.mock.request))
 
-(defapp testapp {:static-dir "lib"}
+(defapp testapp {:static-dir "lib" :log nil}
   (list (route "/listed" (nest (fn [req] {:status 200 :headers {} :body "I am a listed Ring handler"}))))
   {:routes (route "/mapped" (nest (fn [req] {:status 200 :headers {} :body "I am a mapped Ring handler"})))}
   (route "/nested" (nest (fn [req] {:status 200 :headers {} :body "I am a pure Ring handler"})))
@@ -15,6 +15,11 @@
             {:status  200
              :headers {"Content-Type" "text/plain"}
              :body    (str "Yo: " (:a matches))})}))
+
+(defapp logapp
+        {:static-dir "lib"
+         :log {:status-filter #(> % 300)}}
+        (route "/a" (fn [r m] {:status 200})))
 
 (facts "about requests in general"
   (testapp (request :get "/test/hello")) =>
@@ -36,3 +41,7 @@
     (contains
       {:headers (contains {"Content-Type" "text/javascript; charset=utf-8"})
        :body "my_cb({\"method\":\"get\"})"}))
+
+(facts "about logging"
+  (with-out-str (logapp (request :get "/a")))   => ""
+  (with-out-str (logapp (request :get "/404"))) => "{\"request-method\":\"get\",\"remote-addr\":\"localhost\",\"uri\":\"/404\",\"status\":404}\n")

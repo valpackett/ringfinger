@@ -1,8 +1,9 @@
 (ns corefinger.middleware
   "Common Ring middleware"
+  (:refer-clojure :exclude [replace])
   (:use toolfinger
         [clojure.data.json :only [read-json json-str]],
-        [clojure.string :only [lower-case]]))
+        [clojure.string :only [lower-case replace]]))
 
 (defn wrap-length
   "Ring middleware for adding Content-Length"
@@ -76,6 +77,8 @@
                                          (println %))
                    (string? output) #(spit output (str % "\n") :append true)
                    (fn? output) output)
-          entry (json-str (select-keys (merge req res) keys-filter))]
+          entry (-> (select-keys (merge req res) keys-filter)
+                    json-str
+                    (replace "\\" ""))]
       (if (status-filter (:status res)) (logger entry))
       res)))
