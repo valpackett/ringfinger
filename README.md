@@ -4,7 +4,8 @@ Designed for the age of NoSQL, HTML5, REST, JSON, VPS, (sadly) CSRF, XSS and oth
 Modular. Simple. Fast. Secure. Named after a great Nine Inch Nails song.
 
 Check out the [website](http://ringfinger.floatboth.com) for a live demo.
-Also, there are [API docs](http://myfreeweb.github.com/ringfinger/).
+Also, there are [API docs](http://myfreeweb.github.com/ringfinger/) and
+the [wiki](https://github.com/myfreeweb/ringfinger/wiki).
 
 ## Get excited
 
