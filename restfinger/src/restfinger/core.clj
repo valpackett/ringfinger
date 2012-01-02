@@ -8,7 +8,8 @@
         basefinger.core,
         toolfinger,
         valip.core,
-      lamina.core))
+        lamina.core,
+        clojure.walk))
 
 (def regexps {:format #"\.?[a-zA-Z]*"})
 
@@ -105,7 +106,7 @@
                       :headers {"Location" (str urlbase "/" (get form pk) (dotformat matches))}
                       :flash   (call-or-ret flash form)
                       :body    ""})
-        i-get-dboptions (let [base (fn [req] (or (params-to-dboptions (:query-params req)) default-dboptions))
+        i-get-dboptions (let [base (fn [req] (or (keywordize-keys (:params req)) default-dboptions))
                               ownd (if (and owner-field owner-only)
                                      (fn [req] (assoc-in (base req) [:query owner-field] (get-in req [:user :id])))
                                      base)

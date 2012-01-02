@@ -101,7 +101,7 @@
 
 (facts "about index"
   (:body (testapp (request :get "/todos.json"))) => "[{\"state\":\"on\",\"body\":\"test\"}]"
-  (:body (testapp (request :get "/todos.json?query_state_ne=on"))) => "[]"
+  (:body (testapp (request :get "/todos.json?query[state][$ne]=on"))) => "[]"
   (:body (testapp (header (request :get "/todos") "Accept" "application/xml")))
        => "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><entry><state>on</state><body>test</body></entry></response>")
 

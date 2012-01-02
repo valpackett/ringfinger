@@ -50,18 +50,3 @@
                  (merge-with mod obj (val f))) (rest mods))))
 
 (defmacro qs [a] `(keyword (str "$" ~a)))
-
-(defn- param-to-dboptions
-  ([q] {(keyword (first q)) (apply param-to-dboptions (rest q))})
-  ([k v] {(keyword k) v})
-  ([k kk v] {(keyword k) {(qs kk) v}})
-  ([k kk kkk v] {(keyword k) {(qs kk) {(qs kkk) v}}})
-  ([k kk kkk kkkk v] {(keyword k) {(qs kk) {(qs kkk) {(qs kkkk) v}}}}))
-; yeah, that's a mess, but a really fast mess!
-
-(defn params-to-dboptions
-  "Turns ring query-params into db options
-  eg. {'query_field_ne' 3, 'sort_field' -1}
-  becomes {:query {:field {:$ne 3}}, :sort {:field -1}}"
-  ([qp] (if (empty? qp) nil (apply merge (map params-to-dboptions (keys qp) (vals qp)))))
-  ([q v] (if (substring? "_" q) (param-to-dboptions (flatten (list (split q #"_") (typeify v)))) nil)))
