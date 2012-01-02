@@ -51,6 +51,7 @@
 
 (defapp testapp
   {:static-dir "lib"
+   :log nil
    :middleware wrap-auth}
   todos dotos hooked forbidden owned tea)
 
@@ -64,16 +65,20 @@
        => (contains {:status 201
                      :headers (contains {"Location" "/todos/test.json"})})
   (testapp (body (request :post "/todos.json") {:state "false"}))
-       => (contains {:status 400
+       => (contains {:status 422
                      :body "{\"body\":[\"should be present\"]}"})
   (:body (testapp (header (request :post "/todos") "Accept" "application/xml")))
        => "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><response><body><error>should be present</error></body></response>"
+  (-> (request :post "/dotos")
+      (header "User-Agent" "Mozilla 9.99")
+      (body {:body "ass" :state "2"})
+      testapp
+      :status) => 302
   (:status (testapp (body (request :post "/hooked.json") {:name "test"}))) => 201
   (:status (testapp (body (authd (request :post "/owned.json")) {:name "sup"}))) => 201)
 
 (facts "about updating"
   ; put
-  (testapp (body (request :post "/dotos.json") {:body "ass" :state "2"}))
   (testapp (body (request :put "/dotos/ass.json") {:body "ass"}))
   (:body (testapp (request :get "/dotos/ass.json"))) => "{\"body\":\"ass\"}"
   ; patch

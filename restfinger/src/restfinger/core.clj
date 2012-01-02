@@ -198,7 +198,7 @@
                    (ewrap-forbidden :index))
           :post (-> (fn [req matches form errors]
                       (if errors
-                        (respond req matches 400
+                        (respond req matches 422
                            {:data (map get-hook (get-many db coll (i-get-dboptions req)))
                             :newdata form :req req :errors errors} html-index)
                         (let [entry (process-new req form)]
@@ -234,7 +234,7 @@
                            (ewrap-forbidden :read))
                   :put (-> (fn [req matches form errors]
                              (if errors
-                               (respond req matches 400
+                               (respond req matches 422
                                   {:data form :req req :errors errors} html-get)
                                (let [form (process-replace req form)]
                                  ((:update channels) form)
@@ -245,7 +245,7 @@
                              (ewrap-forbidden :update))
                   :patch (-> (fn [req matches form errors]
                                 (if errors
-                                  (respond req matches 400
+                                  (respond req matches 422
                                      {:data (merge inst form) :req req :errors errors} html-get)
                                   (let [diff (put-hook (merge default-entry form))
                                         merged (merge inst diff)]
