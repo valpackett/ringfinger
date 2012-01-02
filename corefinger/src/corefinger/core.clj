@@ -2,7 +2,8 @@
   "A routing system and more"
   (:use corefinger.middleware
         clout.core,
-        (ring.middleware params cookies session stacktrace flash file),
+        (ring.middleware params nested-params cookies
+                         session stacktrace flash file),
         ring.middleware.session.memory,
         secfinger)
   (:require [clojure.java.io :as io]))
@@ -97,6 +98,7 @@
               wrap-refcheck
               wrap-method-override
               wrap-json-params
+              wrap-nested-params
               wrap-params)
         h (if log (wrap-logging h log) h)]
     (if-env "development"
