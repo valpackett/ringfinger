@@ -30,6 +30,7 @@
 (defn pattern "Validates according to given regexp" [re]
   {:html {:pattern (str re)}
    :pred #(boolean (re-matches re %))})
+; TODO: faker like in https://github.com/fent/randexp.js
 
 (defn checkbox "A boolean field, input type=checkbox" []
   {:html {:_render (fn [title value attrs]
@@ -40,7 +41,7 @@
    :pre-hook #(if (= % "on") true false)})
 
 (defn alphanumeric "Validates alphanumeric strings" []
-  (pattern #"[0-9a-zA-Z]+"))
+  (assoc (pattern #"[0-9a-zA-Z]+") :fake (repeatedly #(str "aB" (rand-int 1024)))))
 
 (defn text-field "input type=text" []
   {:html {:type "text"}})
@@ -93,7 +94,7 @@
            (= '(false false false false)
               (map #(> (Integer/parseInt %) 255)
                    (drop 1 (re-matches #"([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})" a)))))})
-
+ 
 (defn color-field "Validates hexadecimal color codes, input type=color" []
   {:html {:type "color"}
    :fake (repeatedly #(str "#" (apply str (take 3 (repeatedly (partial rand-int 10)))) "fff")) ; okay, enough randomness

@@ -5,7 +5,7 @@
   {:val validation
    :err error-msg}) ; TODO after i18n at all: auto i18n of error msgs
 
-(defn many "A collection of fields" [f] f)
+(defn many "A collection of fields" [f] f) ; magic haha
 
 (defn get-required-fields
   "Returns required fields of a form"
@@ -33,3 +33,11 @@
                           (filter #(not (empty? (filter identity (% errs))))
                                   (keys errs)))]
     (if (empty? errs) nil errs)))
+
+(defn make-fake
+  "Generates a valid entry with random data for a form"
+  [form]
+  (into {}
+    (for [[k v] form]
+      (if (map? v) (let [r (make-fake v)] (if (not (empty? r)) [k r]))
+        (if-let [f (last (filter :fake (map :val v)))] [k (first (take 1 (:fake f)))])))))
