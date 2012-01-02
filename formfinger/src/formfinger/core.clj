@@ -17,6 +17,19 @@
           (map? v) (let [r (get-required-fields v)] (if (not (empty? r)) r))
           (not (empty? (filter identity (map #(get-in % [:val :req]) v)))) [k value])))))
 
+(defn- make-getter [field taker]
+  (fn resfn [form]
+    (into {}
+      (for [[k v] form]
+        (if (map? v) (let [r (resfn v)] (if (not (empty? r)) [k r]))
+          (if-let [f (last (filter field (map :val v)))] [k (taker (field f))]))))))
+
+(def #^{:doc "Returns the defaults of a form"}
+  get-defaults (make-getter :default identity))
+
+(def #^{:doc "Generates a valid entry with random data for a form"}
+  make-fake (make-getter :fake #(first (take 1 %))))
+
 (defn validate
   "Validates a form, returns a tree of errors if there are any"
   [form data]
@@ -33,11 +46,3 @@
                           (filter #(not (empty? (filter identity (% errs))))
                                   (keys errs)))]
     (if (empty? errs) nil errs)))
-
-(defn make-fake
-  "Generates a valid entry with random data for a form"
-  [form]
-  (into {}
-    (for [[k v] form]
-      (if (map? v) (let [r (make-fake v)] (if (not (empty? r)) [k r]))
-        (if-let [f (last (filter :fake (map :val v)))] [k (first (take 1 (:fake f)))])))))

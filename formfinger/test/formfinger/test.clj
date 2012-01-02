@@ -22,6 +22,7 @@
               :url "http://cssprefixer.appspot.com"}]})
 
   (get-required-fields frm) => {:name true}
+  (get-defaults {:bool [(f (checkbox) "")]}) => {:bool ""}
   (validate frm (make-fake frm)) => nil
   (validate frm inv-data) => {:name  ["This is required" "Must be alphanumeric"]
                               :sites [nil {:url ["Not an URL"]}]}
