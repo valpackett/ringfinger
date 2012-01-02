@@ -1,7 +1,32 @@
 (ns formfinger.test
   (:refer-clojure :exclude [extend])
-  (:use formfinger.fields, midje.sweet, clj-time.core))
+  (:use (formfinger fields core), midje.sweet, clj-time.core))
 
+(facts "about the form API"
+  (def frm
+    {:name [(f (required) "This is required")
+            (f (alphanumeric) "Must be alphanumeric")]
+     :addr {:city [(f (maxlength 1024) "WTF")]
+            :street [(f (maxlength 2048) "LOL")]}
+     :sites (many {:name [(f (minlength 5) "wtf")]
+                   :url [(f (url-field) "Not an URL")]})})
+  (def inv-data
+    {:addr {:city "Moscow"}
+     :sites [{:name "Ringfinger"
+              :url "http://ringfinger.floatboth.com"}
+             {:name "Floatboth"
+              :url "floatboth@com"}]})
+  (def val-data
+    {:name "v"
+     :sites [{:name "CSSPrefixer"
+              :url "http://cssprefixer.appspot.com"}]})
+
+  (get-required-fields frm) => {:name true}
+  (validate frm inv-data) => {:name  ["This is required" "Must be alphanumeric"]
+                              :sites [nil {:url ["Not an URL"]}]}
+  (validate frm val-data) => nil)
+
+; Fields
 (facts "about required"
   ((:pred (required)) "s") => true
   ((:pred (required)) "")  => false
