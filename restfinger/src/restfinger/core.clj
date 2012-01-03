@@ -11,6 +11,12 @@
         lamina.core,
         clojure.walk))
 
+(defmacro nest-hook
+  "Makes a hook work on nested fields, eg.
+   (nest-hook :contact (my-hook :name)) will modify :contact {:name value}"
+  [field hook]
+  `(fn [data#] (assoc data# ~field (~hook (~field data#)))))
+
 (def regexps {:format #"\.?[a-zA-Z]*"})
 
 (defn resource

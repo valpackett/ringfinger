@@ -58,6 +58,10 @@
 (defn authd [req]
   (header req "Authorization" "Basic dGVzdDpkZW1v"))
 
+(facts "about nest-hook"
+  ((nest-hook :outer (fn [d] (assoc d :a 1))) {:outer {:b 2}})
+    => {:outer {:a 1 :b 2}})
+
 (facts "about creating"
   (testapp (body (request :post "/todos.json")
                            {:body  "test"
