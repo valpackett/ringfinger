@@ -1,9 +1,15 @@
 (ns formfinger.core
-  "API for working with fields")
+  "API for working with fields"
+  (:use hiccup.core,
+        [corefinger.core :only [*request*]])
+  (:require [clojure.string :as str]))
 
-(defn f "A field" [validation error-msg]
-  {:val validation
-   :err error-msg}) ; TODO after i18n at all: auto i18n of error msgs
+(defn f "A field"
+  ([validation error-msg] (f validation error-msg nil))
+  ([validation error-msg title]
+    {:val validation
+     :title title
+     :err error-msg})) ; TODO after i18n at all: auto i18n of error msgs
 
 (defn many "A collection of fields" [f] f) ; magic haha
 
@@ -46,3 +52,36 @@
                           (filter #(not (empty? (filter identity (% errs))))
                                   (keys errs)))]
     (if (empty? errs) nil errs)))
+
+(defn render
+  "Renders fields and errors in HTML.
+   Options:
+    :style -- whether to use :label, :placeholder or nothing
+    :err-html -- error wrapper, default is [:div.error]
+    :wrap-html -- field wrapper, default is [:div]
+    :nest-html -- a function that, given a key, returns the nested form
+                  wrapper, default returns [:fieldset {:id k} [:h2 (capitalize (name k))]]"
+  ([options form] (render options form nil nil))
+  ([options form data] (render options form data nil)) ; not auto-validating eg. for rendering w/ defaults
+  ([options form data errors]
+   (html
+     [:input {:type "hidden" :name "csrftoken" :value (:csrf-token *request*)}]
+     (for [[k v] form]
+       (if (map? v) (conj
+                      (if-let [custom (:nest-html options)]
+                        (custom k)
+                        [:fieldset {:id k}
+                          [:h2 (str/capitalize (name k))]])
+                      (render options v (k data) (k errors)))
+         (let [title     (or (apply str (map :title v)) (str/capitalize (name k)))
+               err-html  (or (:err-html  options) [:div.error])
+               wrap-html (or (:wrap-html options) [:div])]
+           (filter identity
+             [(if (= (:style options) :label)
+               [:label {:for k} title])
+             [:input (apply merge {:name k :id k :value (k data)}
+                            (if (= (:style options) :placeholder)
+                              {:placeholder title})
+                            (map #(get-in % [:val :html]) v))]
+             (if-let [err (k errors)]
+               (map (partial conj err-html) err))])))))))
