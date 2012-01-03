@@ -63,26 +63,30 @@
   ([options form data] (render options form data nil)) ; not auto-validating eg. for rendering w/ defaults
   ([options form data errors]
    (html
-     [:input {:type "hidden" :name "csrftoken" :value (:csrf-token *request*)}]
+     (if (not (:recur options))
+       [:input {:type "hidden" :name "csrftoken" :value (:csrf-token *request*)}])
      (for [[k v] form]
        (if (map? v) (conj
                       (if-let [custom (:nest-html options)]
                         (custom k)
                         [:fieldset {:id k}
                           [:h2 (str/capitalize (name k))]])
-                      (render options v (k data) (k errors)))
-         (let [title     (or (apply str (map :title v)) (str/capitalize (name k)))
+                      (render (assoc options :recur true) v (k data) (k errors)))
+         (let [title     (or (let [r (apply str (map :title v))]
+                               (if (not= r "") r))
+                             (str/capitalize (name k)))
                err-html  (or (:err-html  options) [:div.error])
                wrap-html (or (:wrap-html options) [:div])]
-           (filter identity
-             [(if (= (:style options) :label)
-               [:label {:for k} title])
-             [:input (apply merge {:name k :id k :value (k data)}
-                            (if (= (:style options) :placeholder)
-                              {:placeholder title})
-                            (map #(get-in % [:val :html]) v))]
-             (if-let [err (k errors)]
-               (map (partial conj err-html) err))])))))))
+           (conj wrap-html
+             (filter identity
+               [(if (= (:style options) :label)
+                 [:label {:for k} title])
+               [:input (apply merge {:name k :id k :value (k data)}
+                              (if (= (:style options) :placeholder)
+                                {:placeholder title})
+                              (map #(get-in % [:val :html]) v))]
+               (if-let [err (k errors)]
+                 (map (partial conj err-html) err))]))))))))
 
 (defn- get-hooks [field form]
   (for-map-recur form [k v]
