@@ -60,11 +60,16 @@
         " "
         (if (= ~number 1) ~noun (plural ~noun))))
 
-(defmacro for-map-recur
-  "Recursively process a map"
-  [m p body]
-  `(into {}
-    (for [~p ~m] ~body)))
+(defn recursive-map
+  "Map for maps, recursive."
+  [func m]
+  (into {}
+    (for [[k v] m]
+      (if (map? v) (let [r (recursive-map func v)]
+                     (if (not (empty? r)) [k r]))
+           (if-let [r (func k v)]
+             (if (not (and (coll? r) (empty? r)))
+               [k r]))))))
 
 (defmacro pack-to-map
   "Packs values into a map, eg.

@@ -21,6 +21,12 @@
   (nice-count 2 "post") => "two posts"
   (nice-count 99 "problem") => "99 problems")
 
+(facts "about recursive-map"
+  (recursive-map #(if (> 10 %2) (+ %2 1))
+                 {:a 1 :b {:c 11 :d 4} :e {}}) => {:a 2 :b {:d 5}}
+  (recursive-map (fn [k v] v)
+                 {:empty []}) => {})
+
 (let [one 1 two 2]
   (fact (pack-to-map one two) => {:one 1 :two 2}))
 

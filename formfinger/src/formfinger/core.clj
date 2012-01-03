@@ -18,34 +18,35 @@
   "Returns required fields of a form"
   ([form] (get-required-fields form true))
   ([form value]
-    (for-map-recur form [k v]
-      (cond
-        (map? v) (let [r (get-required-fields v)] (if (not (empty? r)) r))
-        (not (empty? (filter identity (map #(get-in % [:val :req]) v)))) [k value]))))
+   (recursive-map
+     (fn [k v]
+       (if (not (empty? (filter identity (map #(get-in % [:val :req]) v)))) value))
+     form)))
 
 (defn- make-getter [field taker]
-  (fn resfn [form]
-    (for-map-recur form [k v]
-      (if (map? v) (let [r (resfn v)] (if (not (empty? r)) [k r]))
-        (if-let [f (last (filter field (map :val v)))] [k (taker (field f))])))))
+  (fn [form]
+    (recursive-map
+      (fn [k v]
+        (if-let [f (last (filter field (map :val v)))] (taker (field f))))
+      form)))
 
 (def #^{:doc "Returns the defaults of a form"}
   get-defaults (make-getter :default identity))
  
-(def #^{:doc "Generates  a valid entry with random data for a form"}
+(def #^{:doc "Generates a valid entry with random data for a form"}
   make-fake (make-getter :fake #(first (take 1 %))))
 
 (defn validate
   "Validates a form, returns a tree of errors if there are any"
   [form data]
   (let [data (merge (get-required-fields form "") data)
-        errs (for-map-recur data [k v]
-               [k (cond
-                    (map?  v) (validate (k form) v)
-                    (coll? v) (map #(validate (k form) %) v)
-                    :else     (filter (complement nil?)
-                                (map #(if ((get-in % [:val :pred]) v) nil (:err %))
-                                     (k form))))])
+        errs (recursive-map
+               (fn [k v]
+                 (if (coll? v) (map #(validate (k form) %) v)
+                     (filter (complement nil?)
+                             (map #(if ((get-in % [:val :pred]) v) nil (:err %))
+                                     (k form)))))
+               data)
         errs (select-keys errs
                           (filter #(not (empty? (filter identity (% errs))))
                                   (keys errs)))]
@@ -89,18 +90,20 @@
                  (map (partial conj err-html) err))]))))))))
 
 (defn- get-hooks [field form]
-  (for-map-recur form [k v]
-    (if (map? v) (let [r (get-hooks field v)] (if (not (empty? r)) [k r]))
+  (recursive-map
+    (fn [k v]
       (if-let [f (filter field (map :val v))]
-        [k (apply comp (map field f))]))))
+        (apply comp (map field f))))
+    form))
 
 (defn- make-hook [field form]
   (fn [data]
     ((fn hook [frm data]
-      (for-map-recur data [k v]
-         [k (if (map? v) (hook (k frm) v)
-              (or ((k frm) v) v))]))
-        (get-hooks field form) data)))
+       (into {}
+         (for [[k v] data]
+           [k (if (map? v) (hook (k frm) v)
+                (or ((k frm) v) v))])))
+          (get-hooks field form) data)))
 
 (def make-view-hook      (partial make-hook      :view))
 (def make-data-pre-hook  (partial make-hook  :pre-hook))
