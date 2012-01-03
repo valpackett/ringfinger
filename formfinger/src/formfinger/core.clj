@@ -32,8 +32,8 @@
 
 (def #^{:doc "Returns the defaults of a form"}
   get-defaults (make-getter :default identity))
-
-(def #^{:doc "Generates a valid entry with random data for a form"}
+ 
+(def #^{:doc "Generates  a valid entry with random data for a form"}
   make-fake (make-getter :fake #(first (take 1 %))))
 
 (defn validate
@@ -85,3 +85,24 @@
                             (map #(get-in % [:val :html]) v))]
              (if-let [err (k errors)]
                (map (partial conj err-html) err))])))))))
+
+
+(defn- get-hooks [field form]
+  (into {}
+    (for [[k v] form]
+      (if (map? v) (let [r (get-hooks field v)] (if (not (empty? r)) [k r]))
+        (if-let [f (filter field (map :val v))]
+          [k (apply comp (map field f))])))))
+
+(defn- make-hook [field form]
+  (fn [data]
+    ((fn hook [frm data]
+       (into {}
+         (for [[k v] data]
+           [k (if (map? v) (hook (k frm) v)
+                (or ((k frm) v) v))])))
+        (get-hooks field form) data)))
+
+(def make-view-hook      (partial make-hook      :view))
+(def make-data-pre-hook  (partial make-hook  :pre-hook))
+(def make-data-post-hook (partial make-hook :post-hook))

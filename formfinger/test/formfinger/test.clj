@@ -21,6 +21,9 @@
      :sites [{:name "CSSPrefixer"
               :url "http://cssprefixer.appspot.com"}]})
 
+  (-> ((make-data-pre-hook {:date [(f (date-field) "")]})
+         {:date "2010-01-10"})
+      :date class) => org.joda.time.DateTime
   (get-required-fields frm) => {:name true}
   (get-defaults {:bool [(f (checkbox) "")]}) => {:bool ""}
   (validate frm (make-fake frm)) => nil
@@ -28,7 +31,6 @@
                               :sites [nil {:url ["Not an URL"]}]}
   (validate frm val-data) => nil
   (render {} frm) => "<input name=\"csrftoken\" type=\"hidden\" /><input id=\"name\" name=\"name\" pattern=\"[0-9a-zA-Z]+\" required=\"required\" /><fieldset id=\"addr\"><h2>Addr</h2><input name=\"csrftoken\" type=\"hidden\" /><input id=\"city\" maxlength=\"1024\" name=\"city\" /><input id=\"street\" maxlength=\"2048\" name=\"street\" /></fieldset><fieldset id=\"sites\"><h2>Sites</h2><input name=\"csrftoken\" type=\"hidden\" /><input id=\"name\" name=\"name\" pattern=\".{5,}\" /><input id=\"url\" name=\"url\" type=\"url\" /></fieldset>"
-  (render {} frm (make-fake frm)) => "<input name=\"csrftoken\" type=\"hidden\" /><input id=\"name\" name=\"name\" pattern=\"[0-9a-zA-Z]+\" required=\"required\" value=\"aB269\" /><fieldset id=\"addr\"><h2>Addr</h2><input name=\"csrftoken\" type=\"hidden\" /><input id=\"city\" maxlength=\"1024\" name=\"city\" /><input id=\"street\" maxlength=\"2048\" name=\"street\" /></fieldset><fieldset id=\"sites\"><h2>Sites</h2><input name=\"csrftoken\" type=\"hidden\" /><input id=\"name\" name=\"name\" pattern=\".{5,}\" /><input id=\"url\" name=\"url\" type=\"url\" value=\"http://miss.info\" /></fieldset>"
   (render {} frm inv-data (validate frm inv-data))
     => "<input name=\"csrftoken\" type=\"hidden\" /><input id=\"name\" name=\"name\" pattern=\"[0-9a-zA-Z]+\" required=\"required\" /><div class=\"error\">This is required</div><div class=\"error\">Must be alphanumeric</div><fieldset id=\"addr\"><h2>Addr</h2><input name=\"csrftoken\" type=\"hidden\" /><input id=\"city\" maxlength=\"1024\" name=\"city\" value=\"Moscow\" /><input id=\"street\" maxlength=\"2048\" name=\"street\" /></fieldset><fieldset id=\"sites\"><h2>Sites</h2><input name=\"csrftoken\" type=\"hidden\" /><input id=\"name\" name=\"name\" pattern=\".{5,}\" /><input id=\"url\" name=\"url\" type=\"url\" /></fieldset>")
 
