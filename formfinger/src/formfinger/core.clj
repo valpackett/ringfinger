@@ -1,6 +1,7 @@
 (ns formfinger.core
   "API for working with fields"
   (:use hiccup.core,
+        toolfinger,
         [corefinger.core :only [*request*]])
   (:require [clojure.string :as str]))
 
@@ -17,18 +18,16 @@
   "Returns required fields of a form"
   ([form] (get-required-fields form true))
   ([form value]
-    (into {}
-      (for [[k v] form]
-        (cond
-          (map? v) (let [r (get-required-fields v)] (if (not (empty? r)) r))
-          (not (empty? (filter identity (map #(get-in % [:val :req]) v)))) [k value])))))
+    (for-map-recur form [k v]
+      (cond
+        (map? v) (let [r (get-required-fields v)] (if (not (empty? r)) r))
+        (not (empty? (filter identity (map #(get-in % [:val :req]) v)))) [k value]))))
 
 (defn- make-getter [field taker]
   (fn resfn [form]
-    (into {}
-      (for [[k v] form]
-        (if (map? v) (let [r (resfn v)] (if (not (empty? r)) [k r]))
-          (if-let [f (last (filter field (map :val v)))] [k (taker (field f))]))))))
+    (for-map-recur form [k v]
+      (if (map? v) (let [r (resfn v)] (if (not (empty? r)) [k r]))
+        (if-let [f (last (filter field (map :val v)))] [k (taker (field f))])))))
 
 (def #^{:doc "Returns the defaults of a form"}
   get-defaults (make-getter :default identity))
@@ -40,14 +39,13 @@
   "Validates a form, returns a tree of errors if there are any"
   [form data]
   (let [data (merge (get-required-fields form "") data)
-        errs (into {}
-               (for [[k v] data]
-                 [k (cond
-                      (map?  v) (validate (k form) v)
-                      (coll? v) (map #(validate (k form) %) v)
-                      :else     (filter (complement nil?)
-                                  (map #(if ((get-in % [:val :pred]) v) nil (:err %))
-                                       (k form))))]))
+        errs (for-map-recur data [k v]
+               [k (cond
+                    (map?  v) (validate (k form) v)
+                    (coll? v) (map #(validate (k form) %) v)
+                    :else     (filter (complement nil?)
+                                (map #(if ((get-in % [:val :pred]) v) nil (:err %))
+                                     (k form))))])
         errs (select-keys errs
                           (filter #(not (empty? (filter identity (% errs))))
                                   (keys errs)))]
@@ -86,21 +84,18 @@
              (if-let [err (k errors)]
                (map (partial conj err-html) err))])))))))
 
-
 (defn- get-hooks [field form]
-  (into {}
-    (for [[k v] form]
-      (if (map? v) (let [r (get-hooks field v)] (if (not (empty? r)) [k r]))
-        (if-let [f (filter field (map :val v))]
-          [k (apply comp (map field f))])))))
+  (for-map-recur form [k v]
+    (if (map? v) (let [r (get-hooks field v)] (if (not (empty? r)) [k r]))
+      (if-let [f (filter field (map :val v))]
+        [k (apply comp (map field f))]))))
 
 (defn- make-hook [field form]
   (fn [data]
     ((fn hook [frm data]
-       (into {}
-         (for [[k v] data]
-           [k (if (map? v) (hook (k frm) v)
-                (or ((k frm) v) v))])))
+      (for-map-recur data [k v]
+         [k (if (map? v) (hook (k frm) v)
+              (or ((k frm) v) v))]))
         (get-hooks field form) data)))
 
 (def make-view-hook      (partial make-hook      :view))
