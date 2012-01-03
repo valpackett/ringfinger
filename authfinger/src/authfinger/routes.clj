@@ -1,12 +1,12 @@
 (ns authfinger.routes
   "Authorization routes -- registration (if you really want, even with
   e-mail confirmation) and logging in/out."
-  (:use (formfinger fields field-helpers),
+  (:use (formfinger core fields),
         (basefinger core inmem),
         (authfinger core default-views),
         corefinger.core,
         toolfinger,
-        valip.core)
+        clojure.walk)
   (:import java.util.UUID))
 
 (defn get-action [nm]
@@ -33,7 +33,7 @@
         (handler req matches))))
 
 (defn ewrap-render-auth-view
-  [handler views fieldhtml url-base redir-p]
+  [handler views form url-base redir-p]
   (fn [req matches]
     (let [resp (handler req matches)
           v (:aview resp)]
@@ -43,7 +43,7 @@
                      ((get views v)
                      {:errors (:errors resp {})
                       :data   (:data resp {})
-                      :fields fieldhtml
+                      :form   form
                       :urlb   url-base
                       :flash  (:i-flash resp)
                       :action (get-action redir-p)}))
@@ -53,10 +53,10 @@
           resp))))
 
 (defn ewrap-process-form
-  [handler validations]
+  [handler form]
   (fn [req matches]
-    (let [form (keywordize (:form-params req))]
-      (handler req matches form (apply validate form validations)))))
+    (let [data (keywordize-keys (:params req))]
+      (handler req matches data (validate form data)))))
 
 (defn auth-routes
   "Creates auth routes with given options:
@@ -67,8 +67,8 @@
    :redir-to -- where to redirect after a successful login/signup if there's no referer, the default is /
    :redir-param -- query string parameter for keeping the redirect url, the default is _redirect, you generally don't need to care about this
    :confirm -- if you want email confirmation, map of parameters :mailer, :from, :email-field (default is *login-field*), :subject, :mail-template
-   :fields -- list of validations, defaults are: requiring username and at least 6 characters password"
-  [{:keys [views flash url-base redir-to redir-p db coll confirm fields]
+   :form -- well, form. defaults are: requiring username and at least 6 characters password"
+  [{:keys [views flash url-base redir-to redir-p db coll confirm form]
     :or {views auth-demo-views
          flash {:login-success   "Welcome back!"
                 :login-invalid   "Wrong username/password."
@@ -80,16 +80,17 @@
          redir-to "/" redir-p "redirect"
          db inmem coll :ringfinger_auth
          confirm nil
-         fields [[*login-field* (required) "Shouldn't be empty"]
-                 [:password (required)     "Shouldn't be empty"]
-                 [:password (minlength 6)  "Should be at least 6 characters"]]}}]
+         form {*login-field* [(f (required) "Shouldn't be empty")
+                              (f (minlength 2) "Should be at least 2 characters")
+                              (f (maxlength 96) "You're insane!")]
+               :password [(f (required) "Shouldn't be empty")
+                          (f (minlength 6) "Should be at least 6 characters")
+                          (f (maxlength 128) "You must be crazy!")]} }}]
   (if confirm (assert (haz? (arities (:mailer confirm)) 4)))
-  (let [fieldhtml (html-from-fields fields)
-        valds (validations-from-fields fields)
-        getloc #(get (:query-params %) redir-p redir-to)
+  (let [getloc #(get (:query-params %) redir-p redir-to)
         lwrap-if-not-user (fn [handler] (ewrap-if-not-user handler redir-p redir-to))
-        lwrap-render-auth-view (fn [handler] (ewrap-render-auth-view handler views fieldhtml url-base redir-p))
-        lwrap-process-form (fn [handler] (ewrap-process-form handler valds))]
+        lwrap-render-auth-view (fn [handler] (ewrap-render-auth-view handler views form url-base redir-p))
+        lwrap-process-form (fn [handler] (ewrap-process-form handler form))]
     (list
       (route (str url-base "login")
         (-> (method-dispatch-handler

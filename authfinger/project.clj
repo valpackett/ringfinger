@@ -13,7 +13,6 @@
          [ringfinger/formfinger ~version]
          [ringfinger/secfinger ~version]
          [commons-codec "1.5"]
-         [valip "0.2.0"]
          [hiccup "0.3.7"]]
   :dev-dependencies [[midje ~midje-version]
                      [lein-midje ~lein-midje-version]
