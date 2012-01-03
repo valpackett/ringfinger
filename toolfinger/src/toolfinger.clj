@@ -60,6 +60,12 @@
         " "
         (if (= ~number 1) ~noun (plural ~noun))))
 
+(defmacro for-map-recur
+  "Recursively process a map"
+  [m p body]
+  `(into {}
+    (for [~p ~m] ~body)))
+
 (defmacro pack-to-map
   "Packs values into a map, eg.
   (let [demo 1 test 2] (pack demo test)) -> {:demo 1 :test 2}"
