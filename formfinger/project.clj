@@ -14,6 +14,7 @@
          [hiccup "0.3.7"]
          [clj-time "0.3.0"]
          [faker "0.2.2"]
-         [com.ibm.icu/icu4j "4.8.1.1"]]
+         [com.ibm.icu/icu4j "4.8.1.1"]
+         [org.mozilla/rhino "1.7R3"]]
   :dev-dependencies [[midje ~midje-version]
                      [lein-midje ~lein-midje-version]])

@@ -8,8 +8,10 @@
         (clj-time format coerce),
         faker.lorem)
   (:require [valip.predicates :as v],
-            [faker.internet :as netfake])
-  (:import (com.ibm.icu.text SpoofChecker SpoofChecker$Builder)))
+            [faker.internet :as netfake],
+            [clojure.java.io :as io])
+  (:import (com.ibm.icu.text SpoofChecker SpoofChecker$Builder),
+           org.mozilla.javascript.Context))
 
 ; FORMAT:
 ; {:html {:_render -- custom renderer}
@@ -27,10 +29,17 @@
    :pred v/present?
    :req  true})
 
+(let [ctx (Context/enter)
+      scope (. ctx initStandardObjects)
+      script (str "window={};" (slurp (io/resource "randexp.min.js")) ";")]
+  ; yes, evaluate the script every time. or get weird errors
+  (defn- randexp [exp]
+    (. ctx evaluateString scope (format "%snew window.RandExp('%s').gen();" script exp) "<cmd>" 1 nil)))
+
 (defn pattern "Validates according to given regexp" [re]
   {:html {:pattern (str re)}
+   :fake (repeatedly #(randexp (str re)))
    :pred #(boolean (re-matches re %))})
-; TODO: faker like in https://github.com/fent/randexp.js
 
 (defn checkbox "A boolean field, input type=checkbox" []
   {:html {:_render (fn [title value attrs]
@@ -41,7 +50,7 @@
    :pre-hook #(if (= % "on") true false)})
 
 (defn alphanumeric "Validates alphanumeric strings" []
-  (assoc (pattern #"[0-9a-zA-Z]+") :fake (repeatedly #(str "aB" (rand-int 1024)))))
+  (pattern #"[0-9a-zA-Z]+"))
 
 (defn text-field "input type=text" []
   {:html {:type "text"}})
