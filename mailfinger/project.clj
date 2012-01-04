@@ -6,9 +6,8 @@
   :license {:name "Apache License 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
-  :deps [[org.clojure/clojure ~clj-version]
-         [org.clojure/data.json "0.1.1"]
-         [clj-http "0.2.2"]
-         [commons-email "1.1"]]
-  :dev-dependencies [[midje ~midje-version]
-                     [lein-midje ~lein-midje-version]])
+  :deps ~(deps []
+               ["org.clojure/data.json"
+                "clj-http"
+                "commons-email"])
+  :dev-dependencies ~(dev-deps [] []))

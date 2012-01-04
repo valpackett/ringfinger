@@ -6,9 +6,5 @@
   :license {:name "Apache License 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
-  :deps [[org.clojure/clojure ~clj-version]
-         [ringfinger/toolfinger ~version]
-         [commons-codec "1.5"]]
-  :dev-dependencies [[midje ~midje-version]
-                     [lein-midje ~lein-midje-version]
-                     [ring-mock "0.1.1"]])
+  :deps ~(deps ["toolfinger"] ["commons-codec"])
+  :dev-dependencies ~(dev-deps [] ["ring-mock"]))

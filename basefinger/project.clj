@@ -6,9 +6,5 @@
   :license {:name "Apache License 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
-  :deps [[org.clojure/clojure ~clj-version]
-         [ring/ring-core  ~ring-version]
-         [ringfinger/toolfinger ~version]]
-  :dev-dependencies [[midje ~midje-version]
-                     [lein-midje ~lein-midje-version]
-                     [congomongo "0.1.7"]])
+  :deps ~(deps ["toolfinger"] ["ring/ring-core"])
+  :dev-dependencies ~(dev-deps [] ["congomongo"]))

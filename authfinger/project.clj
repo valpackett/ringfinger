@@ -6,14 +6,11 @@
   :license {:name "Apache License 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
-  :deps [[org.clojure/clojure ~clj-version]
-         [ringfinger/toolfinger ~version]
-         [ringfinger/basefinger ~version]
-         [ringfinger/corefinger ~version]
-         [ringfinger/formfinger ~version]
-         [ringfinger/secfinger ~version]
-         [commons-codec "1.5"]
-         [hiccup "0.3.7"]]
-  :dev-dependencies [[midje ~midje-version]
-                     [lein-midje ~lein-midje-version]
-                     [ring-mock "0.1.1"]])
+  :deps ~(deps ["toolfinger"
+                "basefinger"
+                "corefinger"
+                "formfinger"
+                "secfinger"]
+               ["commons-codec"
+                "hiccup"])
+  :dev-dependencies ~(dev-deps [] ["ring-mock"]))

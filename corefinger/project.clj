@@ -6,12 +6,9 @@
   :license {:name "Apache License 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
-  :deps [[org.clojure/clojure ~clj-version]
-         [org.clojure/data.json "0.1.1"]
-         [ringfinger/secfinger ~version]
-         [ring/ring-core  ~ring-version]
-         [ring/ring-devel ~ring-version]
-         [clout "0.4.1"]]
-  :dev-dependencies [[midje ~midje-version]
-                     [lein-midje ~lein-midje-version]
-                     [ring-mock "0.1.1"]])
+  :deps ~(deps ["secfinger"]
+               ["org.clojure/data.json"
+                "ring/ring-core"
+                "ring/ring-devel"
+                "clout"])
+  :dev-dependencies ~(dev-deps [] ["ring-mock"]))
