@@ -1,6 +1,6 @@
 language: clojure
 before_install:
-  - cat metaproject.clj | sed s/1.3.0/1.2.1/ > metaproject.clj
+  - sed -i s/1.3.0/1.2.1/ metaproject.clj
 # http://stackoverflow.com/questions/8577735/midje-on-travis-ci-fails-with-nosuchmethoderror-keywordlookupsite-init
 before_script:
   - lein plugin install lein-sub 0.1.2, plugin install lein-midje 1.0.7
