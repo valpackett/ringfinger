@@ -6,7 +6,8 @@
   :license {:name "Apache License 2.0"
             :url  "http://www.apache.org/licenses/LICENSE-2.0.html"
             :distribution :repo}
-  :deps ~(deps ["toolfinger"
+  :deps ~(deps ["authfinger"
+                "toolfinger"
                 "basefinger"
                 "corefinger"
                 "formfinger"]

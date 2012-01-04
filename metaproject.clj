@@ -7,7 +7,7 @@
 
 (def dep-versions
   {"org.clojure/clojure" "1.3.0"
-   "org.clojure/data.json" "0.1.1"
+   "org.clojure/data.json" "0.1.2"
    "org.clojars.weavejester/autodoc" "0.9.0"
    "org.mozilla/rhino" "1.7R3"
    "com.ibm.icu/icu4j" "4.8.1.1"
@@ -40,9 +40,8 @@
         ext (if dev (conj ext "midje") ext)
         ext-deps (select-keys dep-versions ext)
         fng-deps (zipmap (map #(str "ringfinger/" %) fingers) (repeat version))
-        deps (merge ext-deps fng-deps)
-        deps (into [] (zipmap (map symbol (keys deps)) (vals deps)))]
-    (map #(if (= (first %) 'org.clojure/data.json) (vec (concat % [:exclusions ['org.clojure/clojure]])) %) deps)))
+        deps (merge ext-deps fng-deps)]
+    (into [] (zipmap (map symbol (keys deps)) (vals deps)))))
 
 (defn deps     [fingers ext] (in-deps fingers ext false))
 (defn dev-deps [fingers ext] (in-deps fingers ext true))
