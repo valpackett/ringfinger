@@ -9,7 +9,7 @@
 (defn- make-getter [thing default]
   (fn [fields]
     (let [v (group-by first fields)]
-      (sorted-zipmap (keys v) (map (fn [a] (first (map #(thing (second %) default) a))) (vals v))))))
+      (zipmap (keys v) (map (fn [a] (first (map #(thing (second %) default) a))) (vals v))))))
 
 (defn html-from-fields
   "Makes a map of field names - html attributes from a list of fields, eg.
@@ -18,7 +18,7 @@
   becomes ([:name {:required 'required' :maxlength 10}])"
   [fields]
   (let [v (group-by first fields)]
-    (sorted-zipmap (keys v) (map (fn [a] (apply merge (map #(:html (second %) {}) a))) (vals v)))))
+    (zipmap (keys v) (map (fn [a] (apply merge (map #(:html (second %) {}) a))) (vals v)))))
 ; notice the merge
 
 (defn validations-from-fields

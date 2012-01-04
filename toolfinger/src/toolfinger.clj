@@ -107,8 +107,6 @@
   "Maps typeify to values of map a" [a]
   `(zipmap (keys ~a) (map typeify (vals ~a))))
 
-(defmacro sorted-zipmap [ks vs] `(zipmap (reverse ~ks) (reverse ~vs))) ; this should be built into zipmap, dammit
-
 (defmacro dotformat [matches] `(if-let [fmt# (:format ~matches)] fmt#))
 
 (defn sort-maps

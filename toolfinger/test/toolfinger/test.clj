@@ -36,9 +36,6 @@
 
 (fact (keywordize {"one" 1}) => {:one 1})
 
-(let [mp {:one 1 :two 2}]
-  (fact (sorted-zipmap (keys mp) (vals mp)) => mp))
-
 (let [m [{:a 1 :b 1} {:a 1 :b 2} {:a 2 :b 1} {:a 2 :b 2}]]
   (facts "about sort-maps"
     (sort-maps m {:a 1 :b -1}) => '({:a 1 :b 2} {:a 1 :b 1} {:a 2 :b 2} {:a 2 :b 1})

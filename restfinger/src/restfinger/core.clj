@@ -17,7 +17,7 @@
   [field hook]
   `(fn [data#] (assoc data# ~field (~hook (~field data#)))))
 
-(def regexps {:format #"\.?[a-zA-Z]*"})
+(def regexps {:format #"\.?[a-zA-Z]*" :pk #"[^/,;?\.]+"})
 
 (defn resource
   "Creates a list of two routes (/url-prefix+collname.format and
@@ -128,7 +128,7 @@
                                      ownd)]
                           pagd)
         respond (fn [req matches status data view]
-                  (-> (filter identity
+                  (-> (filter #(and (not (nil? %)) (not (= "" %)))
                               [(get-in req [:headers "accept"])
                                (:format matches)
                                default-format])
