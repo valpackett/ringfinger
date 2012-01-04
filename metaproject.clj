@@ -41,8 +41,8 @@
         ext-deps (select-keys dep-versions ext)
         fng-deps (zipmap (map #(str "ringfinger/" %) fingers) (repeat version))
         deps (merge ext-deps fng-deps)
-        deps (zipmap (map symbol (keys deps)) (vals deps))]
-    (into [] deps)))
+        deps (into [] (zipmap (map symbol (keys deps)) (vals deps)))]
+    (map #(if (= (first %) 'org.clojure/data.json) (vec (concat % [:exclusions ['org.clojure/clojure]])) %) deps)))
 
 (defn deps     [fingers ext] (in-deps fingers ext false))
 (defn dev-deps [fingers ext] (in-deps fingers ext true))
