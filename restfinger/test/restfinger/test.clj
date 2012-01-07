@@ -119,9 +119,8 @@
 (facts "about middleware"
   (:status (testapp (body (request :post "/tea.json") {:name "Lipton"}))) => 418) ; I'm a Teapot
 
-(testapp (request :get "/todos/_create_fakes?count=50"))
-
 (facts "about pagination"
+  (testapp (request :get "/todos/_create_fakes?count=50"))
   (get (:headers (testapp (request :get "/todos.json"))) "Link")
    => "</todos.json?page=2>; rel=\"next\", </todos.json?page=3>; rel=\"last\""
   (get (:headers (testapp (request :get "/todos.json?page=2"))) "Link")
