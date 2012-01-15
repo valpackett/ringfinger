@@ -184,7 +184,10 @@ dependencies {
 }
 clojuredoc.configure {
   destinationDir = file('autodoc')
-  clojureRoots = subprojects.first().sourceSets.main.clojure
+  subprojects.each {
+    clojureRoots.srcDirs it.sourceSets.main.clojure.getSrcDirs()
+    resRoots.srcDirs it.sourceSets.main.resources.getSrcDirs()
+  }
   source = files { subprojects.collect {
     it.sourceSets.main.clojure
   }}
