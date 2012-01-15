@@ -50,7 +50,7 @@
   [:name (required) ""])
 
 (defapp testapp
-  {:static-dir "lib"
+  {:static-dir "."
    :log nil
    :middleware wrap-auth}
   todos dotos hooked forbidden owned tea)

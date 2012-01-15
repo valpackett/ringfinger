@@ -8,7 +8,7 @@
 (with-salt "salt"
   (make-user inmem :ringfinger_auth {:username "test"} "demo")
 
-  (defapp testapp {:static-dir "lib" :middleware wrap-auth}
+  (defapp testapp {:static-dir "." :middleware wrap-auth}
           (route "/user" (fn [req h]
                            {:status 200 :headers {}
                             :body (get-in req [:user :username])})))
