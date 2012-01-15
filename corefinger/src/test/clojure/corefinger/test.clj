@@ -1,7 +1,7 @@
 (ns corefinger.test
   (:use corefinger.core, midje.sweet, ring.mock.request))
 
-(defapp testapp {:static-dir "lib" :log nil}
+(defapp testapp {:static-dir ".." :log nil}
   (list (route "/listed" (nest (fn [req] {:status 200 :headers {} :body "I am a listed Ring handler"}))))
   {:routes (route "/mapped" (nest (fn [req] {:status 200 :headers {} :body "I am a mapped Ring handler"})))}
   (route "/nested" (nest (fn [req] {:status 200 :headers {} :body "I am a pure Ring handler"})))
@@ -17,7 +17,7 @@
              :body    (str "Yo: " (:a matches))})}))
 
 (defapp logapp
-        {:static-dir "lib"
+        {:static-dir ".."
          :log {:status-filter #(> % 300)}}
         (route "/a" (fn [r m] {:status 200})))
 

@@ -1,0 +1,196 @@
+// vim: set foldmethod=marker:
+description = 'Modern web development libraries for Clojure'
+
+buildscript {
+  repositories {
+    mavenRepo url: 'http://clojars.org/repo'
+    mavenRepo url: 'http://repo.smokejumperit.com'
+  }
+  dependencies {
+    classpath 'org.clojars.myfreeweb.clojuresque:clojuresque:1.5.0-SNAPSHOT'
+    classpath 'com.smokejumperit:gradle-plugins:0.8.2'
+  }
+}
+
+// Common {{{
+allprojects {
+  group = 'ringfinger'
+  version = 'git describe --tags --abbrev=0'.execute().text.replace('\n', '')
+  apply {
+    plugin 'clojure'
+    plugin com.smokejumperit.gradle.DepNamesPlugin
+  }
+  repositories {
+    mavenCentral()
+      mavenLocal()
+     clojarsRepo()
+  }
+}
+
+subprojects*.dependencies {
+  compile clojure
+  testCompile midje
+}
+// }}}
+// Projects {{{
+project(':toolfinger') {
+  description = 'Utility functions that are useful for Ringfinger'
+  dependencies {
+    compile valip
+    compile time
+    compile inflections
+  }
+}
+
+project(':secfinger') {
+  description = 'Security-related functions, including middleware for Ring'
+  dependencies {
+    compile project(':toolfinger')
+    compile commons_codec
+    testCompile ring_mock
+  }
+}
+
+project(':mailfinger') {
+  description = 'Email sending library'
+  dependencies {
+    compile json
+    compile http
+    compile commons_email
+  }
+}
+
+project(':basefinger') {
+  description = 'Document-oriented database abstraction'
+  dependencies {
+    compile project(':toolfinger')
+    compile ring_core
+    compile congomongo
+  }
+}
+
+project(':corefinger') {
+  description = 'Routing library and common middleware for Ring'
+  dependencies {
+    compile project(':secfinger')
+    compile json
+    compile ring_core
+    compile ring_devel
+    compile clout
+    testCompile ring_mock
+  }
+}
+
+project(':formfinger') {
+  description = 'Input validation and HTML form rendering library'
+  dependencies {
+    compile project(':corefinger')
+    compile project(':toolfinger')
+    compile project(':basefinger')
+    compile valip
+    compile hiccup
+    compile time
+    compile faker
+    compile icu4j
+    compile rhino
+  }
+}
+
+project(':authfinger') {
+  description = 'Auth and registration library'
+  dependencies {
+    compile project(':toolfinger')
+    compile project(':basefinger')
+    compile project(':corefinger')
+    compile project(':formfinger')
+    compile project(':secfinger')
+    compile commons_codec
+    compile hiccup
+    testCompile ring_mock
+  }
+}
+
+project(':restfinger') {
+  description = 'RESTful resource creation helper library'
+  dependencies {
+    compile project(':authfinger')
+    compile project(':toolfinger')
+    compile project(':basefinger')
+    compile project(':corefinger')
+    compile project(':formfinger')
+    compile json
+    compile valip
+    compile hiccup
+    compile time
+    compile lamina
+    compile inflections
+    compile faker
+    compile csv
+    compile yaml
+    testCompile commons_codec
+    testCompile ring_mock
+  }
+}
+
+project(':fastfinger') {
+  description = 'Helpful common functions for Ringfinger apps'
+  dependencies {
+    compile project(':toolfinger')
+    compile project(':basefinger')
+    compile project(':corefinger')
+    compile lamina
+    compile inflections
+    compile faker
+    compile valip
+    compile enlive
+    compile icu4j
+    testCompile ring_mock
+  }
+}
+// }}}
+// Publishing & installing {{{
+allprojects {
+  pomClosure = {
+    url 'https://github.com/myfreeweb/ringfinger'
+    description project.description
+    licenses {
+      license {
+          name 'The Apache Software License, Version 2.0'
+          url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          distribution 'repo'
+      }
+    }
+  }
+  configure(install.repositories.mavenInstaller) {
+    pom.project pomClosure
+  }
+  task publishJar(dependsOn: 'jar') << {
+    pomName = buildDirName + "/" + mavenPomDir.name + "/pom.xml"
+    pom { project pomClosure }.writeTo(pomName)
+    exec {
+      commandLine(
+        '/usr/bin/scp',
+        file(tasks.jar.archivePath).path,
+        file(pomName).path,
+        'clojars@clojars.org:'
+      )
+    }
+  }
+}
+// }}}
+// Aggregated documentation {{{
+dependencies {
+  clojuresque clojure
+}
+clojuredoc.configure {
+  destinationDir = file('autodoc')
+  clojureRoots = subprojects.first().sourceSets.main.clojure
+  source = files { subprojects.collect {
+    it.sourceSets.main.clojure
+  }}
+  compileClasspath = files { subprojects.collect {
+    it.sourceSets.main.compileClasspath
+  }}
+  excludeNamespace('clojure*')
+}
+// }}}

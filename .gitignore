@@ -1,8 +1,5 @@
-*.lein-*
-*pom.xml
-*.jar
-*lib/
-*classes/
+.gradle
+*build
 autodoc
 wiki
 website
