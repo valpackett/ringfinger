@@ -24,6 +24,8 @@ allprojects {
     mavenCentral()
       mavenLocal()
      clojarsRepo()
+    mavenRepo url: 'http://build.clojure.org/release'
+    mavenRepo url: 'http://build.clojure.org/snapshots'
   }
 }
 
@@ -33,6 +35,17 @@ subprojects*.dependencies {
 }
 // }}}
 // Projects {{{
+dependencies {
+  compile project(':toolfinger')
+  compile project(':secfinger')
+  compile project(':mailfinger')
+  compile project(':basefinger')
+  compile project(':corefinger')
+  compile project(':authfinger')
+  compile project(':formfinger')
+  compile project(':restfinger')
+  compile project(':fastfinger')
+}
 project(':toolfinger') {
   description = 'Utility functions that are useful for Ringfinger'
   dependencies {
