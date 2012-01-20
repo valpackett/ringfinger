@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html><head><link href="css/default.css" rel="stylesheet" type="text/css"><script src="js/jquery.min.js" type="text/javascript"></script><script src="js/page_effects.js" type="text/javascript"></script><title>restfinger.core documentation</title></head><body><div id="header"><h1><a href="index.html">Ringfinger 0.2.0-SNAPSHOT API documentation</a></h1></div><div class="sidebar" id="namespaces"><h3>Namespaces</h3><ul><li><a href="authfinger.core.html">authfinger.core</a></li><li><a href="authfinger.default-views.html">authfinger.default-views</a></li><li><a href="authfinger.routes.html">authfinger.routes</a></li><li><a href="basefinger.core.html">basefinger.core</a></li><li><a href="basefinger.inmem.html">basefinger.inmem</a></li><li><a href="basefinger.mongodb.html">basefinger.mongodb</a></li><li><a href="basefinger.session.html">basefinger.session</a></li><li><a href="corefinger.core.html">corefinger.core</a></li><li><a href="corefinger.middleware.html">corefinger.middleware</a></li><li><a href="fastfinger.actions.html">fastfinger.actions</a></li><li><a href="fastfinger.hooks.html">fastfinger.hooks</a></li><li><a href="fastfinger.misc.html">fastfinger.misc</a></li><li><a href="formfinger.core.html">formfinger.core</a></li><li><a href="formfinger.field-helpers.html">formfinger.field-helpers</a></li><li><a href="formfinger.fields.html">formfinger.fields</a></li><li><a href="mailfinger.console.html">mailfinger.console</a></li><li><a href="mailfinger.postmark.html">mailfinger.postmark</a></li><li><a href="mailfinger.sendmail.html">mailfinger.sendmail</a></li><li><a href="mailfinger.smtp.html">mailfinger.smtp</a></li><li class="current"><a href="restfinger.core.html">restfinger.core</a></li><li><a href="restfinger.default-views.html">restfinger.default-views</a></li><li><a href="restfinger.output.html">restfinger.output</a></li><li><a href="secfinger.html">secfinger</a></li><li><a href="toolfinger.html">toolfinger</a></li></ul></div><div class="sidebar" id="vars"><h3>Public Vars</h3><ul><li><a href="restfinger.core.html#var-nest-hook">nest-hook</a></li><li><a href="restfinger.core.html#var-resource">resource</a></li></ul></div><div class="namespace-docs" id="content"><h2>restfinger.core documentation</h2><pre class="doc">This module saves your time by writing all the Create/Read/Update/Delete
+boilerplate for you. Flash messages, validation, inserting example data,
+customization via hooks, actions and channels -- you name it, this module does it.</pre><div class="public" id="var-nest-hook"><h3>nest-hook</h3><div class="usage"><code>(nest-hook field hook)</code></div><pre class="doc">Makes a hook work on nested fields, eg.
+(nest-hook :contact (my-hook :name)) will modify :contact {:name value}</pre></div><div class="public" id="var-resource"><h3>resource</h3><div class="usage"><code>(resource collname {:keys [db pk owner-field default-dboptions url-prefix whitelist default-format middleware actions views forbidden-methods public-methods flash channels hooks per-page-default owner-only], :or {public-methods [:read], flash nil, actions [], db nil, pk nil, whitelist nil, forbidden-methods [], middleware {}, owner-field nil, url-prefix &quot;/&quot;, hooks {}, per-page-default 20, views {:index default-index, :get default-get, :not-found default-not-found}, default-dboptions {}, default-format &quot;html&quot;, owner-only false, channels {}}} &amp; fields)</code></div><pre class="doc">Creates a list of two routes (/url-prefix+collname.format and
+/url-prefix+collname/pk.format) for RESTful Create/Read/Update/Delete
+of entries in collname.
+Also, while in development environment, you can create example data using faker,
+like this: /url-prefix+collname.format/_create_fakes?count=100 (the default count is 5).
+Accepted options:
+ :db -- database (required!)
+ :pk -- primary key (required!)
+ :url-prefix -- a part of the URL before the collname, default is /
+ :owner-field -- if you want entries to be owned by users, name of the field which should hold user ids
+ :owner-only -- if you want entries to be private
+ :default-dboptions -- default database options (:query, :sort) for the index page
+ :whitelist -- allowed extra fields (not required)
+ :forbidden-methods -- a collection of methods to disallow (:index, :create, :read, :update, :delete)
+ :public-methods -- if :owner-field is specified, a collection of methods
+                    to allow for everyone, not just the owner. default is [:read]
+ :default-format -- 'html' by default, change to 'json' if you don't want html at all
+ :views -- map of HTML views (:index, :get, :not-found)
+ :flash -- map of flash messages (:created, :updated, :deleted, :forbidden),
+           can be either strings or callables expecting a single arg (the entry)
+ :middleware -- map of extended middleware (:all, :index, :create, :read, :update, :delete)
+ :hooks -- map of hooks (:data (on both create and update), :create, :update, :view), must be callables expecting
+           the entry and returning it (with modifications you want). Hooks receive data with correct
+           types, so eg. dates/times are org.joda.time.DateTime's and you can mess with them using clj-time
+           Tip: compose hooks with comp
+ :channels -- map of Lamina channels (:create, :update, :delete). Ringfinger will publish events
+              to these channels so you could, for example, push updates to clients in real time,
+              enqueue long-running jobs, index changes with a search engine, etc.
+ :actions -- map of handlers for custom actions (callables accepting [req matches entry default-data])
+             on resource entries, called by visiting /url-prefix+collname/pk?_action=action
+ :per-page-default -- default amount of entried per page, set to nil to disable pagination</pre></div></div></body></html>
