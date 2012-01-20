@@ -199,7 +199,6 @@ clojuredoc.configure {
   destinationDir = file('autodoc')
   subprojects.each {
     clojureRoots.srcDirs it.sourceSets.main.clojure.getSrcDirs()
-    resRoots.srcDirs it.sourceSets.main.resources.getSrcDirs()
   }
   source = files { subprojects.collect {
     it.sourceSets.main.clojure
@@ -207,6 +206,13 @@ clojuredoc.configure {
   compileClasspath = files { subprojects.collect {
     it.sourceSets.main.compileClasspath
   }}
-  excludeNamespace('clojure*')
+  excludeNamespace 'clojure*'
+}
+// }}}
+// Automation {{{
+task pub(type: Exec) {
+  dependsOn clojuredoc, publishJar
+  commandLine 'git push'
+  commandLine 'cd autodoc && git commit -am "Update" && git push'
 }
 // }}}
