@@ -210,8 +210,24 @@ clojuredoc.configure {
 }
 // }}}
 // Automation {{{
+task publishDocs << {
+  dependsOn clojuredoc
+  exec {
+    workingDir 'autodoc'
+    commandLine 'git', 'add', '-A'
+  }
+  exec {
+    workingDir 'autodoc'
+    commandLine 'git', 'commit', '-m Update'
+    setIgnoreExitValue true
+  }
+  exec {
+    workingDir 'autodoc'
+    commandLine 'git', 'push'
+  }
+}
 task pub(type: Exec) {
-  dependsOn clojuredoc, publishJar
-  commandLine 'git push && cd autodoc && git commit -am "Update" && git push'
+  dependsOn publishDocs, publishJar
+  commandLine 'git', 'push'
 }
 // }}}
