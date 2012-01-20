@@ -212,7 +212,6 @@ clojuredoc.configure {
 // Automation {{{
 task pub(type: Exec) {
   dependsOn clojuredoc, publishJar
-  commandLine 'git push'
-  commandLine 'cd autodoc && git commit -am "Update" && git push'
+  commandLine 'git push && cd autodoc && git commit -am "Update" && git push'
 }
 // }}}
