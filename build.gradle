@@ -210,8 +210,7 @@ clojuredoc.configure {
 }
 // }}}
 // Automation {{{
-task publishDocs << {
-  dependsOn clojuredoc
+task publishDocs(dependsOn: 'clojuredoc') << {
   exec {
     workingDir 'autodoc'
     commandLine 'git', 'add', '-A'
@@ -227,6 +226,7 @@ task publishDocs << {
   }
 }
 task pub(type: Exec) {
+  println 'Go get a coffee...'
   dependsOn publishDocs, publishJar
   commandLine 'git', 'push'
 }
