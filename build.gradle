@@ -225,9 +225,9 @@ task publishDocs(dependsOn: 'clojuredoc') << {
     commandLine 'git', 'push'
   }
 }
-task pub(type: Exec) {
+task pub(type: Exec, dependsOn: 'publishDocs') {
   println 'Go get a coffee...'
-  dependsOn publishDocs, publishJar
+  allprojects.each { dependsOn it.publishJar }
   commandLine 'git', 'push'
 }
 // }}}
