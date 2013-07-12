@@ -4,7 +4,10 @@ ringfinger
 no. No. NO. You're looking for [octohipster](https://github.com/myfreeweb/octohipster), the new cool REST API microframework.  
 This project is dead.  
 I reused some code (stuff like pagination) in octohipster.  
-But this stuff mostly sucks.  
+I also reused ideas in [RapidMachine for Python](https://github.com/myfreeweb/rapidmachine).  
+
+But this project's implementation mostly sucks.  
+I learned a lot though.  
 Making "extended Ring handlers" was an extremely stupid idea.  
 HTML and REST at the same time wasn't smart too.  
 Custom auth is not needed now that there's [friend](https://github.com/cemerick/friend).  
